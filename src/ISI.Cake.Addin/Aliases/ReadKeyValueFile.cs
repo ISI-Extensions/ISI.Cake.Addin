@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -13,23 +13,44 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 #endregion
  
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("ISI.Cake.Addin")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("ISI.Cake.Addin")]
-[assembly: AssemblyCulture("")]
+namespace ISI.Cake.Addin
+{
+	public static partial class Aliases
+	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static IDictionary<string, string> ReadKeyValueFile(global::Cake.Core.IO.FilePath filePath)
+		{
+			var values = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+			var lines = System.IO.File.ReadAllLines(filePath.FullPath).ToList();
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("52e729a1-a1e3-4b92-96fe-d4cf8a461c21")]
+			lines.RemoveAll(string.IsNullOrWhiteSpace);
+
+			foreach (var keyValue in lines.Select(line => line.Split(new[] { ':', '\t' }, 2)))
+			{
+				var key = keyValue.First().Trim();
+
+				var value = string.Empty;
+				if (keyValue.Length > 1)
+				{
+					value = keyValue[1].Trim();
+				}
+
+				if (values.ContainsKey(key))
+				{
+					throw new Exception(string.Format("key: \"{0}\" already exists with value of \"{1}\" cannot add value \"{2}\"", key, values[key], value));
+				}
+
+				values.Add(key, value);
+			}
+
+			return values;
+		}
+	}
+}

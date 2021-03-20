@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -13,23 +13,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 #endregion
  
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("ISI.Cake.Addin")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("ISI.Cake.Addin")]
-[assembly: AssemblyCulture("")]
+namespace ISI.Cake.Addin
+{
+	public static partial class Aliases
+	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static string GetBuildRevision(this global::Cake.Core.ICakeContext cakeContext)
+		{
+			var jan1st2000 = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+			var now = DateTime.UtcNow;
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("52e729a1-a1e3-4b92-96fe-d4cf8a461c21")]
+			return string.Format("{0}.{1}", Math.Floor((now.Date - jan1st2000).TotalDays), Math.Floor(((now - DateTime.UtcNow.Date).TotalSeconds) / 2));
+		}
+	}
+}

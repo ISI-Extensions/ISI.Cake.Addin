@@ -13,23 +13,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 #endregion
  
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("ISI.Cake.Addin")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("ISI.Cake.Addin")]
-[assembly: AssemblyCulture("")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("52e729a1-a1e3-4b92-96fe-d4cf8a461c21")]
+namespace ISI.Cake.Addin
+{
+	public class NupkgPushToolSettings
+	{
+		public bool UseNugetPush { get; set; } = true;
+		public Uri RepositoryUri { get; set; } = new Uri("https://nuget.isi-net.com");
+		public string ApiKey { get; set; }
+		public global::Cake.Core.IO.FilePath NugetCacheDirectory { get; set; }
+		public int MaxFileSegmentSize { get; set; } = 2000000;
+		public int MaxTries { get; set; } = 3;
+	}
+}

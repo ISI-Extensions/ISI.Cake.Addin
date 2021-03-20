@@ -114,3 +114,4 @@ UpgradeLog*.XML
 /src/.vs
 src/Resources/
 /src/tools
+/Nuget
