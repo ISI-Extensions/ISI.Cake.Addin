@@ -17,12 +17,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
-	public enum NupkgSignToolVerbosity
+	public class NupkgPushToolSettings
 	{
-		Normal,
-		Quiet,
-		Detailed,
+		public bool UseNugetPush { get; set; } = true;
+		public Uri RepositoryUri { get; set; } = new Uri("https://nuget.isi-net.com");
+		public string ApiKey { get; set; }
+		public global::Cake.Core.IO.DirectoryPath NugetCacheDirectory { get; set; }
+		public int MaxFileSegmentSize { get; set; } = 2000000;
+		public int MaxTries { get; set; } = 3;
 	}
 }

@@ -21,8 +21,20 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin
 {
-	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-AddIn")]
 	public static partial class Aliases
 	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static string GetBuildVersion(this global::Cake.Core.ICakeContext cakeContext, string assemblyVersion, string revisionBuild = null)
+		{
+			var assemblyVersionPieces = assemblyVersion.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+			assemblyVersion = string.Format("{0}.{1}.*", assemblyVersionPieces[0], assemblyVersionPieces[1]);
+
+			if (string.IsNullOrWhiteSpace(revisionBuild))
+			{
+				return assemblyVersion;
+			}
+
+			return assemblyVersion.Replace("*", revisionBuild);
+		}
 	}
 }

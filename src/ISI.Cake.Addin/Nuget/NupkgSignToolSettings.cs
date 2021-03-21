@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,23 +15,28 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
-	public static partial class Aliases
+	public class NupkgSignToolSettings
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void CreateNuspec(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Nuget.Nuspec nuspec, global::Cake.Core.IO.FilePath nuspecFilePath)
-		{
-			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper();
+		public Uri TimestamperUri { get; set; } = new Uri("http://timestamp.digicert.com");
+		public string TimestampHashAlgorithm { get; set; } = "SHA256";
+		
+		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 
-			System.IO.File.WriteAllText(nuspecFilePath.FullPath, nugetHelper.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.BuildNuspecRequest()
-			{
-				Nuspec = nuspec,
-			}));
-		}
+		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
+		public string CertificatePassword { get; set; }
+		public string CertificateStoreName { get; set; } = "My";
+		public string CertificateStoreLocation { get; set; } = "CurrentUser";
+		public string CertificateSubjectName { get; set; }
+		public string CertificateFingerprint { get; set; }
+
+		public string HashAlgorithm { get; set; } = "SHA256";
+
+		public bool OverwriteAnyExistingSignature { get; set; } = false;
+
+		public NupkgSignToolVerbosity Verbosity { get; set; } = NupkgSignToolVerbosity.Normal;
 	}
 }

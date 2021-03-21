@@ -19,9 +19,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
-	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-AddIn")]
+	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-Nuget-AddIn")]
 	public static partial class Aliases
 	{
 	}

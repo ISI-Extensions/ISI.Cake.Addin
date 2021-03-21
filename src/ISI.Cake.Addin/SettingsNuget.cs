@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,14 +15,35 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin
 {
-	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-AddIn")]
-	public static partial class Aliases
+	public class SettingsNuget
 	{
+		protected Settings Settings { get; }
+
+		public SettingsNuget(Settings settings)
+		{
+			Settings = settings;
+		}
+
+		public string RepositoryUrl
+		{
+			get => Settings.GetValue(Settings.Key.NugetRepositoryUrl);
+			set => Settings.SetValue(Settings.Key.NugetRepositoryUrl, value);
+		}
+
+		public string ApiKey
+		{
+			get => Settings.GetValue(Settings.Key.NugetApiKey);
+			set => Settings.SetValue(Settings.Key.NugetApiKey, value);
+		}
+
+		public string CacheDirectory
+		{
+			get => Settings.GetValue(Settings.Key.NugetCacheDirectory);
+			set => Settings.SetValue(Settings.Key.NugetCacheDirectory, value);
+		}
 	}
 }

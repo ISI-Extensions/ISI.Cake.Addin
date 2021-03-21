@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,42 +15,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
-	public static partial class Aliases
+	public enum NupkgSignToolVerbosity
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static IDictionary<string, string> ReadKeyValueFile(global::Cake.Core.IO.FilePath filePath)
-		{
-			var values = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-
-			var lines = System.IO.File.ReadAllLines(filePath.FullPath).ToList();
-
-			lines.RemoveAll(string.IsNullOrWhiteSpace);
-
-			foreach (var keyValue in lines.Select(line => line.Split(new[] { ':', '\t' }, 2)))
-			{
-				var key = keyValue.First().Trim();
-
-				var value = string.Empty;
-				if (keyValue.Length > 1)
-				{
-					value = keyValue[1].Trim();
-				}
-
-				if (values.ContainsKey(key))
-				{
-					throw new Exception(string.Format("key: \"{0}\" already exists with value of \"{1}\" cannot add value \"{2}\"", key, values[key], value));
-				}
-
-				values.Add(key, value);
-			}
-
-			return values;
-		}
+		Normal,
+		Quiet,
+		Detailed,
 	}
 }

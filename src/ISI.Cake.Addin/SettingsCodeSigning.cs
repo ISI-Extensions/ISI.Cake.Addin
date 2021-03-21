@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,20 +15,35 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin
 {
-	public static partial class Aliases
+	public class SettingsCodeSigning
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.Nuget.Nuspec GenerateNuspecFromProject(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath projectFilePath, Func<string, string> versionFinder = null)
-		{
-			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper();
+		protected Settings Settings { get; }
 
-			return nugetHelper.GenerateNuspecFromProject(projectFilePath.FullPath, versionFinder);
+		public SettingsCodeSigning(Settings settings)
+		{
+			Settings = settings;
+		}
+
+		public string TimeStampUrl
+		{
+			get => Settings.GetValue(Settings.Key.CodeSigningTimeStampUrl);
+			set => Settings.SetValue(Settings.Key.CodeSigningTimeStampUrl, value);
+		}
+
+		public string CertificateFileName
+		{
+			get => Settings.GetValue(Settings.Key.CodeSigningCertificateFileName);
+			set => Settings.SetValue(Settings.Key.CodeSigningCertificateFileName, value);
+		}
+
+		public string CertificatePassword
+		{
+			get => Settings.GetValue(Settings.Key.CodeSigningCertificatePassword);
+			set => Settings.SetValue(Settings.Key.CodeSigningCertificatePassword, value);
 		}
 	}
 }

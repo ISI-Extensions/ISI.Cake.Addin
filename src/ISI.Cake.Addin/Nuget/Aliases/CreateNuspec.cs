@@ -19,10 +19,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
-	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-AddIn")]
 	public static partial class Aliases
 	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static void CreateNuspec(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Nuget.Nuspec nuspec, global::Cake.Core.IO.FilePath nuspecFilePath)
+		{
+			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper(new CakeContextLogger(cakeContext));
+
+			System.IO.File.WriteAllText(nuspecFilePath.FullPath, nugetHelper.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.BuildNuspecRequest()
+			{
+				Nuspec = nuspec,
+			}));
+		}
 	}
 }

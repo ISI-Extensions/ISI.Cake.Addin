@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,17 +15,50 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin
 {
-	public class NupkgPushToolSettings
+	public static partial class Aliases
 	{
-		public bool UseNugetPush { get; set; } = true;
-		public Uri RepositoryUri { get; set; } = new Uri("https://nuget.isi-net.com");
-		public string ApiKey { get; set; }
-		public global::Cake.Core.IO.FilePath NugetCacheDirectory { get; set; }
-		public int MaxFileSegmentSize { get; set; } = 2000000;
-		public int MaxTries { get; set; } = 3;
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static Settings GetSettings(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath settingsFilePath, bool overrideWithEnvironmentVariables = false, GetSettings_TryGetValue overrideTryGetValue = null)
+		{
+			return GetSettings(cakeContext, settingsFilePath.FullPath, overrideWithEnvironmentVariables, overrideTryGetValue);
+		}
+
+		public static Settings GetSettings(this global::Cake.Core.ICakeContext cakeContext, string settingsFullName, bool overrideWithEnvironmentVariables = false, GetSettings_TryGetValue overrideTryGetValue = null)
+		{
+			var values = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+
+			if (!string.IsNullOrWhiteSpace(settingsFullName) && System.IO.File.Exists(settingsFullName))
+			{
+				var keyValueStorage = new ISI.Extensions.SimpleKeyValueStorage(settingsFullName);
+
+				foreach (var key in keyValueStorage.Keys)
+				{
+					values.Add(key, keyValueStorage.GetValue(key));
+				}
+			}
+
+			var settings = new Settings(values, overrideTryGetValue);
+
+			if (overrideWithEnvironmentVariables)
+			{
+				var environmentVariables = System.Environment.GetEnvironmentVariables();
+
+				foreach (var key in Settings.Key.Keys)
+				{
+					if (environmentVariables.Contains(key))
+					{
+						settings.SetValue(key, System.Environment.GetEnvironmentVariable(key));
+					}
+				}
+			}
+
+			return settings;
+		}
 	}
 }

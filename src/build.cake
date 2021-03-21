@@ -1,6 +1,10 @@
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=ISI.Cake.AddIn&loaddependencies=true
 
+//mklink /D Secrets S:\
+var settingsFullName = System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("LocalAppData"), "Secrets", "ISI.SCM.Settings.keyValue");
+var settings = GetSettings(settingsFullName);
+
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -10,11 +14,7 @@ var solution = ParseSolution(solutionPath);
 var assemblyVersionFile = File("./ISI.Cake.Addin.Version.cs");
 
 var revisionBuild = GetBuildRevision();
-var assemblyVersion = ParseAssemblyInfo(assemblyVersionFile).AssemblyVersion;
-var assemblyVersionPieces = assemblyVersion.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-assemblyVersion = string.Format("{0}.{1}.*", assemblyVersionPieces[0], assemblyVersionPieces[1]);
-Information("AssemblyVersion: {0}", assemblyVersion);
-var buildVersion = assemblyVersion.Replace("*", revisionBuild);
+var buildVersion = GetBuildVersion(ParseAssemblyInfo(assemblyVersionFile).AssemblyVersion, revisionBuild);
 Information("BuildVersion: {0}", buildVersion);
 
 var nugetDirectory = "../Nuget";
@@ -61,7 +61,7 @@ Task("Build")
 
 		CreateAssemblyInfo(assemblyVersionFile, new AssemblyInfoSettings()
 		{
-			Version = assemblyVersion,
+			Version = GetBuildVersion(buildVersion, "*"),
 		});
 	});
 
@@ -73,9 +73,9 @@ Task("Sign")
 		{
 			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake.*.dll");
 			Sign(files, new SignToolSignSettings {
-						TimeStampUri = new Uri("http://timestamp.digicert.com"),
-						CertPath = "S:/ISI.CodeSign.pfx",
-						Password = System.IO.File.ReadAllText("S:\\ISI.CodeSign.pwd")
+						TimeStampUri = new Uri(settings.CodeSigning.TimeStampUrl),
+						CertPath = settings.CodeSigning.CertificateFileName,
+						Password = settings.CodeSigning.CertificatePassword,
 			});
 		}
 	});
@@ -88,15 +88,7 @@ Task("Nuget")
 		{
 			Information(project.Name);
 
-			var nuspec = GenerateNuspecFromProject(project.Path, package =>
-			{
-				if (package.StartsWith("ISI.Extensions", StringComparison.InvariantCultureIgnoreCase))
-				{
-					return buildVersion;
-				}
-
-				return string.Empty;
-			});
+			var nuspec = GenerateNuspecFromProject(project.Path);
 			nuspec.Version = buildVersion;
 			nuspec.IconUri = new Uri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");
 			nuspec.ProjectUri = new Uri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin");
@@ -127,16 +119,19 @@ Task("Nuget")
 			DeleteFile(nuspecFile);
 
 			var nupgkFile = File(nugetDirectory + "/" + project.Name + "." + buildVersion + ".nupkg");
-			NupkgSign(nupgkFile, new ISI.Cake.Addin.NupkgSignToolSettings()
+			NupkgSign(nupgkFile, new ISI.Cake.Addin.Nuget.NupkgSignToolSettings()
 			{
-				CertificatePath = File("S:/ISI.CodeSign.pfx"),
-				CertificatePassword = System.IO.File.ReadAllText("S:\\ISI.CodeSign.pwd"),
+				TimestamperUri = new Uri(settings.CodeSigning.TimeStampUrl),
+				CertificatePath = File(settings.CodeSigning.CertificateFileName),
+				CertificatePassword = settings.CodeSigning.CertificatePassword,
 			});
 
-			NupkgPush(nupgkFile, new ISI.Cake.Addin.NupkgPushToolSettings()
+			NupkgPush(nupgkFile, new ISI.Cake.Addin.Nuget.NupkgPushToolSettings()
 			{
 				UseNugetPush = false,
-				ApiKey = System.IO.File.ReadAllText("S:\\ISI.NugetApiKey.txt"),
+				RepositoryUri = new Uri(settings.Nuget.RepositoryUrl),
+				ApiKey = settings.Nuget.ApiKey,
+				NugetCacheDirectory = Directory(settings.Nuget.CacheDirectory),
 			});
 		}
 	});

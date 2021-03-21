@@ -19,14 +19,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static void NupkgSign(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath nupkgFilePath, NupkgSignToolSettings nupkgSignToolSettings)
 		{
-			NupkgSign(cakeContext, new []{ nupkgFilePath }, nupkgSignToolSettings);
+			NupkgSign(cakeContext, new[] { nupkgFilePath }, nupkgSignToolSettings);
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
@@ -38,53 +38,31 @@ namespace ISI.Cake.Addin
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static void NupkgSign(this global::Cake.Core.ICakeContext cakeContext, string nupkgFullName, NupkgSignToolSettings nupkgSignToolSettings)
 		{
-			NupkgSign(cakeContext, new []{ nupkgFullName }, nupkgSignToolSettings);
+			NupkgSign(cakeContext, new[] { nupkgFullName }, nupkgSignToolSettings);
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static void NupkgSign(this global::Cake.Core.ICakeContext cakeContext, IEnumerable<string> nupkgFullNames, NupkgSignToolSettings nupkgSignToolSettings)
 		{
-			var arguments = new StringBuilder();
+			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper(new CakeContextLogger(cakeContext));
 
-			arguments.AppendFormat(" -Timestamper \"{0}\"", nupkgSignToolSettings.TimestamperUri);
-			arguments.AppendFormat(" -TimestampHashAlgorithm \"{0}\"", nupkgSignToolSettings.TimestampHashAlgorithm);
-
-			if (!string.IsNullOrWhiteSpace(nupkgSignToolSettings.OutputDirectory?.FullPath))
+			nugetHelper.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.NupkgSignRequest()
 			{
-				arguments.AppendFormat(" -OutputDirectory \"{0}\"", nupkgSignToolSettings.OutputDirectory.FullPath);
-			}
-
-			if (string.IsNullOrWhiteSpace(nupkgSignToolSettings.CertificatePath?.FullPath))
-			{
-				arguments.AppendFormat(" -CertificateStoreName \"{0}\"", nupkgSignToolSettings.CertificateStoreName);
-				arguments.AppendFormat(" -CertificateStoreLocation \"{0}\"", nupkgSignToolSettings.CertificateStoreLocation);
-				if (!string.IsNullOrWhiteSpace(nupkgSignToolSettings.CertificateSubjectName))
-				{
-					arguments.AppendFormat(" -CertificateSubjectName \"{0}\"", nupkgSignToolSettings.CertificateSubjectName);
-				}
-				if (!string.IsNullOrWhiteSpace(nupkgSignToolSettings.CertificateFingerprint))
-				{
-					arguments.AppendFormat(" -CertificateFingerprint \"{0}\"", nupkgSignToolSettings.CertificateFingerprint);
-				}
-			}
-			else
-			{
-				arguments.AppendFormat(" -CertificatePath \"{0}\"", nupkgSignToolSettings.CertificatePath.FullPath);
-				arguments.AppendFormat(" -CertificatePassword \"{0}\"", nupkgSignToolSettings.CertificatePassword);
-			}
-			arguments.AppendFormat(" -HashAlgorithm \"{0}\"", nupkgSignToolSettings.HashAlgorithm);
-
-			if (nupkgSignToolSettings.OverwriteAnyExistingSignature)
-			{
-				arguments.Append(" -Overwrite");
-			}
-
-			arguments.AppendFormat(" -Verbosity \"{0}\"", nupkgSignToolSettings.Verbosity);
-
-			foreach (var nupkgFullName in nupkgFullNames)
-			{
-				ISI.Cake.Addin.Process.WaitForProcessResponse(cakeContext, "nuget", string.Format("sign \"{0}\" {1}", nupkgFullName, arguments.ToString()));
-			}
+				NupkgFullNames = nupkgFullNames,
+				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
+				TimestamperUri = nupkgSignToolSettings.TimestamperUri,
+				TimestampHashAlgorithm = nupkgSignToolSettings.TimestampHashAlgorithm,
+				OutputDirectory = nupkgSignToolSettings.OutputDirectory?.FullPath,
+				CertificatePath = nupkgSignToolSettings.CertificatePath?.FullPath,
+				CertificatePassword = nupkgSignToolSettings.CertificatePassword,
+				CertificateStoreName = nupkgSignToolSettings.CertificateStoreName,
+				CertificateStoreLocation = nupkgSignToolSettings.CertificateStoreLocation,
+				CertificateSubjectName = nupkgSignToolSettings.CertificateSubjectName,
+				CertificateFingerprint = nupkgSignToolSettings.CertificateFingerprint,
+				HashAlgorithm = nupkgSignToolSettings.HashAlgorithm,
+				OverwriteAnyExistingSignature = nupkgSignToolSettings.OverwriteAnyExistingSignature,
+				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.NupkgSignVerbosity>.Convert(nupkgSignToolSettings.Verbosity),
+			});
 		}
 	}
 }
