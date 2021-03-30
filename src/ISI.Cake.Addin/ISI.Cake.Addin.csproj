@@ -20,9 +20,9 @@
 	<ItemGroup>
 	  <PackageReference Include="Cake.Common" Version="1.1.0" />
 	  <PackageReference Include="Cake.Core" Version="1.1.0" />
-	  <PackageReference Include="ISI.Extensions" Version="10.0.7758.7475" />
-	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7758.7475" />
-	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7758.7475" />
+	  <PackageReference Include="ISI.Extensions" Version="10.0.7759.39413" />
+	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7759.39413" />
+	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7759.39413" />
 	</ItemGroup>
 
 </Project>
