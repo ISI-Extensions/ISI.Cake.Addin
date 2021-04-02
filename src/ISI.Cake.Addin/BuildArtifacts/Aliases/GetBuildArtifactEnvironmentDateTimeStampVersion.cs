@@ -19,34 +19,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static NupkgSignResponse NupkgSign(this global::Cake.Core.ICakeContext cakeContext, NupkgSignRequest request)
+		public static GetBuildArtifactEnvironmentDateTimeStampVersionResponse GetBuildArtifactEnvironmentDateTimeStampVersion(this global::Cake.Core.ICakeContext cakeContext, GetBuildArtifactEnvironmentDateTimeStampVersionRequest request)
 		{
-			var response = new NupkgSignResponse();
+			var response = new GetBuildArtifactEnvironmentDateTimeStampVersionResponse();
+			
+			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
-
-			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
+			response.BuildArtifactEnvironmentDateTimeStampVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 			{
-				NupkgFullNames = request.NupkgFullNames,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimestamperUri = request.TimestamperUri,
-				TimestampHashAlgorithm = request.TimestampHashAlgorithm,
-				OutputDirectory = request.OutputDirectory?.FullPath,
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				HashAlgorithm = request.HashAlgorithm,
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
-			});
+				RemoteManagementUrl = request.RemoteManagementUrl,
+				AuthenticationToken = request.AuthenticationToken,
+				ArtifactName = request.ArtifactName,
+				Environment = request.Environment,
+			}).BuildArtifactEnvironmentDateTimeStampVersion;
 
 			return response;
 		}

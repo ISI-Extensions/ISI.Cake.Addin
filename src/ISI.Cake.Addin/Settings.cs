@@ -25,6 +25,12 @@ namespace ISI.Cake.Addin
 	{
 		public class Key
 		{
+			public const string ActiveDirectoryDomain = nameof(ActiveDirectoryDomain);
+			public const string ActiveDirectoryUserName = nameof(ActiveDirectoryUserName);
+			public const string ActiveDirectoryPassword = nameof(ActiveDirectoryPassword);
+
+			public const string ScmWebServiceUrl = nameof(ScmWebServiceUrl);
+
 			public const string CodeSigningTimeStampUrl = nameof(CodeSigningTimeStampUrl);
 			public const string CodeSigningCertificateFileName = nameof(CodeSigningCertificateFileName);
 			public const string CodeSigningCertificatePassword = nameof(CodeSigningCertificatePassword);
@@ -33,14 +39,27 @@ namespace ISI.Cake.Addin
 			public const string NugetApiKey = nameof(NugetApiKey);
 			public const string NugetCacheDirectory = nameof(NugetCacheDirectory);
 
+			public const string JenkinsApiKey = nameof(JenkinsApiKey);
+
+			public const string FileStoreUploadFileUserName = nameof(FileStoreUploadFileUserName);
+			public const string FileStoreUploadFilePassword = nameof(FileStoreUploadFilePassword);
+
 			internal static IEnumerable<string> Keys =>
 				new[]
 				{
+					ActiveDirectoryDomain,
+					ActiveDirectoryUserName,
+					ActiveDirectoryPassword,
+					ScmWebServiceUrl,
+					CodeSigningTimeStampUrl,
 					CodeSigningCertificateFileName,
 					CodeSigningCertificatePassword,
 					NugetRepositoryUrl,
 					NugetApiKey,
 					NugetCacheDirectory,
+					JenkinsApiKey,
+					FileStoreUploadFileUserName,
+					FileStoreUploadFilePassword,
 				};
 		}
 
@@ -57,12 +76,23 @@ namespace ISI.Cake.Addin
 			});
 		}
 
+		private SettingsActiveDirectory _activeDirectory = null;
+		public SettingsActiveDirectory ActiveDirectory => _activeDirectory ??= new SettingsActiveDirectory(this);
+
+		private SettingsScm _scm = null;
+		public SettingsScm Scm => _scm ??= new SettingsScm(this);
 
 		private SettingsCodeSigning _codeSigning = null;
 		public SettingsCodeSigning CodeSigning => _codeSigning ??= new SettingsCodeSigning(this);
 
 		private SettingsNuget _nuget = null;
 		public SettingsNuget Nuget => _nuget ??= new SettingsNuget(this);
+
+		private SettingsNuget _jenkins = null;
+		public SettingsNuget Jenkins => _jenkins ??= new SettingsNuget(this);
+
+		private SettingsFileStore _fileStore = null;
+		public SettingsFileStore FileStore => _fileStore ??= new SettingsFileStore(this);
 
 
 		public string GetValue(string key, string defaultValue = null)

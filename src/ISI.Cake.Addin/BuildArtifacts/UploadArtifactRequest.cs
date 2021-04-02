@@ -19,19 +19,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public static partial class Aliases
+	public partial class UploadArtifactRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void CreateNuspec(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Nuget.Nuspec nuspec, global::Cake.Core.IO.FilePath nuspecFilePath)
-		{
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
-
-			System.IO.File.WriteAllText(nuspecFilePath.FullPath, nugetApi.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.BuildNuspecRequest()
-			{
-				Nuspec = nuspec,
-			}).Nuspec);
-		}
+		public string RepositoryUrl { get; set; }
+		public string AuthenticationToken { get; set; }
+		public string SourceFileName { get; set; }
+		public string ArtifactName { get; set; }
+		public string DateTimeStamp { get; set; }
 	}
 }

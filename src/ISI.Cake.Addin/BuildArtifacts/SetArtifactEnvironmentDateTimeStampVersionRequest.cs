@@ -19,36 +19,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public static partial class Aliases
+	public partial class SetArtifactEnvironmentDateTimeStampVersionRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static NupkgSignResponse NupkgSign(this global::Cake.Core.ICakeContext cakeContext, NupkgSignRequest request)
-		{
-			var response = new NupkgSignResponse();
-
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
-
-			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
-			{
-				NupkgFullNames = request.NupkgFullNames,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimestamperUri = request.TimestamperUri,
-				TimestampHashAlgorithm = request.TimestampHashAlgorithm,
-				OutputDirectory = request.OutputDirectory?.FullPath,
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				HashAlgorithm = request.HashAlgorithm,
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
-			});
-
-			return response;
-		}
+		public string RepositoryUrl { get; set; }
+		public string AuthenticationToken { get; set; }
+		public string ArtifactName { get; set; }
+		public string Environment { get; set; }
+		public string DateTimeStampVersion { get; set; }
 	}
 }

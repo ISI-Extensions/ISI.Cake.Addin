@@ -19,33 +19,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static NupkgSignResponse NupkgSign(this global::Cake.Core.ICakeContext cakeContext, NupkgSignRequest request)
+		public static UploadArtifactResponse UploadArtifact(this global::Cake.Core.ICakeContext cakeContext, UploadArtifactRequest request)
 		{
-			var response = new NupkgSignResponse();
+			var response = new UploadArtifactResponse();
+			
+			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
-
-			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
+			buildArtifactApi.UploadArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.UploadArtifactRequest()
 			{
-				NupkgFullNames = request.NupkgFullNames,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimestamperUri = request.TimestamperUri,
-				TimestampHashAlgorithm = request.TimestampHashAlgorithm,
-				OutputDirectory = request.OutputDirectory?.FullPath,
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				HashAlgorithm = request.HashAlgorithm,
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
+				RepositoryUrl = request.RepositoryUrl,
+				AuthenticationToken = request.AuthenticationToken,
+				SourceFileName = request.SourceFileName,
+				ArtifactName = request.ArtifactName,
+				DateTimeStamp = request.DateTimeStamp,
 			});
 
 			return response;

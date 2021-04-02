@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,40 +15,35 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin
 {
-	public static partial class Aliases
+	public class SettingsActiveDirectory
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static NupkgSignResponse NupkgSign(this global::Cake.Core.ICakeContext cakeContext, NupkgSignRequest request)
+		protected Settings Settings { get; }
+
+		public SettingsActiveDirectory(Settings settings)
 		{
-			var response = new NupkgSignResponse();
+			Settings = settings;
+		}
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+		public string Domain
+		{
+			get => Settings.GetValue(Settings.Key.ActiveDirectoryDomain);
+			set => Settings.SetValue(Settings.Key.ActiveDirectoryDomain, value);
+		}
 
-			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
-			{
-				NupkgFullNames = request.NupkgFullNames,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimestamperUri = request.TimestamperUri,
-				TimestampHashAlgorithm = request.TimestampHashAlgorithm,
-				OutputDirectory = request.OutputDirectory?.FullPath,
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				HashAlgorithm = request.HashAlgorithm,
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
-			});
+		public string UserName
+		{
+			get => Settings.GetValue(Settings.Key.ActiveDirectoryUserName);
+			set => Settings.SetValue(Settings.Key.ActiveDirectoryUserName, value);
+		}
 
-			return response;
+		public string Password
+		{
+			get => Settings.GetValue(Settings.Key.ActiveDirectoryPassword);
+			set => Settings.SetValue(Settings.Key.ActiveDirectoryPassword, value);
 		}
 	}
 }

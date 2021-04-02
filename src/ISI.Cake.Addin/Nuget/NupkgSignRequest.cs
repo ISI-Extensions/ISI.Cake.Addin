@@ -21,34 +21,26 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public static partial class Aliases
+	public partial class NupkgSignRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static NupkgSignResponse NupkgSign(this global::Cake.Core.ICakeContext cakeContext, NupkgSignRequest request)
-		{
-			var response = new NupkgSignResponse();
+		public IEnumerable<string> NupkgFullNames { get; set; }
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+		public Uri TimestamperUri { get; set; } = new Uri("http://timestamp.digicert.com");
+		public string TimestampHashAlgorithm { get; set; } = "SHA256";
+		
+		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 
-			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
-			{
-				NupkgFullNames = request.NupkgFullNames,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimestamperUri = request.TimestamperUri,
-				TimestampHashAlgorithm = request.TimestampHashAlgorithm,
-				OutputDirectory = request.OutputDirectory?.FullPath,
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				HashAlgorithm = request.HashAlgorithm,
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
-			});
+		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
+		public string CertificatePassword { get; set; }
+		public string CertificateStoreName { get; set; } = "My";
+		public string CertificateStoreLocation { get; set; } = "CurrentUser";
+		public string CertificateSubjectName { get; set; }
+		public string CertificateFingerprint { get; set; }
 
-			return response;
-		}
+		public string HashAlgorithm { get; set; } = "SHA256";
+
+		public bool OverwriteAnyExistingSignature { get; set; } = false;
+
+		public NupkgSignToolVerbosity Verbosity { get; set; } = NupkgSignToolVerbosity.Normal;
 	}
 }

@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,17 +15,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public class NupkgPushToolSettings
+	public static partial class Aliases
 	{
-		public bool UseNugetPush { get; set; } = true;
-		public Uri RepositoryUri { get; set; } = new Uri("https://nuget.isi-net.com");
-		public string ApiKey { get; set; }
-		public global::Cake.Core.IO.DirectoryPath NugetCacheDirectory { get; set; }
-		public int MaxFileSegmentSize { get; set; } = 2000000;
-		public int MaxTries { get; set; } = 3;
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static CreateNuspecFileResponse CreateNuspecFile(this global::Cake.Core.ICakeContext cakeContext, CreateNuspecFileRequest request)
+		{
+			var response = new CreateNuspecFileResponse();
+
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+
+			System.IO.File.WriteAllText(request.NuspecFullName, nugetApi.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.BuildNuspecRequest()
+			{
+				Nuspec = request.Nuspec,
+			}).Nuspec);
+
+			return response;
+		}
 	}
 }

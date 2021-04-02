@@ -24,39 +24,25 @@ namespace ISI.Cake.Addin.Nuget
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void NupkgPush(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath nupkgFilePath, NupkgPushToolSettings nupkgPushToolSettings)
+		public static NupkgPushResponse NupkgPush(this global::Cake.Core.ICakeContext cakeContext, NupkgPushRequest request)
 		{
-			NupkgPush(cakeContext, new[] { nupkgFilePath }, nupkgPushToolSettings);
-		}
+			var response = new NupkgPushResponse();
 
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void NupkgPush(this global::Cake.Core.ICakeContext cakeContext, IEnumerable<global::Cake.Core.IO.FilePath> nupkgFilePaths, NupkgPushToolSettings nupkgPushToolSettings)
-		{
-			NupkgPush(cakeContext, nupkgFilePaths.Select(filePath => filePath.FullPath), nupkgPushToolSettings);
-		}
-
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void NupkgPush(this global::Cake.Core.ICakeContext cakeContext, string nupkgFullName, NupkgPushToolSettings nupkgPushToolSettings)
-		{
-			NupkgPush(cakeContext, new[] { nupkgFullName }, nupkgPushToolSettings);
-		}
-
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void NupkgPush(this global::Cake.Core.ICakeContext cakeContext, IEnumerable<string> nupkgFullNames, NupkgPushToolSettings nupkgPushToolSettings)
-		{
 			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
 
 			nugetApi.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPushRequest()
 			{
-				NupkgFullNames = nupkgFullNames,
+				NupkgFullNames = request.NupkgFullNames,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				UseNugetPush = nupkgPushToolSettings.UseNugetPush,
-				RepositoryUri = nupkgPushToolSettings.RepositoryUri,
-				ApiKey = nupkgPushToolSettings.ApiKey,
-				MaxFileSegmentSize = nupkgPushToolSettings.MaxFileSegmentSize,
-				MaxTries = nupkgPushToolSettings.MaxTries,
-				NugetCacheDirectory = nupkgPushToolSettings.NugetCacheDirectory?.FullPath,
+				UseNugetPush = request.UseNugetPush,
+				RepositoryUri = request.RepositoryUri,
+				ApiKey = request.ApiKey,
+				MaxFileSegmentSize = request.MaxFileSegmentSize,
+				MaxTries = request.MaxTries,
+				NugetCacheDirectory = request.NugetCacheDirectory?.FullPath,
 			});
+
+			return response;
 		}
 	}
 }
