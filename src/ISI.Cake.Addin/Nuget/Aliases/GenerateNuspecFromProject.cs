@@ -24,11 +24,15 @@ namespace ISI.Cake.Addin.Nuget
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.Nuget.Nuspec GenerateNuspecFromProject(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath projectFilePath, Func<string, string> versionFinder = null)
+		public static ISI.Extensions.Nuget.Nuspec GenerateNuspecFromProject(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath projectFilePath, ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetPackageVersion getPackageVersion = null)
 		{
-			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper(new CakeContextLogger(cakeContext));
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
 
-			return nugetHelper.GenerateNuspecFromProject(projectFilePath.FullPath, versionFinder);
+			return nugetApi.GenerateNuspecFromProject(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GenerateNuspecFromProjectRequest()
+			{
+				ProjectFullName = projectFilePath.FullPath, 
+				GetPackageVersion = getPackageVersion,
+			}).Nuspec;
 		}
 	}
 }

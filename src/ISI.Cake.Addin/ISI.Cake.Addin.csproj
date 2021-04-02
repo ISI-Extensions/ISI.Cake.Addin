@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Deterministic>false</Deterministic>
@@ -20,9 +20,11 @@
 	<ItemGroup>
 	  <PackageReference Include="Cake.Common" Version="1.1.0" />
 	  <PackageReference Include="Cake.Core" Version="1.1.0" />
-	  <PackageReference Include="ISI.Extensions" Version="10.0.7759.39413" />
-	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7759.39413" />
-	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7759.39413" />
+	  <PackageReference Include="ISI.Extensions" Version="10.0.7762.7063" />
+	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7762.7063" />
+	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7762.7063" />
+	  <PackageReference Include="ISI.Extensions.Scm" Version="10.0.7762.7063" />
+	  <PackageReference Include="ISI.Extensions.Svn" Version="10.0.7762.7063" />
 	</ItemGroup>
 
 </Project>

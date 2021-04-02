@@ -44,9 +44,9 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static void NupkgPush(this global::Cake.Core.ICakeContext cakeContext, IEnumerable<string> nupkgFullNames, NupkgPushToolSettings nupkgPushToolSettings)
 		{
-			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper(new CakeContextLogger(cakeContext));
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
 
-			nugetHelper.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.NupkgPushRequest()
+			nugetApi.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPushRequest()
 			{
 				NupkgFullNames = nupkgFullNames,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,

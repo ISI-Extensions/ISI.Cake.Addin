@@ -26,12 +26,12 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static void CreateNuspec(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Nuget.Nuspec nuspec, global::Cake.Core.IO.FilePath nuspecFilePath)
 		{
-			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper(new CakeContextLogger(cakeContext));
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
 
-			System.IO.File.WriteAllText(nuspecFilePath.FullPath, nugetHelper.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.BuildNuspecRequest()
+			System.IO.File.WriteAllText(nuspecFilePath.FullPath, nugetApi.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.BuildNuspecRequest()
 			{
 				Nuspec = nuspec,
-			}));
+			}).Nuspec);
 		}
 	}
 }

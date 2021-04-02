@@ -44,9 +44,9 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static void NupkgSign(this global::Cake.Core.ICakeContext cakeContext, IEnumerable<string> nupkgFullNames, NupkgSignToolSettings nupkgSignToolSettings)
 		{
-			var nugetHelper = new ISI.Extensions.Nuget.NugetHelper(new CakeContextLogger(cakeContext));
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
 
-			nugetHelper.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.NupkgSignRequest()
+			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
 			{
 				NupkgFullNames = nupkgFullNames,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
@@ -61,7 +61,7 @@ namespace ISI.Cake.Addin.Nuget
 				CertificateFingerprint = nupkgSignToolSettings.CertificateFingerprint,
 				HashAlgorithm = nupkgSignToolSettings.HashAlgorithm,
 				OverwriteAnyExistingSignature = nupkgSignToolSettings.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetHelper.NupkgSignVerbosity>.Convert(nupkgSignToolSettings.Verbosity),
+				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(nupkgSignToolSettings.Verbosity),
 			});
 		}
 	}
