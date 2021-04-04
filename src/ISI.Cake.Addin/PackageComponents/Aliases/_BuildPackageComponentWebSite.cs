@@ -37,6 +37,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				ISI.Extensions.DirectoryIcon.SetDirectoryIcon(packageComponentDirectory, packageComponent.IconFullName);
 			}
 
+			// /p:DeployOnBuild=true/p:WebPublishMethod=Package/p:PackageAsSingleFile=true/p:PackageLocation="C:\temp\web.zip"
 			if (string.Equals(platform, "AnyCPU", StringComparison.InvariantCultureIgnoreCase))
 			{
 				cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
