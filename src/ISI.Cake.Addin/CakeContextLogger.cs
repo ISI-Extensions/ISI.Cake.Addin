@@ -17,8 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ISI.Extensions.Extensions;
-using LogLevel = Cake.Core.Diagnostics.LogLevel;
-using Verbosity = Cake.Core.Diagnostics.Verbosity;
 
 namespace ISI.Cake.Addin
 {
@@ -53,31 +51,31 @@ namespace ISI.Cake.Addin
 			switch (logLevel)
 			{
 				case Microsoft.Extensions.Logging.LogLevel.None:
-					CakeContext.Log.Write(Verbosity.Normal, LogLevel.Information, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, formatter(state, exception));
 					break;
 
 				case Microsoft.Extensions.Logging.LogLevel.Trace:
-					CakeContext.Log.Write(Verbosity.Verbose, LogLevel.Verbose, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Verbose, global::Cake.Core.Diagnostics.LogLevel.Verbose, formatter(state, exception));
 					break;
 
 				case Microsoft.Extensions.Logging.LogLevel.Debug:
-					CakeContext.Log.Write(Verbosity.Verbose, LogLevel.Verbose, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Verbose, global::Cake.Core.Diagnostics.LogLevel.Verbose, formatter(state, exception));
 					break;
 
 				case Microsoft.Extensions.Logging.LogLevel.Information:
-					CakeContext.Log.Write(Verbosity.Normal, LogLevel.Information, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, formatter(state, exception));
 					break;
 
 				case Microsoft.Extensions.Logging.LogLevel.Warning:
-					CakeContext.Log.Write(Verbosity.Normal, LogLevel.Warning, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Warning, formatter(state, exception));
 					break;
 
 				case Microsoft.Extensions.Logging.LogLevel.Error:
-					CakeContext.Log.Write(Verbosity.Normal, LogLevel.Error, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Error, formatter(state, exception));
 					break;
 
 				case Microsoft.Extensions.Logging.LogLevel.Critical:
-					CakeContext.Log.Write(Verbosity.Normal, LogLevel.Fatal, formatter(state, exception));
+					CakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Fatal, formatter(state, exception));
 					break;
 
 				default:
