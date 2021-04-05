@@ -21,7 +21,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public class DownloadArtifactRequest
 	{
-		public string RepositoryUrl { get; set; }
+		public string RemoteManagementUrl { get; set; }
 		public string AuthenticationToken { get; set; }
 		public string ArtifactName { get; set; }
 		public string DateTimeStamp { get; set; }

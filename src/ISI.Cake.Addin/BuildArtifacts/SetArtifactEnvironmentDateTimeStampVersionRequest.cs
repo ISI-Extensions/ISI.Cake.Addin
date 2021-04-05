@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public partial class SetArtifactEnvironmentDateTimeStampVersionRequest
 	{
-		public string RepositoryUrl { get; set; }
+		public string RemoteManagementUrl { get; set; }
 		public string AuthenticationToken { get; set; }
 		public string ArtifactName { get; set; }
 		public string Environment { get; set; }

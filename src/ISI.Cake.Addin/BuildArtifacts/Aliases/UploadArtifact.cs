@@ -32,7 +32,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			buildArtifactApi.UploadArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.UploadArtifactRequest()
 			{
-				RepositoryUrl = request.RepositoryUrl,
+				RemoteManagementUrl = request.RemoteManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				SourceFileName = request.SourceFileName,
 				ArtifactName = request.ArtifactName,
