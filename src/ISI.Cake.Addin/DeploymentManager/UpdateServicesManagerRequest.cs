@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public partial class UpdateServicesManagerRequest
 	{
-		public string RemoteManagementUrl { get; set; }
+		public string ServicesManagerUrl { get; set; }
 		public string Password { get; set; }
 	}
 }

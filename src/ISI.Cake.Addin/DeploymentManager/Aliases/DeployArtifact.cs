@@ -33,8 +33,9 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			response.Success = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
 			{
-				RemoteManagementUrl = request.RemoteManagementUrl,
+				ServicesManagerUrl = request.ServicesManagerUrl,
 				Password = request.Password,
+				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				ArtifactName = request.ArtifactName,
 				ArtifactDateTimeStampVersionUrl = request.ArtifactDateTimeStampVersionUrl,

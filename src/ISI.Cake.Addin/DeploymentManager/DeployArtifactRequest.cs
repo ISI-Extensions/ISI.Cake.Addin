@@ -23,11 +23,12 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public partial class DeployArtifactRequest
 	{
-		public string RemoteManagementUrl { get; set; }
+		public string ServicesManagerUrl { get; set; }
 		public string Password { get; set; }
 		public string AuthenticationToken { get; set; }
 
 		public string ArtifactName { get; set; }
+		public string BuildArtifactManagementUrl { get; set; }
 		public string ArtifactDateTimeStampVersionUrl { get; set; }
 		public string ArtifactDownloadUrl { get; set; }
 		public string ToDateTimeStamp { get; set; }

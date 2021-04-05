@@ -32,7 +32,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			response.Status = buildArtifactApi.SetArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.SetArtifactEnvironmentDateTimeStampVersionRequest()
 			{
-				RemoteManagementUrl = request.RemoteManagementUrl,
+				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				ArtifactName = request.ArtifactName,
 				Environment = request.Environment,

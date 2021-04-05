@@ -32,7 +32,7 @@ namespace ISI.Cake.Addin.Scm
 
 			response.AuthenticationToken = scmApi.GetAuthenticationToken(new ISI.Extensions.Scm.DataTransferObjects.ScmApi.GetAuthenticationTokenRequest()
 			{
-				RemoteManagementUrl = request.RemoteManagementUrl,
+				ScmManagementUrl = request.ScmManagementUrl,
 				UserName = request.UserName,
 				Password = request.Password,
 			}).AuthenticationToken;

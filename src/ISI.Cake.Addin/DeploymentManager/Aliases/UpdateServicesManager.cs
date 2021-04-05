@@ -32,7 +32,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			var apiResponse = deploymentManagerApi.UpdateServicesManager(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.UpdateServicesManagerRequest()
 			{
-				RemoteManagementUrl = request.RemoteManagementUrl,
+				ServicesManagerUrl = request.ServicesManagerUrl,
 				Password = request.Password,
 			});
 

@@ -32,7 +32,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			response.ArtifactDateTimeStamp = buildArtifactApi.GetArtifactDateTimeStamp(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetArtifactDateTimeStampRequest()
 			{
-				RemoteManagementUrl = request.RemoteManagementUrl,
+				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				DateTimeStamp = request.DateTimeStamp,
 			}).ArtifactDateTimeStamp;
