@@ -23,6 +23,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public partial class GetBuildArtifactEnvironmentDateTimeStampVersionResponse
 	{
-		public string BuildArtifactEnvironmentDateTimeStampVersion { get; set; }
+		public ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.DateTimeStampVersion DateTimeStampVersion { get; set; }
 	}
 }
