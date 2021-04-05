@@ -29,10 +29,15 @@ namespace ISI.Cake.Addin.PackageComponents
 		{
 			var response = new PackageComponentsResponse();
 
-			//using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
-			//{
-			//	var packageComponentsDirectory = tempDirectory.FullName;
-				var packageComponentsDirectory = ISI.Extensions.IO.Path.GetTempDirectoryName();
+			using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
+			{
+				var packageComponentsDirectory = tempDirectory.FullName;
+				//var packageComponentsDirectory = ISI.Extensions.IO.Path.GetTempDirectoryName();
+
+				if (!string.IsNullOrWhiteSpace(request.SubDirectory))
+				{
+					packageComponentsDirectory = System.IO.Path.Combine(packageComponentsDirectory, request.SubDirectory);
+				}
 
 				foreach (var packageComponent in request.PackageComponents)
 				{
@@ -58,7 +63,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName));
 
 				cakeContext.Zip(cakeContext.Directory(packageComponentsDirectory), cakeContext.File(request.PackageComponentsFullName));
-			//}
+			}
 
 			return response;
 		}

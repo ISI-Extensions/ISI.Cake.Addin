@@ -23,18 +23,18 @@ namespace ISI.Cake.Addin.PackageComponents
 {
 	public static partial class Aliases
 	{
-		private static string GetBinDirectory(string projectFullName, string configuration, string platform)
+		private static string GetBinDirectory(string projectFullName, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform)
 		{
 			var projectDirectoryFullName = System.IO.Path.GetDirectoryName(projectFullName);
 
 			return System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration);
 
-			if (string.IsNullOrWhiteSpace(platform) || string.Equals(platform, "Any CPU", StringComparison.InvariantCultureIgnoreCase))
-			{
-				return System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration);
-			}
+			//if (string.IsNullOrWhiteSpace(platform) || string.Equals(platform, "Any CPU", StringComparison.InvariantCultureIgnoreCase))
+			//{
+			//	return System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration);
+			//}
 
-			return System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration, platform);
+			//return System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration, platform);
 		}
 	}
 }

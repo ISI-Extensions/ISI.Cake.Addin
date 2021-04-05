@@ -25,7 +25,7 @@ namespace ISI.Cake.Addin.PackageComponents
 {
 	public static partial class Aliases
 	{
-		private static void BuildPackageComponentWebSite(global::Cake.Core.ICakeContext cakeContext, string configuration, string platform, string packageComponentsDirectory, PackageComponentWebSite packageComponent)
+		private static void BuildPackageComponentWebSite(global::Cake.Core.ICakeContext cakeContext, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform, string packageComponentsDirectory, PackageComponentWebSite packageComponent)
 		{
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
@@ -43,7 +43,7 @@ namespace ISI.Cake.Addin.PackageComponents
 			}
 
 			// /p:DeployOnBuild=true/p:WebPublishMethod=Package/p:PackageAsSingleFile=true/p:PackageLocation="C:\temp\web.zip"
-			if (string.Equals(platform, "AnyCPU", StringComparison.InvariantCultureIgnoreCase))
+			if (platform == MSBuildPlatform.Automatic)
 			{
 				cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
 					.SetConfiguration(configuration)
@@ -63,7 +63,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
 					.SetConfiguration(configuration)
 					.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
-					.WithProperty("Platform", platform)
+					.SetMSBuildPlatform(platform)
 					.WithProperty("OutputPath", System.IO.Path.Combine(projectDirectory, "bin"))
 					.WithProperty("OutDir", packageComponentDirectory)
 					.WithProperty("Retries", "1")

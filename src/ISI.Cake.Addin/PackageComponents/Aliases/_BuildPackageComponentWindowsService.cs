@@ -24,7 +24,7 @@ namespace ISI.Cake.Addin.PackageComponents
 {
 	public static partial class Aliases
 	{
-		private static void BuildPackageComponentWindowsService(global::Cake.Core.ICakeContext cakeContext, string configuration, string platform, string packageComponentsDirectory, PackageComponentWindowsService packageComponent)
+		private static void BuildPackageComponentWindowsService(global::Cake.Core.ICakeContext cakeContext, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform, string packageComponentsDirectory, PackageComponentWindowsService packageComponent)
 		{
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);

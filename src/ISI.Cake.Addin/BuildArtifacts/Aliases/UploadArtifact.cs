@@ -27,7 +27,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public static UploadArtifactResponse UploadArtifact(this global::Cake.Core.ICakeContext cakeContext, UploadArtifactRequest request)
 		{
 			var response = new UploadArtifactResponse();
-			
+
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
 			buildArtifactApi.UploadArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.UploadArtifactRequest()

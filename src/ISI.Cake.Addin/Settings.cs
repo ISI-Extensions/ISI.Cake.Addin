@@ -15,6 +15,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ISI.Cake.Addin
@@ -138,5 +139,7 @@ namespace ISI.Cake.Addin
 			Values.Remove(key);
 			Values.Add(new KeyValuePair<string, string>(key, value));
 		}
+
+		public override string ToString() => string.Join("\r\n", Values.Select(keyValue => string.Format("{0} => {1}", keyValue.Key, keyValue.Value)));
 	}
 }
