@@ -13,9 +13,11 @@ var solution = ParseSolution(solutionPath);
 
 var assemblyVersionFile = File("./ISI.Cake.Addin.Version.cs");
 
-var revisionBuild = GetBuildRevision();
-var buildVersion = GetBuildVersion(ParseAssemblyInfo(assemblyVersionFile).AssemblyVersion, revisionBuild);
-Information("BuildVersion: {0}", buildVersion);
+var buildDateTime = DateTime.UtcNow;
+var buildDateTimeStamp = GetDateTimeStamp(buildDateTime);
+var buildRevision = GetBuildRevision(buildDateTime);
+var assemblyVersion = GetAssemblyVersion(ParseAssemblyInfo(assemblyVersionFile).AssemblyVersion, buildRevision);
+Information("AssemblyVersion: {0}", assemblyVersion);
 
 var nugetDirectory = "../Nuget";
 
@@ -49,7 +51,7 @@ Task("Build")
 	{
 		CreateAssemblyInfo(assemblyVersionFile, new AssemblyInfoSettings()
 		{
-			Version = buildVersion,
+			Version = assemblyVersion,
 		});
 
 		MSBuild(solutionPath, configurator => configurator
@@ -61,7 +63,7 @@ Task("Build")
 
 		CreateAssemblyInfo(assemblyVersionFile, new AssemblyInfoSettings()
 		{
-			Version = GetBuildVersion(buildVersion, "*"),
+			Version = GetAssemblyVersion(assemblyVersion, "*"),
 		});
 	});
 
@@ -92,7 +94,7 @@ Task("Nuget")
 			{
 				ProjectFullName = project.Path.FullPath,
 			}).Nuspec;
-			nuspec.Version = buildVersion;
+			nuspec.Version = assemblyVersion;
 			nuspec.IconUri = new Uri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");
 			nuspec.ProjectUri = new Uri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin");
 			nuspec.Title = project.Name;
@@ -112,7 +114,7 @@ Task("Nuget")
 			NuGetPack(project.Path.FullPath, new NuGetPackSettings()
 			{
 				Id = project.Name,
-				Version = buildVersion, 
+				Version = assemblyVersion, 
 				Verbosity = NuGetVerbosity.Detailed,
 				Properties = new Dictionary<string, string>
 				{
@@ -125,7 +127,7 @@ Task("Nuget")
 
 			DeleteFile(nuspecFile);
 
-			var nupgkFile = File(nugetDirectory + "/" + project.Name + "." + buildVersion + ".nupkg");
+			var nupgkFile = File(nugetDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg");
 			NupkgSign(new ISI.Cake.Addin.Nuget.NupkgSignRequest()
 			{
 				NupkgFullNames = new [] { nupgkFile.Path.FullPath },

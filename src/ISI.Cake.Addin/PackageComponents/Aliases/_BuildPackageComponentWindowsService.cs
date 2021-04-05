@@ -34,8 +34,6 @@ namespace ISI.Cake.Addin.PackageComponents
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectDirectory: {0}", projectDirectory);
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "PackageComponentDirectory: {0}", packageComponentDirectory);
 			
-			packageComponent.ExcludeFiles.Add(string.Format("{0}.exe.config", projectName));
-
 			System.IO.Directory.CreateDirectory(packageComponentDirectory);
 
 			if (!string.IsNullOrWhiteSpace(packageComponent.IconFullName) && System.IO.File.Exists(packageComponent.IconFullName))

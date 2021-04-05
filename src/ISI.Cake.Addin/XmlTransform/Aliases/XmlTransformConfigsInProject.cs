@@ -33,24 +33,24 @@ namespace ISI.Cake.Addin.XmlTransform
 
 			var csProjXml = System.Xml.Linq.XElement.Load(request.ProjectFullName);
 
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "{0}", csProjXml.ToString());
+			//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "{0}", csProjXml.ToString());
 
 			foreach (var itemGroup in csProjXml.Elements().Where(e => string.Equals(e.Name.LocalName, "ItemGroup", StringComparison.InvariantCultureIgnoreCase)))
 			{
-				cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "itemGroup");
+				//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "itemGroup");
 
 				var contents = itemGroup.Elements().Where(e => (string.Equals(e.Name.LocalName, "Content", StringComparison.InvariantCultureIgnoreCase) || string.Equals(e.Name.LocalName, "None", StringComparison.InvariantCultureIgnoreCase)));
 
 				foreach (var content in contents)
 				{
-					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "content");
+					//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "content");
 
 					var fileName = content.Attributes("Include").FirstOrDefault()?.Value;
-					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "fileName: {0}", fileName);
+					//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "fileName: {0}", fileName);
 					if (!string.IsNullOrWhiteSpace(fileName) && fileName.EndsWith(".config", StringComparison.InvariantCultureIgnoreCase))
 					{
 						var directoryName = System.IO.Path.GetDirectoryName(fileName);
-						cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "directoryName: {0}", directoryName);
+						//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "directoryName: {0}", directoryName);
 
 						var dependentUpons = content.Elements().Where(e => string.Equals(e.Name.LocalName, "DependentUpon", StringComparison.InvariantCultureIgnoreCase));
 						if (dependentUpons != null)
@@ -59,7 +59,7 @@ namespace ISI.Cake.Addin.XmlTransform
 							{
 								var dependentUponFileName = System.IO.Path.Combine(directoryName, dependentUpon.Value);
 
-								cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "dependentUponFileName: {0}", dependentUponFileName);
+								//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "dependentUponFileName: {0}", dependentUponFileName);
 
 								filesToTransform.Add(fileName, dependentUponFileName);
 							}
@@ -79,9 +79,9 @@ namespace ISI.Cake.Addin.XmlTransform
 
 					var targetFileName = transformFileName;
 
-					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "transformFileName: {0}", transformFileName);
-					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "sourceFileName: {0}", sourceFileName);
-					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "targetFileName: {0}", targetFileName);
+					//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "transformFileName: {0}", transformFileName);
+					//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "sourceFileName: {0}", sourceFileName);
+					//cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "targetFileName: {0}", targetFileName);
 
 					if (request.MoveConfigurationKey)
 					{

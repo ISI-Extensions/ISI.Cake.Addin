@@ -28,10 +28,10 @@ namespace ISI.Cake.Addin
 			Settings = settings;
 		}
 
-		public string ApiKey
+		public string WebServiceUrl
 		{
-			get => Settings.GetValue(Settings.Key.JenkinsApiKey);
-			set => Settings.SetValue(Settings.Key.JenkinsApiKey, value);
+			get => Settings.GetValue(Settings.Key.ScmWebServiceUrl);
+			set => Settings.SetValue(Settings.Key.ScmWebServiceUrl, value);
 		}
 	}
 }

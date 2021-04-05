@@ -24,17 +24,17 @@ namespace ISI.Cake.Addin
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static string GetBuildVersion(this global::Cake.Core.ICakeContext cakeContext, string assemblyVersion, string revisionBuild = null)
+		public static string GetAssemblyVersion(this global::Cake.Core.ICakeContext cakeContext, string assemblyVersion, string buildRevision = null)
 		{
 			var assemblyVersionPieces = assemblyVersion.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 			assemblyVersion = string.Format("{0}.{1}.*", assemblyVersionPieces[0], assemblyVersionPieces[1]);
 
-			if (string.IsNullOrWhiteSpace(revisionBuild))
+			if (string.IsNullOrWhiteSpace(buildRevision))
 			{
 				return assemblyVersion;
 			}
 
-			return assemblyVersion.Replace("*", revisionBuild);
+			return assemblyVersion.Replace("*", buildRevision);
 		}
 	}
 }
