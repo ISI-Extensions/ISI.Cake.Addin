@@ -33,6 +33,8 @@ namespace ISI.Cake.Addin.PackageComponents
 			"*.licenseheader",
 			"*.vshost.exe",
 			"*.vshost.exe.*",
+			"Dockerfile",
+			"*Manifests.lst",
 		});
 	}
 }

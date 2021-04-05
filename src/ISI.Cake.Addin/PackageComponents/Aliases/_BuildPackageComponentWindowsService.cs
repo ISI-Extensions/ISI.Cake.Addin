@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.XmlTransform;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
@@ -28,6 +29,12 @@ namespace ISI.Cake.Addin.PackageComponents
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
 			var packageComponentDirectory = System.IO.Path.Combine(packageComponentsDirectory, projectName);
+			
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectName: {0}", projectName);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectDirectory: {0}", projectDirectory);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "PackageComponentDirectory: {0}", packageComponentDirectory);
+			
+			packageComponent.ExcludeFiles.Add(string.Format("{0}.exe.config", projectName));
 
 			System.IO.Directory.CreateDirectory(packageComponentDirectory);
 
@@ -40,16 +47,23 @@ namespace ISI.Cake.Addin.PackageComponents
 
 			var excludeFileDefinitions = GetExcludeFileDefinitions(packageComponent.ExcludeFiles);
 
-			foreach (var sourceDirectory in System.IO.Directory.GetDirectories(projectBinDirectory, "*", System.IO.SearchOption.AllDirectories))
+			var sourceDirectories = System.IO.Directory.GetDirectories(projectBinDirectory, "*", System.IO.SearchOption.AllDirectories).ToList();
+			sourceDirectories.Insert(0, projectBinDirectory);
+			foreach (var sourceDirectory in sourceDirectories)
 			{
-				var relativeDirectory = sourceDirectory.Substring(projectBinDirectory.Length);
+				var relativeDirectory = (string.Equals(sourceDirectory, projectBinDirectory, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : sourceDirectory.Substring(projectBinDirectory.Length));
 
-				var relativeRootDirectory = relativeDirectory.Split(new[] { System.IO.Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).First();
+				var relativeRootDirectory = (string.IsNullOrWhiteSpace(relativeDirectory) ? string.Empty : relativeDirectory.Split(new[] { System.IO.Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).First());
 
-				if (!ShouldExclude(excludeFileDefinitions, relativeRootDirectory))
+				if (string.IsNullOrWhiteSpace(relativeRootDirectory) || !ShouldExclude(excludeFileDefinitions, relativeRootDirectory))
 				{
-					var targetDirectory = System.IO.Path.Combine(packageComponentDirectory, relativeDirectory);
-					System.IO.Directory.CreateDirectory(targetDirectory);
+					var targetDirectory = packageComponentDirectory;
+
+					if (!string.IsNullOrWhiteSpace(relativeDirectory))
+					{
+						targetDirectory = System.IO.Path.Combine(targetDirectory, relativeDirectory);
+						System.IO.Directory.CreateDirectory(targetDirectory);
+					}
 
 					foreach (var sourceFullName in System.IO.Directory.GetFiles(sourceDirectory, "*", System.IO.SearchOption.TopDirectoryOnly))
 					{
@@ -65,7 +79,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				}
 			}
 
-			ISI.Cake.Addin.XmlTransform.Aliases.XmlTransformConfigsInProject(cakeContext, new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
+			cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
 			{
 				ProjectFullName = packageComponent.ProjectFullName,
 				DestinationDirectory = packageComponentDirectory,
@@ -76,6 +90,14 @@ namespace ISI.Cake.Addin.PackageComponents
 			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.config*", System.IO.SearchOption.TopDirectoryOnly))
 			{
 				System.IO.File.Move(appConfigFullName, System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}{1}", projectName, System.IO.Path.GetFileName(appConfigFullName).Substring(3))));
+			}
+			
+			{
+				var appConfigFullName = System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}.exe.config", projectName));
+				if (System.IO.File.Exists(appConfigFullName))
+				{
+					System.IO.File.Move(appConfigFullName, string.Format("{0}.sample", appConfigFullName));
+				}
 			}
 
 			CopyCmsData(projectDirectory, packageComponentDirectory);

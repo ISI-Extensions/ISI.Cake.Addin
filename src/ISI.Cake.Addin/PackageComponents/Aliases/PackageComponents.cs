@@ -29,22 +29,25 @@ namespace ISI.Cake.Addin.PackageComponents
 		{
 			var response = new PackageComponentsResponse();
 
-			using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
-			{
+			//using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
+			//{
+			//	var packageComponentsDirectory = tempDirectory.FullName;
+				var packageComponentsDirectory = ISI.Extensions.IO.Path.GetTempDirectoryName();
+
 				foreach (var packageComponent in request.PackageComponents)
 				{
 					switch (packageComponent)
 					{
 						case PackageComponentConsoleApplication packageComponentConsoleApplication:
-							BuildPackageComponentConsoleApplication(cakeContext, request.Configuration, request.Platform, tempDirectory.FullName, packageComponentConsoleApplication);
+							BuildPackageComponentConsoleApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, packageComponentConsoleApplication);
 							break;
 
 						case PackageComponentWindowsService packageComponentWindowsService:
-							BuildPackageComponentWindowsService(cakeContext, request.Configuration, request.Platform, tempDirectory.FullName, packageComponentWindowsService);
+							BuildPackageComponentWindowsService(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, packageComponentWindowsService);
 							break;
 
 						case PackageComponentWebSite packageComponentWebSite:
-							BuildPackageComponentWebSite(cakeContext, request.Configuration, request.Platform, tempDirectory.FullName, packageComponentWebSite);
+							BuildPackageComponentWebSite(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, packageComponentWebSite);
 							break;
 
 						default:
@@ -52,8 +55,10 @@ namespace ISI.Cake.Addin.PackageComponents
 					}
 				}
 
-				cakeContext.Zip(cakeContext.Directory(tempDirectory.FullName), cakeContext.File(request.PackageComponentsFullName));
-			}
+				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName));
+
+				cakeContext.Zip(cakeContext.Directory(packageComponentsDirectory), cakeContext.File(request.PackageComponentsFullName));
+			//}
 
 			return response;
 		}

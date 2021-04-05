@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cake.Common.Tools.MSBuild;
+using ISI.Cake.Addin.XmlTransform;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
@@ -29,6 +30,10 @@ namespace ISI.Cake.Addin.PackageComponents
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
 			var packageComponentDirectory = System.IO.Path.Combine(packageComponentsDirectory, projectName);
+			
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectName: {0}", projectName);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectDirectory: {0}", projectDirectory);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "PackageComponentDirectory: {0}", packageComponentDirectory);
 
 			System.IO.Directory.CreateDirectory(packageComponentDirectory);
 
@@ -67,10 +72,9 @@ namespace ISI.Cake.Addin.PackageComponents
 					.SetNodeReuse(false)
 					.SetPlatformTarget(PlatformTarget.MSIL)
 					.WithTarget("_CopyWebApplication"));
-				
 			}
 
-			ISI.Cake.Addin.XmlTransform.Aliases.XmlTransformConfigsInProject(cakeContext, new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
+			cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
 			{
 				ProjectFullName = packageComponent.ProjectFullName,
 				DestinationDirectory = packageComponentDirectory,
@@ -78,9 +82,17 @@ namespace ISI.Cake.Addin.PackageComponents
 				TransformedFileSuffix = ".sample",
 			});
 
-			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.config*", System.IO.SearchOption.TopDirectoryOnly))
+			foreach (var webConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.config*", System.IO.SearchOption.TopDirectoryOnly))
 			{
-				System.IO.File.Move(appConfigFullName, System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}{1}", projectName, System.IO.Path.GetFileName(appConfigFullName).Substring(3))));
+				System.IO.File.Move(webConfigFullName, System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}{1}", projectName, System.IO.Path.GetFileName(webConfigFullName).Substring(3))));
+			}
+						
+			{
+				var webConfigFullName = System.IO.Path.Combine(packageComponentDirectory, "web.config");
+				if (System.IO.File.Exists(webConfigFullName))
+				{
+					System.IO.File.Move(webConfigFullName, string.Format("{0}.sample", webConfigFullName));
+				}
 			}
 
 			CopyCmsData(projectDirectory, packageComponentDirectory);

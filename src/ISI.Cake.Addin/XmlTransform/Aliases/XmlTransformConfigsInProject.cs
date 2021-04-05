@@ -31,34 +31,37 @@ namespace ISI.Cake.Addin.XmlTransform
 
 			var filesToTransform = new Dictionary<string, string>();
 
-			var csProj = System.IO.File.ReadAllText(request.ProjectFullName);
-			if (csProj.IndexOf("Sdk=\"Microsoft.NET.Sdk\"") < 0)
+			var csProjXml = System.Xml.Linq.XElement.Load(request.ProjectFullName);
+
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "{0}", csProjXml.ToString());
+
+			foreach (var itemGroup in csProjXml.Elements().Where(e => string.Equals(e.Name.LocalName, "ItemGroup", StringComparison.InvariantCultureIgnoreCase)))
 			{
-				var csProjXml = System.Xml.Linq.XDocument.Parse(csProj, System.Xml.Linq.LoadOptions.None);
+				cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "itemGroup");
 
-				foreach (var itemGroup in csProjXml.Elements("ItemGroup"))
+				var contents = itemGroup.Elements().Where(e => (string.Equals(e.Name.LocalName, "Content", StringComparison.InvariantCultureIgnoreCase) || string.Equals(e.Name.LocalName, "None", StringComparison.InvariantCultureIgnoreCase)));
+
+				foreach (var content in contents)
 				{
-					var contents = itemGroup.Elements().Where(e => (string.Equals(e.Name.LocalName, "Content", StringComparison.InvariantCultureIgnoreCase) || string.Equals(e.Name.LocalName, "None", StringComparison.InvariantCultureIgnoreCase)));
+					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "content");
 
-					foreach (var content in contents)
+					var fileName = content.Attributes("Include").FirstOrDefault()?.Value;
+					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "fileName: {0}", fileName);
+					if (!string.IsNullOrWhiteSpace(fileName) && fileName.EndsWith(".config", StringComparison.InvariantCultureIgnoreCase))
 					{
-						var fileName = content.Attributes("Include").FirstOrDefault()?.Value;
-						if (!string.IsNullOrWhiteSpace(fileName) && fileName.EndsWith(".config", StringComparison.InvariantCultureIgnoreCase))
+						var directoryName = System.IO.Path.GetDirectoryName(fileName);
+						cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "directoryName: {0}", directoryName);
+
+						var dependentUpons = content.Elements().Where(e => string.Equals(e.Name.LocalName, "DependentUpon", StringComparison.InvariantCultureIgnoreCase));
+						if (dependentUpons != null)
 						{
-							var directoryName = System.IO.Path.GetDirectoryName(fileName);
-
-							var dependentUpons = content.Elements();
-							if (dependentUpons != null)
+							foreach (var dependentUpon in dependentUpons)
 							{
-								foreach (var dependentUpon in dependentUpons)
-								{
-									if (string.Equals(dependentUpon.Name.LocalName, "DependentUpon", StringComparison.InvariantCultureIgnoreCase))
-									{
-										var dependentUponFileName = System.IO.Path.Combine(directoryName, dependentUpon.Value);
+								var dependentUponFileName = System.IO.Path.Combine(directoryName, dependentUpon.Value);
 
-										filesToTransform.Add(fileName, dependentUponFileName);
-									}
-								}
+								cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "dependentUponFileName: {0}", dependentUponFileName);
+
+								filesToTransform.Add(fileName, dependentUponFileName);
 							}
 						}
 					}
@@ -75,6 +78,10 @@ namespace ISI.Cake.Addin.XmlTransform
 					var sourceFileName = fileToTransform.Value;
 
 					var targetFileName = transformFileName;
+
+					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "transformFileName: {0}", transformFileName);
+					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "sourceFileName: {0}", sourceFileName);
+					cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "targetFileName: {0}", targetFileName);
 
 					if (request.MoveConfigurationKey)
 					{
