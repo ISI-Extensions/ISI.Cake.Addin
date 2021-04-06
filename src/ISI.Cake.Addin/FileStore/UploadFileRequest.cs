@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.FileStore
 {
-	public partial class UploadFileRequest
+	public partial class UploadFileRequest : IWarmUpWebService
 	{
 		public int MaxFileSegmentSize { get; set; } = 2000000;
 
@@ -31,5 +31,9 @@ namespace ISI.Cake.Addin.FileStore
 		public string Version { get; set; }
 		public Guid FileStoreUuid { get; set; }
 		public string FileName { get; set; }
+
+		string IWarmUpWebService.WebServiceUrl => FileStoreUrl;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
@@ -27,11 +28,9 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public static GetBuildArtifactEnvironmentDateTimeStampVersionResponse GetBuildArtifactEnvironmentDateTimeStampVersion(this global::Cake.Core.ICakeContext cakeContext, GetBuildArtifactEnvironmentDateTimeStampVersionRequest request)
 		{
 			var response = new GetBuildArtifactEnvironmentDateTimeStampVersionResponse();
-
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "GetBuildArtifactEnvironmentDateTimeStampVersion, BuildArtifactManagementUrl: {0}", request.BuildArtifactManagementUrl);
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "GetBuildArtifactEnvironmentDateTimeStampVersion, ArtifactName: {0}", request.ArtifactName);
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "GetBuildArtifactEnvironmentDateTimeStampVersion, Environment: {0}", request.Environment);
 			
+			request.WarmUpWebService(cakeContext.Log);
+
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
 			response.DateTimeStampVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()

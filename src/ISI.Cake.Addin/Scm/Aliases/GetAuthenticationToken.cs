@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.Scm
 {
@@ -27,6 +28,8 @@ namespace ISI.Cake.Addin.Scm
 		public static GetAuthenticationTokenResponse GetAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetAuthenticationTokenRequest request)
 		{
 			var response = new GetAuthenticationTokenResponse();
+			
+			request.WarmUpWebService(cakeContext.Log);
 
 			var scmApi = new ISI.Extensions.Scm.ScmApi(new CakeContextLogger(cakeContext));
 

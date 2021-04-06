@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
@@ -27,6 +28,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public static UploadArtifactResponse UploadArtifact(this global::Cake.Core.ICakeContext cakeContext, UploadArtifactRequest request)
 		{
 			var response = new UploadArtifactResponse();
+			
+			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 

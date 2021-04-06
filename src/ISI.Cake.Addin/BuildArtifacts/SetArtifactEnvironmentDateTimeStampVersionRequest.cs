@@ -21,12 +21,16 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public partial class SetArtifactEnvironmentDateTimeStampVersionRequest
+	public partial class SetArtifactEnvironmentDateTimeStampVersionRequest : IWarmUpWebService
 	{
 		public string BuildArtifactManagementUrl { get; set; }
 		public string AuthenticationToken { get; set; }
 		public string ArtifactName { get; set; }
 		public string Environment { get; set; }
 		public string DateTimeStampVersion { get; set; }
+
+		string IWarmUpWebService.WebServiceUrl => BuildArtifactManagementUrl;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

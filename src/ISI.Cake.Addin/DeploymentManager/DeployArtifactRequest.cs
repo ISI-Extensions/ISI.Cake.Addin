@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public partial class DeployArtifactRequest
+	public partial class DeployArtifactRequest : IWarmUpWebService
 	{
 		public string ServicesManagerUrl { get; set; }
 		public string Password { get; set; }
@@ -38,5 +38,9 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public IEnumerable<IDeployComponent> Components { get; set; }
 		public bool SetDeployedVersion { get; set; } = true;
 		public bool RunAsync { get; set; } = true;
+
+		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

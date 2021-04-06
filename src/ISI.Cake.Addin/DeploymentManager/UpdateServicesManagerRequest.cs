@@ -21,9 +21,13 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public partial class UpdateServicesManagerRequest
+	public partial class UpdateServicesManagerRequest : IWarmUpWebService
 	{
 		public string ServicesManagerUrl { get; set; }
 		public string Password { get; set; }
+
+		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,32 +15,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.BuildArtifacts
+namespace ISI.Cake.Addin
 {
-	public static partial class Aliases
+	public interface IWarmUpWebService
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetArtifactDateTimeStampVersionResponse GetArtifactDateTimeStampVersion(this global::Cake.Core.ICakeContext cakeContext, GetArtifactDateTimeStampVersionRequest request)
-		{
-			var response = new GetArtifactDateTimeStampVersionResponse();
-			
-			request.WarmUpWebService(cakeContext.Log);
-
-			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
-
-			response.ArtifactDateTimeStampVersion = buildArtifactApi.GetArtifactDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetArtifactDateTimeStampVersionRequest()
-			{
-				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
-				AuthenticationToken = request.AuthenticationToken,
-				DateTimeStampVersion = request.DateTimeStampVersion,
-			}).ArtifactDateTimeStampVersion;
-
-			return response;
-		}
+		string WebServiceUrl { get; }
+		bool WarmUpWebService { get; }
+		int WarmUpWebServiceMaxTries { get; set; }
 	}
 }

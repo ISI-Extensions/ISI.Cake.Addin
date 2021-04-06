@@ -19,10 +19,14 @@ using System.Text;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public class GetArtifactDateTimeStampRequest
+	public class GetArtifactDateTimeStampRequest : IWarmUpWebService
 	{
 		public string BuildArtifactManagementUrl { get; set; }
 		public string AuthenticationToken { get; set; }
 		public string DateTimeStamp { get; set; }
+
+		string IWarmUpWebService.WebServiceUrl => BuildArtifactManagementUrl;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

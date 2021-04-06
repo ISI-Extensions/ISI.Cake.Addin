@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
@@ -27,6 +28,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public static SetArtifactEnvironmentDateTimeStampVersionResponse SetArtifactEnvironmentDateTimeStampVersion(this global::Cake.Core.ICakeContext cakeContext, SetArtifactEnvironmentDateTimeStampVersionRequest request)
 		{
 			var response = new SetArtifactEnvironmentDateTimeStampVersionResponse();
+			
+			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 

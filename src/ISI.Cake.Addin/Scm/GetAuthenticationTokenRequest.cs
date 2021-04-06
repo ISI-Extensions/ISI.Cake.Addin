@@ -21,10 +21,14 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Scm
 {
-	public partial class GetAuthenticationTokenRequest
+	public partial class GetAuthenticationTokenRequest : IWarmUpWebService
 	{
 		public string ScmManagementUrl { get; set; }
 		public string UserName { get; set; }
 		public string Password { get; set; }
+
+		string IWarmUpWebService.WebServiceUrl => ScmManagementUrl;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

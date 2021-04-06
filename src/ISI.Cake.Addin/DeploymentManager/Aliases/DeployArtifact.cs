@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.DeploymentManager
@@ -28,6 +29,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public static DeployArtifactResponse DeployArtifact(this global::Cake.Core.ICakeContext cakeContext, DeployArtifactRequest request)
 		{
 			var response = new DeployArtifactResponse();
+			
+			request.WarmUpWebService(cakeContext.Log);
 
 			var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
 

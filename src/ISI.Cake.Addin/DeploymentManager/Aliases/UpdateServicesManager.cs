@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
@@ -27,6 +28,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public static UpdateServicesManagerResponse UpdateServicesManager(this global::Cake.Core.ICakeContext cakeContext, UpdateServicesManagerRequest request)
 		{
 			var response = new UpdateServicesManagerResponse();
+			
+			request.WarmUpWebService(cakeContext.Log);
 
 			var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
 

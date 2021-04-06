@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.FileStore
 {
@@ -27,6 +28,8 @@ namespace ISI.Cake.Addin.FileStore
 		public static UploadFileResponse UploadFile(this global::Cake.Core.ICakeContext cakeContext, UploadFileRequest request)
 		{
 			var response = new UploadFileResponse();
+			
+			request.WarmUpWebService(cakeContext.Log);
 
 			var fileStoreApi = new ISI.Extensions.Scm.FileStoreApi(new CakeContextLogger(cakeContext));
 
