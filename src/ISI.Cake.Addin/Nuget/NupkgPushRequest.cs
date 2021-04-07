@@ -22,11 +22,12 @@ namespace ISI.Cake.Addin.Nuget
 	public class NupkgPushRequest
 	{
 		public IEnumerable<string> NupkgFullNames { get; set; }
-		public bool UseNugetPush { get; set; } = true;
-		public string RepositoryName { get; set; }
-		public Uri RepositoryUri { get; set; }
+
 		public string ApiKey { get; set; }
-		public global::Cake.Core.IO.DirectoryPath NugetCacheDirectory { get; set; }
+		
+		public string RepositoryName { get; set; }
+		
+		public Uri RepositoryUri { get; set; }
 		public int MaxFileSegmentSize { get; set; } = 2000000;
 		public int MaxTries { get; set; } = 3;
 	}

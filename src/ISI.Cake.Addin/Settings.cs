@@ -56,6 +56,7 @@ namespace ISI.Cake.Addin
 					CodeSigningTimeStampUrl,
 					CodeSigningCertificateFileName,
 					CodeSigningCertificatePassword,
+					NugetRepositoryName,
 					NugetRepositoryUrl,
 					NugetApiKey,
 					NugetCacheDirectory,

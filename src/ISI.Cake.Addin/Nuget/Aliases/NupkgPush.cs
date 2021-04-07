@@ -33,14 +33,12 @@ namespace ISI.Cake.Addin.Nuget
 			nugetApi.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPushRequest()
 			{
 				NupkgFullNames = request.NupkgFullNames,
+				ApiKey = request.ApiKey,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				UseNugetPush = request.UseNugetPush,
 				RepositoryName = request.RepositoryName,
 				RepositoryUri = request.RepositoryUri,
-				ApiKey = request.ApiKey,
 				MaxFileSegmentSize = request.MaxFileSegmentSize,
 				MaxTries = request.MaxTries,
-				NugetCacheDirectory = request.NugetCacheDirectory?.FullPath,
 			});
 
 			return response;
