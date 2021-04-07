@@ -35,6 +35,7 @@ namespace ISI.Cake.Addin.Nuget
 				NupkgFullNames = request.NupkgFullNames,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
 				UseNugetPush = request.UseNugetPush,
+				RepositoryName = request.RepositoryName,
 				RepositoryUri = request.RepositoryUri,
 				ApiKey = request.ApiKey,
 				MaxFileSegmentSize = request.MaxFileSegmentSize,

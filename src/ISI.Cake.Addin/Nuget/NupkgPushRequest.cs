@@ -23,7 +23,8 @@ namespace ISI.Cake.Addin.Nuget
 	{
 		public IEnumerable<string> NupkgFullNames { get; set; }
 		public bool UseNugetPush { get; set; } = true;
-		public Uri RepositoryUri { get; set; } = new Uri("https://nuget.isi-net.com");
+		public string RepositoryName { get; set; }
+		public Uri RepositoryUri { get; set; }
 		public string ApiKey { get; set; }
 		public global::Cake.Core.IO.DirectoryPath NugetCacheDirectory { get; set; }
 		public int MaxFileSegmentSize { get; set; } = 2000000;

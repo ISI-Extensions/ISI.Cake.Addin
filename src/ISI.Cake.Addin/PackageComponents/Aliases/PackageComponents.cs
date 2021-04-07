@@ -32,7 +32,6 @@ namespace ISI.Cake.Addin.PackageComponents
 			using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
 			{
 				var packageComponentsDirectory = tempDirectory.FullName;
-				//var packageComponentsDirectory = ISI.Extensions.IO.Path.GetTempDirectoryName();
 
 				if (!string.IsNullOrWhiteSpace(request.SubDirectory))
 				{
@@ -62,7 +61,7 @@ namespace ISI.Cake.Addin.PackageComponents
 
 				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName));
 
-				cakeContext.Zip(cakeContext.Directory(packageComponentsDirectory), cakeContext.File(request.PackageComponentsFullName));
+				cakeContext.Zip(cakeContext.Directory(tempDirectory.FullName), cakeContext.File(request.PackageComponentsFullName));
 			}
 
 			return response;
