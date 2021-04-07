@@ -36,6 +36,7 @@ namespace ISI.Cake.Addin
 			public const string CodeSigningCertificateFileName = nameof(CodeSigningCertificateFileName);
 			public const string CodeSigningCertificatePassword = nameof(CodeSigningCertificatePassword);
 
+			public const string NugetRepositoryName = nameof(NugetRepositoryName);
 			public const string NugetRepositoryUrl = nameof(NugetRepositoryUrl);
 			public const string NugetApiKey = nameof(NugetApiKey);
 			public const string NugetCacheDirectory = nameof(NugetCacheDirectory);

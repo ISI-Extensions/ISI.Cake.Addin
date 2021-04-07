@@ -28,6 +28,12 @@ namespace ISI.Cake.Addin
 			Settings = settings;
 		}
 
+		public string RepositoryName
+		{
+			get => Settings.GetValue(Settings.Key.NugetRepositoryName);
+			set => Settings.SetValue(Settings.Key.NugetRepositoryName, value);
+		}
+
 		public string RepositoryUrl
 		{
 			get => Settings.GetValue(Settings.Key.NugetRepositoryUrl);
