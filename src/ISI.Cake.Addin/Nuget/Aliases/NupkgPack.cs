@@ -33,6 +33,7 @@ namespace ISI.Cake.Addin.Nuget
 			nugetApi.NupkgPack(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPackRequest()
 			{
 				NuspecFullName = request.NuspecFullName,
+				OutputDirectory = request.OutputDirectory,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
 			});
 
