@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cake.Common.Diagnostics;
+using Cake.Common.IO;
 using Cake.Common.Tools.MSBuild;
 using ISI.Cake.Addin.XmlTransform;
 
@@ -35,44 +37,89 @@ namespace ISI.Cake.Addin.PackageComponents
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectDirectory: {0}", projectDirectory);
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "PackageComponentDirectory: {0}", packageComponentDirectory);
 
-			System.IO.Directory.CreateDirectory(packageComponentDirectory);
-
-			if (!string.IsNullOrWhiteSpace(packageComponent.IconFullName) && System.IO.File.Exists(packageComponent.IconFullName))
+			using (var tempBuildDirectory = new ISI.Extensions.IO.Path.TempDirectory())
 			{
-				ISI.Extensions.DirectoryIcon.SetDirectoryIcon(packageComponentDirectory, packageComponent.IconFullName);
+				var buildDirectory = tempBuildDirectory.FullName;
+				
+				using (var tempPublishDirectory = new ISI.Extensions.IO.Path.TempDirectory())
+				{
+					var publishDirectory = tempPublishDirectory.FullName;
+
+					if (platform == MSBuildPlatform.Automatic)
+					{
+						cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
+						.SetConfiguration(configuration)
+						.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
+						.WithProperty("Platform", string.Empty)
+						.WithProperty("OutputPath", System.IO.Path.Combine(buildDirectory, "bin"))
+						.WithProperty("DeployOnBuild", "true")
+						.WithProperty("WebPublishMethod", "FileSystem")
+						.WithProperty("PackageAsSingleFile", "true")
+						.WithProperty("SkipInvalidConfigurations", "true")
+						.WithProperty("publishUrl", publishDirectory)
+						.WithProperty("DeployDefaultTarget", "WebPublish"));
+					}
+					else
+					{
+						cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
+							.SetConfiguration(configuration)
+							.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
+							.SetMSBuildPlatform(platform)
+							.WithProperty("OutputPath", System.IO.Path.Combine(buildDirectory, "bin"))
+							.WithProperty("DeployOnBuild", "true")
+							.WithProperty("WebPublishMethod", "FileSystem")
+							.WithProperty("PackageAsSingleFile", "true")
+							.WithProperty("SkipInvalidConfigurations", "true")
+							.WithProperty("publishUrl", publishDirectory)
+							.WithProperty("DeployDefaultTarget", "WebPublish"));
+					}
+
+					System.IO.Directory.CreateDirectory(packageComponentDirectory);
+
+					if (!string.IsNullOrWhiteSpace(packageComponent.IconFullName) && System.IO.File.Exists(packageComponent.IconFullName))
+					{
+						ISI.Extensions.DirectoryIcon.SetDirectoryIcon(packageComponentDirectory, packageComponent.IconFullName);
+					}
+
+					cakeContext.CopyDirectory(publishDirectory, packageComponentDirectory);
+				}
 			}
+
+
+
+
 
 			// /p:DeployOnBuild=true/p:WebPublishMethod=Package/p:PackageAsSingleFile=true/p:PackageLocation="C:\temp\web.zip"
-			if (platform == MSBuildPlatform.Automatic)
-			{
-				cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
-					.SetConfiguration(configuration)
-					.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
-					.WithProperty("Platform", string.Empty)
-					.WithProperty("OutputPath", System.IO.Path.Combine(projectDirectory, "bin"))
-					.WithProperty("OutDir", packageComponentDirectory)
-					.WithProperty("Retries", "1")
-					.WithProperty("RetryDelayMilliseconds", "100")
-					.SetMaxCpuCount(0)
-					.SetNodeReuse(false)
-					.SetPlatformTarget(PlatformTarget.MSIL)
-					.WithTarget("_CopyWebApplication"));
-			}
-			else
-			{
-				cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
-					.SetConfiguration(configuration)
-					.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
-					.SetMSBuildPlatform(platform)
-					.WithProperty("OutputPath", System.IO.Path.Combine(projectDirectory, "bin"))
-					.WithProperty("OutDir", packageComponentDirectory)
-					.WithProperty("Retries", "1")
-					.WithProperty("RetryDelayMilliseconds", "100")
-					.SetMaxCpuCount(0)
-					.SetNodeReuse(false)
-					.SetPlatformTarget(PlatformTarget.MSIL)
-					.WithTarget("_CopyWebApplication"));
-			}
+			//if (platform == MSBuildPlatform.Automatic)
+			//{
+			//	cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
+			//		.SetConfiguration(configuration)
+			//		.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
+			//		.WithProperty("Platform", string.Empty)
+			//		.WithProperty("OutputPath", System.IO.Path.Combine(projectDirectory, "bin"))
+			//		.WithProperty("OutDir", packageComponentDirectory)
+			//		.WithProperty("Retries", "1")
+			//		.WithProperty("RetryDelayMilliseconds", "100")
+			//		.SetMaxCpuCount(0)
+			//		.SetNodeReuse(false)
+			//		.SetPlatformTarget(PlatformTarget.MSIL)
+			//		.WithTarget("_CopyWebApplication"));
+			//}
+			//else
+			//{
+			//	cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
+			//		.SetConfiguration(configuration)
+			//		.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
+			//		.SetMSBuildPlatform(platform)
+			//		.WithProperty("OutputPath", System.IO.Path.Combine(projectDirectory, "bin"))
+			//		.WithProperty("OutDir", packageComponentDirectory)
+			//		.WithProperty("Retries", "1")
+			//		.WithProperty("RetryDelayMilliseconds", "100")
+			//		.SetMaxCpuCount(0)
+			//		.SetNodeReuse(false)
+			//		.SetPlatformTarget(PlatformTarget.MSIL)
+			//		.WithTarget("_CopyWebApplication"));
+			//}
 
 			cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
 			{
