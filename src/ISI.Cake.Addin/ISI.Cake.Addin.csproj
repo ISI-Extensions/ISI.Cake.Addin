@@ -20,11 +20,11 @@
 	<ItemGroup>
 	  <PackageReference Include="Cake.Common" Version="1.1.0" />
 	  <PackageReference Include="Cake.Core" Version="1.1.0" />
-	  <PackageReference Include="ISI.Extensions" Version="10.0.7774.26110" />
-	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7774.26110" />
-	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7774.26110" />
-	  <PackageReference Include="ISI.Extensions.Scm" Version="10.0.7774.26110" />
-	  <PackageReference Include="ISI.Extensions.Svn" Version="10.0.7774.26110" />
+	  <PackageReference Include="ISI.Extensions" Version="10.0.7780.33411" />
+	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7780.33411" />
+	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7780.33411" />
+	  <PackageReference Include="ISI.Extensions.Scm" Version="10.0.7780.33411" />
+	  <PackageReference Include="ISI.Extensions.Svn" Version="10.0.7780.33411" />
 	  <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
 	</ItemGroup>
 

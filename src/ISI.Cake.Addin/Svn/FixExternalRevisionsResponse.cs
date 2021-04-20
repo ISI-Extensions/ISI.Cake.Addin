@@ -19,11 +19,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.Svn
 {
-	public partial class GenerateNuspecFromProjectRequest
+	public partial class FixExternalRevisionsResponse
 	{
-		public string ProjectFullName { get; set; }
-		public ISI.Extensions.Nuget.DataTransferObjects.NugetApi.TryGetPackageVersion TryGetPackageVersion { get; set; } = null;
 	}
 }

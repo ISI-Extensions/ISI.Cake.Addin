@@ -33,7 +33,7 @@ namespace ISI.Cake.Addin.Nuget
 			response.Nuspec = nugetApi.GenerateNuspecFromProject(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GenerateNuspecFromProjectRequest()
 			{
 				ProjectFullName = request.ProjectFullName,
-				GetPackageVersion = request.GetPackageVersion,
+				TryGetPackageVersion = request.TryGetPackageVersion,
 			}).Nuspec;
 
 			return response;

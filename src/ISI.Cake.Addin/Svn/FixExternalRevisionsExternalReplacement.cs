@@ -19,11 +19,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.Svn
 {
-	public partial class GenerateNuspecFromProjectRequest
+	public partial class FixExternalRevisionsExternalReplacement
 	{
-		public string ProjectFullName { get; set; }
-		public ISI.Extensions.Nuget.DataTransferObjects.NugetApi.TryGetPackageVersion TryGetPackageVersion { get; set; } = null;
+		public string WorkingCopyDirectory { get; set; }
+		public string Version { get; set; }
+		public DateTime? DateTimeStamp { get; set; }
+		public string DateTimeMask { get; set; } = "yyyy/MM/";
 	}
 }
