@@ -40,6 +40,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				SourceFileName = request.SourceFileName,
 				ArtifactName = request.ArtifactName,
 				DateTimeStamp = request.DateTimeStamp,
+				MaxTries = request.MaxTries,
 			});
 
 			return response;

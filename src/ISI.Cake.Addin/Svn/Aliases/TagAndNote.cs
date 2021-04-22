@@ -37,6 +37,7 @@ namespace ISI.Cake.Addin.Svn
 				Version = request.Version,
 				DateTimeStamp = request.DateTimeStamp,
 				DateTimeMask = request.DateTimeMask,
+				TryGetExternalVersion = request.TryGetExternalVersion,
 			});
 
 			return response;

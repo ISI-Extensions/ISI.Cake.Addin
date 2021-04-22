@@ -29,6 +29,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public string ArtifactName { get; set; }
 		public string DateTimeStamp { get; set; }
 
+		public int MaxTries { get; set; } = 3;
+
 		string IWarmUpWebService.WebServiceUrl => BuildArtifactManagementUrl;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;

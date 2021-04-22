@@ -27,5 +27,6 @@ namespace ISI.Cake.Addin.Svn
 		public string Version { get; set; }
 		public DateTime DateTimeStamp { get; set; }
 		public string DateTimeMask { get; set; } = "yyyy/MM/";
+		public ISI.Extensions.Svn.DataTransferObjects.SvnApi.TryGetExternalVersion TryGetExternalVersion { get; set; }
 	}
 }
