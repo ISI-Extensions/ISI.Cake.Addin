@@ -146,7 +146,7 @@ namespace ISI.Cake.Addin.PackageComponents
 
 			foreach (var webConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.config*", System.IO.SearchOption.TopDirectoryOnly))
 			{
-				System.IO.File.Move(webConfigFullName, System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}{1}", projectName, System.IO.Path.GetFileName(webConfigFullName).Substring(3))));
+				System.IO.File.Move(webConfigFullName, System.IO.Path.Combine(packageComponentDirectory, System.IO.Path.GetFileName(webConfigFullName)));
 			}
 						
 			{
