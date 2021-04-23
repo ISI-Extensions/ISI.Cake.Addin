@@ -43,15 +43,15 @@ namespace ISI.Cake.Addin.PackageComponents
 					switch (packageComponent)
 					{
 						case PackageComponentConsoleApplication packageComponentConsoleApplication:
-							BuildPackageComponentConsoleApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, packageComponentConsoleApplication);
+							BuildPackageComponentConsoleApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentConsoleApplication);
 							break;
 
 						case PackageComponentWindowsService packageComponentWindowsService:
-							BuildPackageComponentWindowsService(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, packageComponentWindowsService);
+							BuildPackageComponentWindowsService(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentWindowsService);
 							break;
 
 						case PackageComponentWebSite packageComponentWebSite:
-							BuildPackageComponentWebSite(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, packageComponentWebSite);
+							BuildPackageComponentWebSite(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentWebSite);
 							break;
 
 						default:

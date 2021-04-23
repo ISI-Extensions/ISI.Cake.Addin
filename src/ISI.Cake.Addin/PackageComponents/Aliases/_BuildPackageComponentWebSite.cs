@@ -27,7 +27,7 @@ namespace ISI.Cake.Addin.PackageComponents
 {
 	public static partial class Aliases
 	{
-		private static void BuildPackageComponentWebSite(global::Cake.Core.ICakeContext cakeContext, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform, string packageComponentsDirectory, PackageComponentWebSite packageComponent)
+		private static void BuildPackageComponentWebSite(global::Cake.Core.ICakeContext cakeContext, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform, string packageComponentsDirectory, AssemblyVersionFileDictionary assemblyVersionFiles, PackageComponentWebSite packageComponent)
 		{
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
@@ -45,43 +45,58 @@ namespace ISI.Cake.Addin.PackageComponents
 				{
 					var publishDirectory = tempPublishDirectory.FullName;
 
-					if (platform == MSBuildPlatform.Automatic)
+					if (assemblyVersionFiles != null)
 					{
-						cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
-						.SetConfiguration(configuration)
-						.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
-						.WithProperty("Platform", string.Empty)
-						.WithProperty("OutputPath", System.IO.Path.Combine(buildDirectory, "bin"))
-						.WithProperty("DeployOnBuild", "true")
-						.WithProperty("WebPublishMethod", "FileSystem")
-						.WithProperty("PackageAsSingleFile", "true")
-						.WithProperty("SkipInvalidConfigurations", "true")
-						.WithProperty("publishUrl", publishDirectory)
-						.WithProperty("DeployDefaultTarget", "WebPublish"));
-					}
-					else
-					{
-						cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
-							.SetConfiguration(configuration)
-							.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
-							.SetMSBuildPlatform(platform)
-							.WithProperty("OutputPath", System.IO.Path.Combine(buildDirectory, "bin"))
-							.WithProperty("DeployOnBuild", "true")
-							.WithProperty("WebPublishMethod", "FileSystem")
-							.WithProperty("PackageAsSingleFile", "true")
-							.WithProperty("SkipInvalidConfigurations", "true")
-							.WithProperty("publishUrl", publishDirectory)
-							.WithProperty("DeployDefaultTarget", "WebPublish"));
+						cakeContext.SetAssemblyVersionFiles(assemblyVersionFiles);
 					}
 
-					System.IO.Directory.CreateDirectory(packageComponentDirectory);
-
-					if (!string.IsNullOrWhiteSpace(packageComponent.IconFullName) && System.IO.File.Exists(packageComponent.IconFullName))
+					try
 					{
-						ISI.Extensions.DirectoryIcon.SetDirectoryIcon(packageComponentDirectory, packageComponent.IconFullName);
-					}
+						if (platform == MSBuildPlatform.Automatic)
+						{
+							cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
+								.SetConfiguration(configuration)
+								.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
+								.WithProperty("Platform", string.Empty)
+								.WithProperty("OutputPath", System.IO.Path.Combine(buildDirectory, "bin"))
+								.WithProperty("DeployOnBuild", "true")
+								.WithProperty("WebPublishMethod", "FileSystem")
+								.WithProperty("PackageAsSingleFile", "true")
+								.WithProperty("SkipInvalidConfigurations", "true")
+								.WithProperty("publishUrl", publishDirectory)
+								.WithProperty("DeployDefaultTarget", "WebPublish"));
+						}
+						else
+						{
+							cakeContext.MSBuild(packageComponent.ProjectFullName, configurator => configurator
+								.SetConfiguration(configuration)
+								.SetVerbosity(global::Cake.Core.Diagnostics.Verbosity.Quiet)
+								.SetMSBuildPlatform(platform)
+								.WithProperty("OutputPath", System.IO.Path.Combine(buildDirectory, "bin"))
+								.WithProperty("DeployOnBuild", "true")
+								.WithProperty("WebPublishMethod", "FileSystem")
+								.WithProperty("PackageAsSingleFile", "true")
+								.WithProperty("SkipInvalidConfigurations", "true")
+								.WithProperty("publishUrl", publishDirectory)
+								.WithProperty("DeployDefaultTarget", "WebPublish"));
+						}
 
-					cakeContext.CopyDirectory(publishDirectory, packageComponentDirectory);
+						System.IO.Directory.CreateDirectory(packageComponentDirectory);
+
+						if (!string.IsNullOrWhiteSpace(packageComponent.IconFullName) && System.IO.File.Exists(packageComponent.IconFullName))
+						{
+							ISI.Extensions.DirectoryIcon.SetDirectoryIcon(packageComponentDirectory, packageComponent.IconFullName);
+						}
+
+						cakeContext.CopyDirectory(publishDirectory, packageComponentDirectory);
+					}
+					finally
+					{
+						if (assemblyVersionFiles != null)
+						{
+							cakeContext.ResetAssemblyVersionFiles(assemblyVersionFiles);
+						}
+					}
 				}
 			}
 
