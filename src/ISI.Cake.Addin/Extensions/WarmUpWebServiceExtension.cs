@@ -31,47 +31,54 @@ namespace ISI.Cake.Addin.Extensions
 
 			if (request.WarmUpWebService)
 			{
-				var webServiceUrl = (new UriBuilder(request.WebServiceUrl) {Path = string.Empty}).Uri.ToString();
-
-				if (!WarmedUpWebServiceUrls.Contains(webServiceUrl))
+				var webServiceUrls = new[]
 				{
-					log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Warming up: {0}", webServiceUrl);
+					(new UriBuilder(request.WebServiceUrl) {Query = string.Empty}).Uri.ToString(),
+					(new UriBuilder(request.WebServiceUrl) {Path = string.Empty, Query = string.Empty}).Uri.ToString(),
+				};
 
-					var tryAttemptsLeft = request.WarmUpWebServiceMaxTries;
-					while (tryAttemptsLeft > 0)
+				foreach (var webServiceUrl in webServiceUrls)
+				{
+					if (!WarmedUpWebServiceUrls.Contains(webServiceUrl))
 					{
-						try
+						log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Warming up: {0}", webServiceUrl);
+
+						var tryAttemptsLeft = request.WarmUpWebServiceMaxTries;
+						while (tryAttemptsLeft > 0)
 						{
-							var warmUpUrl = webServiceUrl;
-
-							var httpWebRequest = (System.Net.HttpWebRequest) System.Net.WebRequest.Create(warmUpUrl);
-							httpWebRequest.Method = System.Net.WebRequestMethods.Http.Get;
-
-							using (var httpWebResponse = (System.Net.HttpWebResponse) httpWebRequest.GetResponse())
+							try
 							{
-								using (var stream = new System.IO.StreamReader(httpWebResponse.GetResponseStream()))
+								var warmUpUrl = webServiceUrl;
+
+								var httpWebRequest = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(warmUpUrl);
+								httpWebRequest.Method = System.Net.WebRequestMethods.Http.Get;
+
+								using (var httpWebResponse = (System.Net.HttpWebResponse)httpWebRequest.GetResponse())
 								{
-									var result = stream.ReadToEnd();
+									using (var stream = new System.IO.StreamReader(httpWebResponse.GetResponseStream()))
+									{
+										var result = stream.ReadToEnd();
+									}
 								}
+
+								tryAttemptsLeft = 0;
 							}
-
-							tryAttemptsLeft = 0;
-						}
-						catch (Exception exception)
-						{
-							log.Error(exception);
-
-							tryAttemptsLeft--;
-							if (tryAttemptsLeft < 0)
+							catch (Exception exception)
 							{
-								throw;
+								log.Error(exception);
+
+								tryAttemptsLeft--;
+								if (tryAttemptsLeft < 0)
+								{
+									throw;
+								}
+
+								System.Threading.Thread.Sleep(5000);
 							}
-
-							System.Threading.Thread.Sleep(5000);
 						}
-					}
 
-					WarmedUpWebServiceUrls.Add(webServiceUrl);
+						WarmedUpWebServiceUrls.Add(webServiceUrl);
+					}
 				}
 			}
 		}

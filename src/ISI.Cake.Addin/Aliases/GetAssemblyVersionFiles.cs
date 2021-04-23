@@ -45,6 +45,7 @@ namespace ISI.Cake.Addin
 				});
 			}
 
+			if(!string.IsNullOrWhiteSpace(rootAssemblyVersionKey))
 			{
 				var assemblyVersionFile = cakeContext.File("./" + rootAssemblyVersionKey + ".Version.cs");
 				if (System.IO.File.Exists(assemblyVersionFile))
