@@ -98,6 +98,11 @@ namespace ISI.Cake.Addin.DeploymentManager
 				RunAsync = request.RunAsync,
 			}).Success;
 
+			if (!response.Success)
+			{
+				throw new Exception("Deployment Failed");
+			}
+
 			return response;
 		}
 	}
