@@ -73,7 +73,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 							} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
 
 						case DeployComponentWebSite deployComponentWebSite:
-							return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentConsoleApplication()
+							return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWebSite()
 							{
 								PackageFolder = deployComponentWebSite.PackageFolder,
 								DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
