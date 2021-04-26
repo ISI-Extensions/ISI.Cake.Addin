@@ -59,13 +59,13 @@ namespace ISI.Cake.Addin.PackageComponents
 					}
 				}
 
-				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName));
+				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageFullName));
 
-				cakeContext.Zip(cakeContext.Directory(tempDirectory.FullName), cakeContext.File(request.PackageComponentsFullName));
+				cakeContext.Zip(cakeContext.Directory(tempDirectory.FullName), cakeContext.File(request.PackageFullName));
 
-				if (!string.IsNullOrWhiteSpace(request.PackageComponentsVersion) && !string.IsNullOrWhiteSpace(request.PackageComponentsBuildDateTimeStamp))
+				if (!string.IsNullOrWhiteSpace(request.PackageVersion) && !string.IsNullOrWhiteSpace(request.PackageBuildDateTimeStamp))
 				{
-					System.IO.File.WriteAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName), string.Format("{0}.Current.DateTimeStamp.Version.txt", System.IO.Path.GetFileNameWithoutExtension(request.PackageComponentsFullName))), string.Format("{0}|{1}", request.PackageComponentsBuildDateTimeStamp, request.PackageComponentsVersion));
+					System.IO.File.WriteAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(request.PackageFullName), string.Format("{0}.Current.DateTimeStamp.Version.txt", System.IO.Path.GetFileNameWithoutExtension(request.PackageFullName))), string.Format("{0}|{1}", request.PackageBuildDateTimeStamp, request.PackageVersion));
 				}
 			}
 
