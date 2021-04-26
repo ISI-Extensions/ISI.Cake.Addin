@@ -62,6 +62,11 @@ namespace ISI.Cake.Addin.PackageComponents
 				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName));
 
 				cakeContext.Zip(cakeContext.Directory(tempDirectory.FullName), cakeContext.File(request.PackageComponentsFullName));
+
+				if (!string.IsNullOrWhiteSpace(request.PackageComponentsVersion) && !string.IsNullOrWhiteSpace(request.PackageComponentsBuildDateTimeStamp))
+				{
+					System.IO.File.WriteAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(request.PackageComponentsFullName), string.Format("{0}.Current.DateTimeStamp.Version.txt", System.IO.Path.GetFileNameWithoutExtension(request.PackageComponentsFullName))), string.Format("{0}|{1}", request.PackageComponentsBuildDateTimeStamp, request.PackageComponentsVersion));
+				}
 			}
 
 			return response;
