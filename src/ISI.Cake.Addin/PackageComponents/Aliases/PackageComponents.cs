@@ -29,9 +29,19 @@ namespace ISI.Cake.Addin.PackageComponents
 		{
 			var response = new PackageComponentsResponse();
 
+			if (string.IsNullOrWhiteSpace(request.PackageName))
+			{
+				request.PackageName = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetFileNameWithoutExtension(request.PackageFullName)));
+			}
+
 			using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
 			{
 				var packageComponentsDirectory = tempDirectory.FullName;
+
+				if (!request.CleanupTempDirectories)
+				{
+					packageComponentsDirectory = ISI.Extensions.IO.Path.GetTempDirectoryName();
+				}
 
 				if (!string.IsNullOrWhiteSpace(request.SubDirectory))
 				{
@@ -65,7 +75,7 @@ namespace ISI.Cake.Addin.PackageComponents
 
 				if (!string.IsNullOrWhiteSpace(request.PackageVersion) && !string.IsNullOrWhiteSpace(request.PackageBuildDateTimeStamp))
 				{
-					System.IO.File.WriteAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(request.PackageFullName), string.Format("{0}.Current.DateTimeStamp.Version.txt", System.IO.Path.GetFileNameWithoutExtension(request.PackageFullName))), string.Format("{0}|{1}", request.PackageBuildDateTimeStamp, request.PackageVersion));
+					System.IO.File.WriteAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(request.PackageFullName), string.Format("{0}.Current.DateTimeStamp.Version.txt", request.PackageName)), string.Format("{0}|{1}", request.PackageBuildDateTimeStamp, request.PackageVersion));
 				}
 			}
 

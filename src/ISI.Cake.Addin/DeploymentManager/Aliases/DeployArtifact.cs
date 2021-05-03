@@ -32,73 +32,100 @@ namespace ISI.Cake.Addin.DeploymentManager
 			
 			request.WarmUpWebService(cakeContext.Log);
 
-			var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
+			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
-			response.Success = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
+			var toDateTimeStamp = request.ToDateTimeStamp;
+			if (string.IsNullOrWhiteSpace(toDateTimeStamp))
 			{
-				ServicesManagerUrl = request.ServicesManagerUrl,
-				Password = request.Password,
+				toDateTimeStamp = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+				{
+					BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
+					AuthenticationToken = request.AuthenticationToken,
+					ArtifactName = request.ArtifactName,
+					Environment = request.FromEnvironment,
+				})?.DateTimeStampVersion?.DateTimeStamp ?? string.Empty;
+			}
+
+			var currentDateTimeStamp = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+			{
 				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				ArtifactName = request.ArtifactName,
-				ArtifactDateTimeStampVersionUrl = request.ArtifactDateTimeStampVersionUrl,
-				ArtifactDownloadUrl = request.ArtifactDownloadUrl,
-				ToDateTimeStamp = request.ToDateTimeStamp,
-				FromEnvironment = request.FromEnvironment,
-				ToEnvironment = request.ToEnvironment,
-				ConfigurationKey = request.ConfigurationKey,
-				Components = request.Components.ToNullCheckedArray(component =>
+				Environment = request.ToEnvironment,
+			})?.DateTimeStampVersion?.DateTimeStamp ?? string.Empty;
+
+			var versionIsAlreadyDeployed = string.Equals(toDateTimeStamp, currentDateTimeStamp, StringComparison.InvariantCultureIgnoreCase);
+
+			if(!versionIsAlreadyDeployed)
+			{
+				var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
+
+				response.Success = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
 				{
-					switch (component)
+					ServicesManagerUrl = request.ServicesManagerUrl,
+					Password = request.Password,
+					BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
+					AuthenticationToken = request.AuthenticationToken,
+					ArtifactName = request.ArtifactName,
+					ArtifactDateTimeStampVersionUrl = request.ArtifactDateTimeStampVersionUrl,
+					ArtifactDownloadUrl = request.ArtifactDownloadUrl,
+					ToDateTimeStamp = request.ToDateTimeStamp,
+					FromEnvironment = request.FromEnvironment,
+					ToEnvironment = request.ToEnvironment,
+					ConfigurationKey = request.ConfigurationKey,
+					Components = request.Components.ToNullCheckedArray(component =>
 					{
-						case DeployComponent deployComponent:
-							return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponent()
-							{
-								ComponentType = deployComponent.ComponentType,
-								PackageFolder = deployComponent.PackageFolder,
-								DeployToSubfolder = deployComponent.DeployToSubfolder,
-								ApplicationExe = deployComponent.ApplicationExe,
-								ExcludeFiles = deployComponent.ExcludeFiles,
-							} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+						switch (component)
+						{
+							case DeployComponent deployComponent:
+								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponent()
+								{
+									ComponentType = deployComponent.ComponentType,
+									PackageFolder = deployComponent.PackageFolder,
+									DeployToSubfolder = deployComponent.DeployToSubfolder,
+									ApplicationExe = deployComponent.ApplicationExe,
+									ExcludeFiles = deployComponent.ExcludeFiles,
+								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
 
-						case DeployComponentConsoleApplication deployComponentConsoleApplication:
-							return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentConsoleApplication()
-							{
-								PackageFolder = deployComponentConsoleApplication.PackageFolder,
-								DeployToSubfolder = deployComponentConsoleApplication.DeployToSubfolder,
-								ConsoleApplicationExe = deployComponentConsoleApplication.ConsoleApplicationExe,
-								ExcludeFiles = deployComponentConsoleApplication.ExcludeFiles,
-								ExecuteConsoleApplicationAfterInstall = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstall,
-								ExecuteConsoleApplicationAfterInstallArguments = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstallArguments,
-							} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+							case DeployComponentConsoleApplication deployComponentConsoleApplication:
+								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentConsoleApplication()
+								{
+									PackageFolder = deployComponentConsoleApplication.PackageFolder,
+									DeployToSubfolder = deployComponentConsoleApplication.DeployToSubfolder,
+									ConsoleApplicationExe = deployComponentConsoleApplication.ConsoleApplicationExe,
+									ExcludeFiles = deployComponentConsoleApplication.ExcludeFiles,
+									ExecuteConsoleApplicationAfterInstall = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstall,
+									ExecuteConsoleApplicationAfterInstallArguments = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstallArguments,
+								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
 
-						case DeployComponentWebSite deployComponentWebSite:
-							return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWebSite()
-							{
-								PackageFolder = deployComponentWebSite.PackageFolder,
-								DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
-								ExcludeFiles = deployComponentWebSite.ExcludeFiles,
-							} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+							case DeployComponentWebSite deployComponentWebSite:
+								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWebSite()
+								{
+									PackageFolder = deployComponentWebSite.PackageFolder,
+									DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
+									ExcludeFiles = deployComponentWebSite.ExcludeFiles,
+								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
 
-						case DeployComponentWindowsService deployComponentWindowsService:
-							return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWindowsService()
-							{
-								PackageFolder = deployComponentWindowsService.PackageFolder,
-								DeployToSubfolder = deployComponentWindowsService.DeployToSubfolder,
-								WindowsServiceExe = deployComponentWindowsService.WindowsServiceExe,
-								ExcludeFiles = deployComponentWindowsService.ExcludeFiles,
-								UninstallIfInstalled = deployComponentWindowsService.UninstallIfInstalled,
-							} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+							case DeployComponentWindowsService deployComponentWindowsService:
+								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWindowsService()
+								{
+									PackageFolder = deployComponentWindowsService.PackageFolder,
+									DeployToSubfolder = deployComponentWindowsService.DeployToSubfolder,
+									WindowsServiceExe = deployComponentWindowsService.WindowsServiceExe,
+									ExcludeFiles = deployComponentWindowsService.ExcludeFiles,
+									UninstallIfInstalled = deployComponentWindowsService.UninstallIfInstalled,
+								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
 
-						default:
-							throw new ArgumentOutOfRangeException(nameof(component));
-					}
-				}),
-				SetDeployedVersion = request.SetDeployedVersion,
-				RunAsync = request.RunAsync,
-			}).Success;
+							default:
+								throw new ArgumentOutOfRangeException(nameof(component));
+						}
+					}),
+					SetDeployedVersion = request.SetDeployedVersion,
+					RunAsync = request.RunAsync,
+				}).Success;
+			}
 
-			if (!response.Success)
+			if (!response.Success && (!versionIsAlreadyDeployed || request.ThrowExceptionWhenVersionIsAlreadyDeployed))
 			{
 				throw new Exception("Deployment Failed");
 			}

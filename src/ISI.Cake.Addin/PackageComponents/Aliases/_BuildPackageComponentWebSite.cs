@@ -33,9 +33,10 @@ namespace ISI.Cake.Addin.PackageComponents
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
 			var packageComponentDirectory = System.IO.Path.Combine(packageComponentsDirectory, projectName);
 			
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectName: {0}", projectName);
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectDirectory: {0}", projectDirectory);
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "PackageComponentDirectory: {0}", packageComponentDirectory);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Package Component WebSite");
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectName: {0}", projectName);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectDirectory: {0}", projectDirectory);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  PackageComponentDirectory: {0}", packageComponentDirectory);
 
 			using (var tempBuildDirectory = new ISI.Extensions.IO.Path.TempDirectory())
 			{
@@ -149,6 +150,11 @@ namespace ISI.Cake.Addin.PackageComponents
 				System.IO.File.Move(webConfigFullName, System.IO.Path.Combine(packageComponentDirectory, System.IO.Path.GetFileName(webConfigFullName)));
 			}
 						
+			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.*.config", System.IO.SearchOption.TopDirectoryOnly))
+			{
+				System.IO.File.Delete(appConfigFullName);
+			}
+
 			{
 				var webConfigFullName = System.IO.Path.Combine(packageComponentDirectory, "web.config");
 				if (System.IO.File.Exists(webConfigFullName))
@@ -160,6 +166,8 @@ namespace ISI.Cake.Addin.PackageComponents
 			CopyCmsData(projectDirectory, packageComponentDirectory);
 
 			CopyDeploymentFiles(projectDirectory, packageComponentDirectory);
+
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Finish");
 		}
 	}
 }

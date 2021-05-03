@@ -31,9 +31,12 @@ namespace ISI.Cake.Addin.PackageComponents
 		public IPackageComponent[] PackageComponents { get; set; }
 
 		public string PackageFullName { get; set; }
+		public string PackageName { get; set; }
 		public string PackageVersion { get; set; }
 		public string PackageBuildDateTimeStamp { get; set; }
 
 		public AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }
+
+		public bool CleanupTempDirectories { get; set; } = true;
 	}
 }

@@ -30,9 +30,10 @@ namespace ISI.Cake.Addin.PackageComponents
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
 			var packageComponentDirectory = System.IO.Path.Combine(packageComponentsDirectory, projectName);
 
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectName: {0}", projectName);
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "ProjectDirectory: {0}", projectDirectory);
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "PackageComponentDirectory: {0}", packageComponentDirectory);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Package Component Console Application");
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectName: {0}", projectName);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectDirectory: {0}", projectDirectory);
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  PackageComponentDirectory: {0}", packageComponentDirectory);
 
 			System.IO.Directory.CreateDirectory(packageComponentDirectory);
 
@@ -62,7 +63,7 @@ namespace ISI.Cake.Addin.PackageComponents
 						targetDirectory = System.IO.Path.Combine(targetDirectory, relativeDirectory);
 						System.IO.Directory.CreateDirectory(targetDirectory);
 					}
-					
+
 					foreach (var sourceFullName in System.IO.Directory.GetFiles(sourceDirectory, "*", System.IO.SearchOption.TopDirectoryOnly))
 					{
 						var fileName = System.IO.Path.GetFileName(sourceFullName);
@@ -87,7 +88,19 @@ namespace ISI.Cake.Addin.PackageComponents
 
 			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.config*", System.IO.SearchOption.TopDirectoryOnly))
 			{
-				System.IO.File.Move(appConfigFullName, System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}{1}", projectName, System.IO.Path.GetFileName(appConfigFullName).Substring(3))));
+				var projectConfigFullName = System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}.exe{1}", projectName, System.IO.Path.GetFileName(appConfigFullName).Substring(3)));
+
+				if (System.IO.File.Exists(projectConfigFullName))
+				{
+					System.IO.File.Delete(projectConfigFullName);
+				}
+
+				System.IO.File.Move(appConfigFullName, projectConfigFullName);
+			}
+
+			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.*.config", System.IO.SearchOption.TopDirectoryOnly))
+			{
+				System.IO.File.Delete(appConfigFullName);
 			}
 
 			{
@@ -101,6 +114,8 @@ namespace ISI.Cake.Addin.PackageComponents
 			CopyCmsData(projectDirectory, packageComponentDirectory);
 
 			CopyDeploymentFiles(projectDirectory, packageComponentDirectory);
+
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Finish");
 		}
 	}
 }
