@@ -34,29 +34,33 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
-			var toDateTimeStamp = request.ToDateTimeStamp;
-			if (string.IsNullOrWhiteSpace(toDateTimeStamp))
+			var toVersion = new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.DateTimeStampVersion(request.ToDateTimeStamp).Version.ToString();
+			if (string.IsNullOrWhiteSpace(toVersion))
 			{
-				toDateTimeStamp = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+				toVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 				{
 					BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 					AuthenticationToken = request.AuthenticationToken,
 					ArtifactName = request.ArtifactName,
 					Environment = request.FromEnvironment,
-				})?.DateTimeStampVersion?.DateTimeStamp ?? string.Empty;
+				})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
 			}
 
-			var currentDateTimeStamp = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+			var currentVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 			{
 				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				ArtifactName = request.ArtifactName,
 				Environment = request.ToEnvironment,
-			})?.DateTimeStampVersion?.DateTimeStamp ?? string.Empty;
+			})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
 
-			var versionIsAlreadyDeployed = string.Equals(toDateTimeStamp, currentDateTimeStamp, StringComparison.InvariantCultureIgnoreCase);
+			var versionIsAlreadyDeployed = string.Equals(toVersion, currentVersion, StringComparison.InvariantCultureIgnoreCase);
 
-			if(!versionIsAlreadyDeployed)
+			if (versionIsAlreadyDeployed)
+			{
+				cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Version: {0} already deployed", toVersion);
+			}
+			else
 			{
 				var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
 
