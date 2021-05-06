@@ -28,16 +28,22 @@ namespace ISI.Cake.Addin
 			Settings = settings;
 		}
 
-		public string UploadFileUserName
+		public string Url
 		{
-			get => Settings.GetValue(Settings.Key.FileStoreUploadFileUserName);
-			set => Settings.SetValue(Settings.Key.FileStoreUploadFileUserName, value);
+			get => Settings.GetValue(Settings.Key.FileStoreUrl);
+			set => Settings.SetValue(Settings.Key.FileStoreUrl, value);
 		}
 
-		public string UploadFilePassword
+		public string UserName
 		{
-			get => Settings.GetValue(Settings.Key.FileStoreUploadFilePassword);
-			set => Settings.SetValue(Settings.Key.FileStoreUploadFilePassword, value);
+			get => Settings.GetValue(Settings.Key.FileStoreUserName);
+			set => Settings.SetValue(Settings.Key.FileStoreUserName, value);
+		}
+
+		public string Password
+		{
+			get => Settings.GetValue(Settings.Key.FileStorePassword);
+			set => Settings.SetValue(Settings.Key.FileStorePassword, value);
 		}
 	}
 }

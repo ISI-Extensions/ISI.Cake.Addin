@@ -43,8 +43,9 @@ namespace ISI.Cake.Addin
 
 			public const string JenkinsApiKey = nameof(JenkinsApiKey);
 
-			public const string FileStoreUploadFileUserName = nameof(FileStoreUploadFileUserName);
-			public const string FileStoreUploadFilePassword = nameof(FileStoreUploadFilePassword);
+			public const string FileStoreUrl = nameof(FileStoreUrl);
+			public const string FileStoreUserName = nameof(FileStoreUserName);
+			public const string FileStorePassword = nameof(FileStorePassword);
 
 			internal static IEnumerable<string> Keys =>
 				new[]
@@ -61,8 +62,9 @@ namespace ISI.Cake.Addin
 					NugetApiKey,
 					NugetCacheDirectory,
 					JenkinsApiKey,
-					FileStoreUploadFileUserName,
-					FileStoreUploadFilePassword,
+					FileStoreUrl,
+					FileStoreUserName,
+					FileStorePassword,
 				};
 		}
 
