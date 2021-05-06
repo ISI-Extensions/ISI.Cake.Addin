@@ -29,7 +29,7 @@ namespace ISI.Cake.Addin.FileStore
 		{
 			var response = new UploadFileResponse();
 			
-			request.WarmUpWebService(cakeContext.Log);
+			//request.WarmUpWebService(cakeContext.Log);
 
 			var fileStoreApi = new ISI.Extensions.Scm.FileStoreApi(new CakeContextLogger(cakeContext));
 
