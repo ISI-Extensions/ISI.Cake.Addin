@@ -27,7 +27,20 @@ namespace ISI.Cake.Addin.PackageComponents
 		{
 			var projectDirectoryFullName = System.IO.Path.GetDirectoryName(projectFullName);
 
-			return System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration);
+			var binDirectory = System.IO.Path.Combine(projectDirectoryFullName, "bin", configuration);
+
+			foreach (var framework in new [] {"net5.0"})
+			{
+				var frameworkBinDirectory = System.IO.Path.Combine(binDirectory, framework);
+
+				if (System.IO.Directory.Exists(frameworkBinDirectory))
+				{
+					return frameworkBinDirectory;
+				}
+			}
+
+			return binDirectory;
+
 
 			//if (string.IsNullOrWhiteSpace(platform) || string.Equals(platform, "Any CPU", StringComparison.InvariantCultureIgnoreCase))
 			//{
