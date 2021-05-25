@@ -25,11 +25,16 @@ namespace ISI.Cake.Addin.VisualStudio
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.Locks.ILock GetSolutionLock(this global::Cake.Core.ICakeContext cakeContext, string solutionFullName)
+		public static ISI.Extensions.Locks.ILock GetSolutionLock(this global::Cake.Core.ICakeContext cakeContext, string solutionFullName = null)
 		{
 			var logger = new CakeContextLogger(cakeContext);
 
 			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
+
+			if (string.IsNullOrWhiteSpace(solutionFullName))
+			{
+				solutionFullName = cakeContext.Environment.WorkingDirectory.FullPath;
+			}
 
 			return solutionApi.GetSolutionLock(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetSolutionLockRequest()
 			{
