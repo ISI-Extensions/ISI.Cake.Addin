@@ -12,7 +12,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +29,12 @@ namespace ISI.Cake.Addin.PackageComponents
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
 			var packageComponentDirectory = System.IO.Path.Combine(packageComponentsDirectory, projectName);
-			
+
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Package Component Windows Service");
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectName: {0}", projectName);
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectDirectory: {0}", projectDirectory);
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  PackageComponentDirectory: {0}", packageComponentDirectory);
-			
+
 			System.IO.Directory.CreateDirectory(packageComponentDirectory);
 
 			if (!string.IsNullOrWhiteSpace(packageComponent.IconFullName) && System.IO.File.Exists(packageComponent.IconFullName))
@@ -78,6 +78,71 @@ namespace ISI.Cake.Addin.PackageComponents
 				}
 			}
 
+			var areaDirectories = new List<string>();
+			areaDirectories.Add(projectDirectory);
+			var projectAreasDirectory = System.IO.Path.Combine(projectDirectory, "Areas");
+			if (System.IO.Directory.Exists(projectAreasDirectory))
+			{
+				areaDirectories.AddRange(System.IO.Directory.GetDirectories(projectAreasDirectory, "*", System.IO.SearchOption.TopDirectoryOnly));
+			}
+			foreach (var areaDirectory in areaDirectories)
+			{
+				foreach (var path in new[]
+				{
+					"wwwroot",
+					"Content",
+					"JavaScripts",
+					"Scripts",
+					"StyleSheets",
+					"Views",
+					"favicon.ico",
+					"Web.config",
+				})
+				{
+					var contentPath = System.IO.Path.Combine(areaDirectory, path);
+
+					if (System.IO.File.Exists(contentPath))
+					{
+						var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentPath);
+
+						var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
+
+						System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(packageComponentContentPath));
+
+						System.IO.File.Copy(contentPath, packageComponentContentPath);
+					}
+
+					if (System.IO.Directory.Exists(contentPath))
+					{
+						{
+							var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentPath);
+
+							var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
+
+							System.IO.Directory.CreateDirectory(packageComponentContentPath);
+						}
+
+						foreach (var contentDirectoryName in System.IO.Directory.GetDirectories(contentPath, "*", System.IO.SearchOption.AllDirectories))
+						{
+							var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentDirectoryName);
+
+							var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
+
+							System.IO.Directory.CreateDirectory(packageComponentContentPath);
+						}
+
+						foreach (var contentFullName in System.IO.Directory.GetFiles(contentPath, "*", System.IO.SearchOption.AllDirectories))
+						{
+							var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentFullName);
+
+							var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
+
+							System.IO.File.Copy(contentFullName, packageComponentContentPath, true);
+						}
+					}
+				}
+			}
+
 			cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
 			{
 				ProjectFullName = packageComponent.ProjectFullName,
@@ -97,7 +162,7 @@ namespace ISI.Cake.Addin.PackageComponents
 
 				System.IO.File.Move(appConfigFullName, projectConfigFullName);
 			}
-			
+
 			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.*.config", System.IO.SearchOption.TopDirectoryOnly))
 			{
 				System.IO.File.Delete(appConfigFullName);

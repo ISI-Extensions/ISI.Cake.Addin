@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.VisualStudio
 {
@@ -39,6 +40,7 @@ namespace ISI.Cake.Addin.VisualStudio
 			return solutionApi.GetSolutionLock(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetSolutionLockRequest()
 			{
 				SolutionFullName = solutionFullName,
+				AddToLog = description => logger.LogInformation(description),
 			}).Lock;
 		}
 	}

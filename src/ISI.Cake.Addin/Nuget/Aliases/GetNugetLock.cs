@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.Nuget
 {
@@ -26,9 +27,14 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static ISI.Extensions.Locks.ILock GetNugetLock(this global::Cake.Core.ICakeContext cakeContext)
 		{
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+			var logger = new CakeContextLogger(cakeContext);
 
-			return nugetApi.GetNugetLock(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetNugetLockRequest()).Lock;
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(logger);
+
+			return nugetApi.GetNugetLock(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetNugetLockRequest()
+			{
+				AddToLog = description => logger.LogInformation(description),
+			}).Lock;
 		}
 	}
 }
