@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,35 +15,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.VisualStudio
 {
-	public class SettingsActiveDirectory
+	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-VisualStudio-AddIn")]
+	public static partial class Aliases
 	{
-		protected Settings Settings { get; }
-
-		public SettingsActiveDirectory(Settings settings)
-		{
-			Settings = settings;
-		}
-
-		public string Domain
-		{
-			get => Settings.GetValue(Settings.Key.ActiveDirectoryDomain);
-			set => Settings.SetValue(Settings.Key.ActiveDirectoryDomain, value);
-		}
-
-		public string UserName
-		{
-			get => Settings.GetValue(Settings.Key.ActiveDirectoryUserName);
-			set => Settings.SetValue(Settings.Key.ActiveDirectoryUserName, value);
-		}
-
-		public string Password
-		{
-			get => Settings.GetValue(Settings.Key.ActiveDirectoryPassword);
-			set => Settings.SetValue(Settings.Key.ActiveDirectoryPassword, value);
-		}
 	}
 }

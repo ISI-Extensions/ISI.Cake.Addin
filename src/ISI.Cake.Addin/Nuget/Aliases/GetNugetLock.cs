@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,35 +15,20 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.Nuget
 {
-	public class SettingsCodeSigning
+	public static partial class Aliases
 	{
-		protected Settings Settings { get; }
-
-		public SettingsCodeSigning(Settings settings)
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static ISI.Extensions.Locks.ILock GetNugetLock(this global::Cake.Core.ICakeContext cakeContext)
 		{
-			Settings = settings;
-		}
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
 
-		public string TimeStampUrl
-		{
-			get => Settings.GetValue(Settings.Key.CodeSigningTimeStampUrl);
-			set => Settings.SetValue(Settings.Key.CodeSigningTimeStampUrl, value);
-		}
-
-		public string CertificateFileName
-		{
-			get => Settings.GetValue(Settings.Key.CodeSigningCertificateFileName);
-			set => Settings.SetValue(Settings.Key.CodeSigningCertificateFileName, value);
-		}
-
-		public string CertificatePassword
-		{
-			get => Settings.GetValue(Settings.Key.CodeSigningCertificatePassword);
-			set => Settings.SetValue(Settings.Key.CodeSigningCertificatePassword, value);
+			return nugetApi.GetNugetLock(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetNugetLockRequest()).Lock;
 		}
 	}
 }

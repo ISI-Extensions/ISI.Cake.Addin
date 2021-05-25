@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,23 +15,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.VisualStudio
 {
-	public class SettingsScm
+	public partial class UpdateNugetPackagesResponse
 	{
-		protected Settings Settings { get; }
-
-		public SettingsScm(Settings settings)
-		{
-			Settings = settings;
-		}
-
-		public string WebServiceUrl
-		{
-			get => Settings.GetValue(Settings.Key.ScmWebServiceUrl);
-			set => Settings.SetValue(Settings.Key.ScmWebServiceUrl, value);
-		}
 	}
 }

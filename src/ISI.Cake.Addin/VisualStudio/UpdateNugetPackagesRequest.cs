@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,35 +15,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.VisualStudio
 {
-	public class SettingsFileStore
+	public partial class UpdateNugetPackagesRequest
 	{
-		protected Settings Settings { get; }
+		public bool UpdateWorkingCopyFromSourceControl { get; set; } = true;
+		public bool CommitWorkingCopyToSourceControl { get; set; } = true;
 
-		public SettingsFileStore(Settings settings)
-		{
-			Settings = settings;
-		}
+		public IEnumerable<string> SolutionFullNames { get; set; }
 
-		public string Url
-		{
-			get => Settings.GetValue(Settings.Key.FileStoreUrl);
-			set => Settings.SetValue(Settings.Key.FileStoreUrl, value);
-		}
-
-		public string UserName
-		{
-			get => Settings.GetValue(Settings.Key.FileStoreUserName);
-			set => Settings.SetValue(Settings.Key.FileStoreUserName, value);
-		}
-
-		public string Password
-		{
-			get => Settings.GetValue(Settings.Key.FileStorePassword);
-			set => Settings.SetValue(Settings.Key.FileStorePassword, value);
-		}
+		public IEnumerable<string> IgnorePackageIds { get; set; }
 	}
 }

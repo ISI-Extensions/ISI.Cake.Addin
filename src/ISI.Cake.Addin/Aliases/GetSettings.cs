@@ -18,44 +18,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Extensions.Scm.Extensions;
 
 namespace ISI.Cake.Addin
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static Settings GetSettings(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath settingsFilePath, bool overrideWithEnvironmentVariables = false, GetSettings_TryGetValue overrideTryGetValue = null)
+		public static ISI.Extensions.Scm.Settings GetSettings(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath settingsFilePath, bool overrideWithEnvironmentVariables = false, ISI.Extensions.Scm.Settings.GetSettings_TryGetValue overrideTryGetValue = null)
 		{
 			return GetSettings(cakeContext, settingsFilePath.FullPath, overrideWithEnvironmentVariables, overrideTryGetValue);
 		}
 
-		public static Settings GetSettings(this global::Cake.Core.ICakeContext cakeContext, string settingsFullName, bool overrideWithEnvironmentVariables = false, GetSettings_TryGetValue overrideTryGetValue = null)
+		public static ISI.Extensions.Scm.Settings GetSettings(this global::Cake.Core.ICakeContext cakeContext, string settingsFullName, bool overrideWithEnvironmentVariables = false, ISI.Extensions.Scm.Settings.GetSettings_TryGetValue overrideTryGetValue = null)
 		{
-			var values = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-
-			if (!string.IsNullOrWhiteSpace(settingsFullName) && System.IO.File.Exists(settingsFullName))
-			{
-				var keyValueStorage = new ISI.Extensions.SimpleKeyValueStorage(settingsFullName);
-
-				foreach (var key in keyValueStorage.Keys)
-				{
-					values.Add(key, keyValueStorage.GetValue(key));
-				}
-			}
-
-			var settings = new Settings(values, overrideTryGetValue);
+			var settings = ISI.Extensions.Scm.Settings.Load(settingsFullName, overrideTryGetValue);
 
 			if (overrideWithEnvironmentVariables)
 			{
-				var environmentVariables = System.Environment.GetEnvironmentVariables();
-
-				foreach (var key in Settings.Key.Keys)
-				{
-					if (environmentVariables.Contains(key))
-					{
-						settings.SetValue(key, System.Environment.GetEnvironmentVariable(key));
-					}
-				}
+				settings.OverrideWithEnvironmentVariables();
 			}
 
 			return settings;

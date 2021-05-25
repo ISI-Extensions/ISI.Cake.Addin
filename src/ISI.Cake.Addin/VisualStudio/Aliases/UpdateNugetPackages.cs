@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -12,44 +12,36 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.VisualStudio
 {
-	public class SettingsNuget
+	public static partial class Aliases
 	{
-		protected Settings Settings { get; }
-
-		public SettingsNuget(Settings settings)
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static UpdateNugetPackagesResponse UpdateNugetPackages(this global::Cake.Core.ICakeContext cakeContext, UpdateNugetPackagesRequest request)
 		{
-			Settings = settings;
-		}
+			var logger = new CakeContextLogger(cakeContext);
 
-		public string RepositoryName
-		{
-			get => Settings.GetValue(Settings.Key.NugetRepositoryName);
-			set => Settings.SetValue(Settings.Key.NugetRepositoryName, value);
-		}
+			var response = new UpdateNugetPackagesResponse();
 
-		public string RepositoryUrl
-		{
-			get => Settings.GetValue(Settings.Key.NugetRepositoryUrl);
-			set => Settings.SetValue(Settings.Key.NugetRepositoryUrl, value);
-		}
+			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
 
-		public string ApiKey
-		{
-			get => Settings.GetValue(Settings.Key.NugetApiKey);
-			set => Settings.SetValue(Settings.Key.NugetApiKey, value);
-		}
+			solutionApi.UpdateNugetPackages(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.UpdateNugetPackagesRequest()
+			{
+				UpdateWorkingCopyFromSourceControl = request.UpdateWorkingCopyFromSourceControl,
+				CommitWorkingCopyToSourceControl = request.CommitWorkingCopyToSourceControl,
+				SolutionFullNames = request.SolutionFullNames,
+				IgnorePackageIds = request.IgnorePackageIds,
+			});
 
-		public string CacheDirectory
-		{
-			get => Settings.GetValue(Settings.Key.NugetCacheDirectory);
-			set => Settings.SetValue(Settings.Key.NugetCacheDirectory, value);
+			return response;
 		}
 	}
 }
