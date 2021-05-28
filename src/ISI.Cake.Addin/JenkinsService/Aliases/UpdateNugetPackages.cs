@@ -19,26 +19,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.VisualStudio
+namespace ISI.Cake.Addin.JenkinsService
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static UpdateNugetPackagesResponse UpdateNugetPackages(this global::Cake.Core.ICakeContext cakeContext, UpdateNugetPackagesRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var logger = new CakeContextLogger(cakeContext);
 
 			var response = new UpdateNugetPackagesResponse();
 
-			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
+			var solutionApi = new ISI.Extensions.Scm.JenkinsServiceApi(logger);
 
-			solutionApi.UpdateNugetPackages(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.UpdateNugetPackagesRequest()
+			solutionApi.UpdateNugetPackages(new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
 			{
-				UpdateWorkingCopyFromSourceControl = request.UpdateWorkingCopyFromSourceControl,
-				CommitWorkingCopyToSourceControl = request.CommitWorkingCopyToSourceControl,
-				SolutionFullNames = request.SolutionFullNames,
-				IgnorePackageIds = request.IgnorePackageIds,
+				SettingsFullName = request.SettingsFullName,
+				JenkinsServiceUrl = request.JenkinsServiceUrl,
+				JenkinsServicePassword = request.JenkinsServicePassword,
+				JenkinsUrl = request.JenkinsUrl,
+				JenkinsUserName = request.JenkinsUserName,
+				JenkinsApiToken = request.JenkinsApiToken,
+				JobIds = request.JobIds.ToNullCheckedArray(),
+				FilterByJobIdSuffix = request.FilterByJobIdSuffix,
+				IgnorePackageIds = request.IgnorePackageIds.ToNullCheckedArray(),
 			});
 
 			return response;

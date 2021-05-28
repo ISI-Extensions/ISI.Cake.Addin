@@ -19,9 +19,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.VisualStudio
+namespace ISI.Cake.Addin.JenkinsService
 {
-	public partial class UpdateNugetPackagesResponse
+	public partial class UpdateNugetPackagesRequest
 	{
+		public string SettingsFullName { get; set; }
+
+		public string JenkinsServiceUrl { get; set; }
+		public string JenkinsServicePassword { get; set; }
+		
+		public string JenkinsUrl { get; set; }
+		public string JenkinsUserName { get; set; }
+		public string JenkinsApiToken { get; set; }
+		
+		public string[] JobIds { get; set; }
+		public string FilterByJobIdSuffix { get; set; }
+		public string[] IgnorePackageIds { get; set; }
 	}
 }

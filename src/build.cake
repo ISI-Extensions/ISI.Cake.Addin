@@ -41,8 +41,11 @@ Task("NugetPackageRestore")
 	.IsDependentOn("Clean")
 	.Does(() =>
 	{
-		Information("Restoring Nuget Packages ...");
-		NuGetRestore(solutionPath);
+		using(GetNugetLock())
+		{
+			Information("Restoring Nuget Packages ...");
+			NuGetRestore(solutionPath);
+		}
 	});
 
 Task("Build")
@@ -152,4 +155,7 @@ Task("Default")
 		Information("No target provided. Starting default task");
 	});
 
-RunTarget(target);
+using(GetSolutionLock())
+{
+	RunTarget(target);
+}

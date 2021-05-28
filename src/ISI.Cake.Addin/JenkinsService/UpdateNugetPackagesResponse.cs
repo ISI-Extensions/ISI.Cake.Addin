@@ -19,15 +19,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.VisualStudio
+namespace ISI.Cake.Addin.JenkinsService
 {
-	public partial class UpdateNugetPackagesRequest
+	public partial class UpdateNugetPackagesResponse
 	{
-		public bool UpdateWorkingCopyFromSourceControl { get; set; } = true;
-		public bool CommitWorkingCopyToSourceControl { get; set; } = true;
-
-		public IEnumerable<string> SolutionFullNames { get; set; }
-
-		public IEnumerable<string> IgnorePackageIds { get; set; }
 	}
 }
