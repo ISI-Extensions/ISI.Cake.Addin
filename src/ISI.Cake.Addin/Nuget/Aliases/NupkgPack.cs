@@ -35,6 +35,8 @@ namespace ISI.Cake.Addin.Nuget
 				NuspecFullName = request.NuspecFullName,
 				OutputDirectory = request.OutputDirectory,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
+				IncludeSymbols = request.IncludeSymbols,
+				IncludeSource = request.IncludeSource,
 			});
 
 			return response;

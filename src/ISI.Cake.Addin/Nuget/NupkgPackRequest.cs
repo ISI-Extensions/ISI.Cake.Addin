@@ -25,5 +25,8 @@ namespace ISI.Cake.Addin.Nuget
 	{
 		public string NuspecFullName { get; set; }
 		public string OutputDirectory { get; set; }
+
+		public bool IncludeSymbols { get; set; }
+		public bool IncludeSource { get; set; }
 	}
 }
