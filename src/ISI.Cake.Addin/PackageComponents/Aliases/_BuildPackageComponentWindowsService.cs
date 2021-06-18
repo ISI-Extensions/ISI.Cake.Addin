@@ -179,6 +179,8 @@ namespace ISI.Cake.Addin.PackageComponents
 			CopyCmsData(projectDirectory, packageComponentDirectory);
 
 			CopyDeploymentFiles(projectDirectory, packageComponentDirectory);
+			
+			packageComponent.AfterBuildPackageComponent?.Invoke(packageComponentsDirectory);
 
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Finish");
 		}

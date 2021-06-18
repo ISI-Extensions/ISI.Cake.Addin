@@ -19,6 +19,8 @@ using System.Text;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
+	public delegate void AfterBuildPackageComponent(string packageComponentDirectory);
+
 	public interface IPackageComponent
 	{
 	}

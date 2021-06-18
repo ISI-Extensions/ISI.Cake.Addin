@@ -36,5 +36,7 @@ namespace ISI.Cake.Addin.PackageComponents
 			"Dockerfile",
 			"*Manifests.lst",
 		});
+
+		public AfterBuildPackageComponent AfterBuildPackageComponent { get; set; } = null;
 	}
 }
