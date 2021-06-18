@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.SourceControlClient
+namespace ISI.Cake.Addin.SourceControl
 {
 	public partial class CommitWorkingCopyResponse
 	{

@@ -18,12 +18,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.SourceControlClient
+namespace ISI.Cake.Addin.SourceControl
 {
-	public partial class CommitWorkingCopyRequest
+	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-SourceControl-AddIn")]
+	public static partial class Aliases
 	{
-		public string FullName { get; set; }
-		public string LogMessage { get; set; }
 	}
 }

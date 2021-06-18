@@ -20,20 +20,20 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.SourceControlClient
+namespace ISI.Cake.Addin.SourceControl
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static CommitResponse Commit(this global::Cake.Core.ICakeContext cakeContext, CommitRequest request)
+		public static CommitWorkingCopyResponse SourceControlCommitWorkingCopy(this global::Cake.Core.ICakeContext cakeContext, CommitWorkingCopyRequest request)
 		{
-			var response = new CommitResponse();
+			var response = new CommitWorkingCopyResponse();
 
 			var svnApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
 
-			response.Success = svnApi.Commit(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitRequest()
+			response.Success = svnApi.CommitWorkingCopy(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitWorkingCopyRequest()
 			{
-				FullNames = request.FullNames,
+				FullName = request.FullName,
 				LogMessage = request.LogMessage,
 			}).Success;
 

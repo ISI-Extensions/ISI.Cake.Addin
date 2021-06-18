@@ -18,26 +18,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.SourceControlClient
+namespace ISI.Cake.Addin.SourceControl
 {
-	public static partial class Aliases
+	public partial class CommitResponse
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static CommitWorkingCopyResponse CommitWorkingCopy(this global::Cake.Core.ICakeContext cakeContext, CommitWorkingCopyRequest request)
-		{
-			var response = new CommitWorkingCopyResponse();
-
-			var svnApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
-
-			response.Success = svnApi.CommitWorkingCopy(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitWorkingCopyRequest()
-			{
-				FullName = request.FullName,
-				LogMessage = request.LogMessage,
-			}).Success;
-
-			return response;
-		}
+		public bool Success { get; set; }
 	}
 }
