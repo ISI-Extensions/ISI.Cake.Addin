@@ -20,17 +20,17 @@
 	<ItemGroup>
 	  <PackageReference Include="Cake.Common" Version="1.1.0" />
 	  <PackageReference Include="Cake.Core" Version="1.1.0" />
-	  <PackageReference Include="ISI.Extensions" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.Git" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.Scm" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.Svn" Version="10.0.7845.34004" />
-	  <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.7845.34004" />
+	  <PackageReference Include="ISI.Extensions" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.Git" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.Scm" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.Svn" Version="10.0.7855.4150" />
+	  <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.7855.4150" />
 	  <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
 	</ItemGroup>
 

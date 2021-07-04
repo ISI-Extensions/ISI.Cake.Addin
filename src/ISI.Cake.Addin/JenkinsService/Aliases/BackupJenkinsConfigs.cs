@@ -45,6 +45,8 @@ namespace ISI.Cake.Addin.JenkinsService
 				JenkinsUserName = request.JenkinsUserName,
 				JenkinsApiToken = request.JenkinsApiToken,
 				JobIds = request.JobIds.ToNullCheckedArray(),
+				FilterByJobIdPrefix = request.FilterByJobIdPrefix,
+				FilterByJobIdSuffix = request.FilterByJobIdSuffix,
 			});
 
 			return response;
