@@ -78,7 +78,7 @@ Task("Sign")
 		{
 			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake.*.dll");
 			Sign(files, new SignToolSignSettings {
-						TimeStampUri = new Uri(settings.CodeSigning.TimeStampUrl),
+						TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
 						CertPath = settings.CodeSigning.CertificateFileName,
 						Password = settings.CodeSigning.CertificatePassword,
 			});
@@ -98,8 +98,8 @@ Task("Nuget")
 				ProjectFullName = project.Path.FullPath,
 			}).Nuspec;
 			nuspec.Version = assemblyVersion;
-			nuspec.IconUri = new Uri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");
-			nuspec.ProjectUri = new Uri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin");
+			nuspec.IconUri = GetNullableUri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");
+			nuspec.ProjectUri = GetNullableUri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin");
 			nuspec.Title = project.Name;
 			nuspec.Description = project.Name;
 			nuspec.Copyright = string.Format("Copyright (c) {0}, Integrated Solutions, Inc.", DateTime.Now.Year);
@@ -134,7 +134,7 @@ Task("Nuget")
 			NupkgSign(new ISI.Cake.Addin.Nuget.NupkgSignRequest()
 			{
 				NupkgFullNames = new [] { nupgkFile.Path.FullPath },
-				TimestamperUri = new Uri(settings.CodeSigning.TimeStampUrl),
+				TimestamperUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
 				CertificatePath = File(settings.CodeSigning.CertificateFileName),
 				CertificatePassword = settings.CodeSigning.CertificatePassword,
 			});
@@ -143,7 +143,9 @@ Task("Nuget")
 			{
 				NupkgFullNames = new [] { nupgkFile.Path.FullPath },
 				ApiKey = settings.Nuget.ApiKey,
-				RepositoryUri = new Uri(settings.Nuget.RepositoryUrl),
+				RepositoryName = settings.Nuget.RepositoryName,
+				RepositoryUri = GetNullableUri(settings.Nuget.RepositoryUrl),
+				PackageChunksRepositoryUri = GetNullableUri(settings.Nuget.PackageChunksRepositoryUrl),
 			});
 		}
 	});
