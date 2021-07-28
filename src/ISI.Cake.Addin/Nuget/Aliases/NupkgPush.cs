@@ -34,11 +34,12 @@ namespace ISI.Cake.Addin.Nuget
 			{
 				NupkgFullNames = request.NupkgFullNames,
 				ApiKey = request.ApiKey,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
 				RepositoryName = request.RepositoryName,
 				RepositoryUri = request.RepositoryUri,
-				MaxFileSegmentSize = request.MaxFileSegmentSize,
-				MaxTries = request.MaxTries,
+				PackageChunksRepositoryUri = request.PackageChunksRepositoryUri,
+				PackageChunksMaxFileSegmentSize = request.PackageChunksMaxFileSegmentSize,
+				PackageChunksMaxTries = request.PackageChunksMaxTries,
+				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
 			});
 
 			return response;

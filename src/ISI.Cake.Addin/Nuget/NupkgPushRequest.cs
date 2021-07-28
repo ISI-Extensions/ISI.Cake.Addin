@@ -28,7 +28,9 @@ namespace ISI.Cake.Addin.Nuget
 		public string RepositoryName { get; set; }
 		
 		public Uri RepositoryUri { get; set; }
-		public int MaxFileSegmentSize { get; set; } = 2000000;
-		public int MaxTries { get; set; } = 3;
+
+		public Uri PackageChunksRepositoryUri { get; set; }
+		public int PackageChunksMaxFileSegmentSize { get; set; } = 2000000;
+		public int PackageChunksMaxTries { get; set; } = 3;
 	}
 }
