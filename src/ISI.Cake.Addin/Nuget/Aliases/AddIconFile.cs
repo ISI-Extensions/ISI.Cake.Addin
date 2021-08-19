@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,16 +15,26 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ISI.Extensions.Nuget.Extensions;
+using Microsoft.Extensions.Logging;
 
-namespace ISI.Cake.Addin.Extensions
+namespace ISI.Cake.Addin.Nuget
 {
-	public static class NuspecExtensions
+	public static partial class Aliases
 	{
-		public static void AddIconFile(this ISI.Extensions.Nuget.Nuspec nuspec, global::Cake.Common.IO.Paths.ConvertableFilePath iconFile)
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static void AddIconFile(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Nuget.Nuspec nuspec, global::Cake.Common.IO.Paths.ConvertableFilePath iconFile)
 		{
 			nuspec.AddIconFile(iconFile.Path.FullPath);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static void AddIconFile(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Nuget.Nuspec nuspec, string iconFileFullName)
+		{
+			nuspec.AddIconFile(iconFileFullName);
 		}
 	}
 }
