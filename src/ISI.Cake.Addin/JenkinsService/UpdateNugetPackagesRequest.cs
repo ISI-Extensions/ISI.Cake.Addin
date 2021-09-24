@@ -31,6 +31,7 @@ namespace ISI.Cake.Addin.JenkinsService
 		public string JenkinsUrl { get; set; }
 		public string JenkinsUserName { get; set; }
 		public string JenkinsApiToken { get; set; }
+		public bool PauseJenkins { get; set; }
 		
 		public string[] JobIds { get; set; }
 		public string FilterByJobIdPrefix { get; set; }
