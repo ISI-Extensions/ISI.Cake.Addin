@@ -41,15 +41,17 @@ namespace ISI.Cake.Addin.JenkinsService
 				SettingsFullName = request.SettingsFullName,
 				JenkinsServiceUrl = request.JenkinsServiceUrl,
 				JenkinsServicePassword = request.JenkinsServicePassword,
-				
+
 				JenkinsUrl = request.JenkinsUrl,
 				JenkinsUserName = request.JenkinsUserName,
 				JenkinsApiToken = request.JenkinsApiToken,
-				
+
 				PauseJenkins = request.PauseJenkins,
 				PauseJenkinsReason = request.PauseJenkinsReason,
-				
+
 				FinishAllJobsBeforeProcessing = request.FinishAllJobsBeforeProcessing,
+				FinishAllJobsBeforeProcessingFilterByJobIdPrefix = request.FinishAllJobsBeforeProcessingFilterByJobIdPrefix,
+				FinishAllJobsBeforeProcessingFilterByJobIdSuffix = request.FinishAllJobsBeforeProcessingFilterByJobIdSuffix,
 				FinishAllJobsBeforeProcessingExceptForJobIds = request.FinishAllJobsBeforeProcessingExceptForJobIds.ToNullCheckedArray(),
 
 				JobIds = request.JobIds.ToNullCheckedArray(),
