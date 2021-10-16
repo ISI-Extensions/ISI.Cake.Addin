@@ -34,9 +34,9 @@ namespace ISI.Cake.Addin.JenkinsService
 
 			var response = new UpdateNugetPackagesResponse();
 
-			var solutionApi = new ISI.Extensions.Scm.JenkinsServiceApi(logger);
+			var jenkinsServiceApi = new ISI.Extensions.Scm.JenkinsServiceApi(logger);
 
-			solutionApi.UpdateNugetPackages(new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
+			jenkinsServiceApi.UpdateNugetPackages(new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
 			{
 				SettingsFullName = request.SettingsFullName,
 				JenkinsServiceUrl = request.JenkinsServiceUrl,
