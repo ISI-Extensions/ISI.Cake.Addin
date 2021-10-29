@@ -24,13 +24,13 @@ namespace ISI.Cake.Addin.PackageComponents
 {
 	public static partial class Aliases
 	{
-		private static void BuildPackageComponentWindowsService(global::Cake.Core.ICakeContext cakeContext, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform, string packageComponentsDirectory, AssemblyVersionFileDictionary assemblyVersionFiles, PackageComponentWindowsService packageComponent)
+		private static void BuildPackageComponentWindowsApplication(global::Cake.Core.ICakeContext cakeContext, string configuration, global::Cake.Common.Tools.MSBuild.MSBuildPlatform platform, string packageComponentsDirectory, AssemblyVersionFileDictionary assemblyVersionFiles, PackageComponentWindowsApplication packageComponent)
 		{
 			var projectName = System.IO.Path.GetFileNameWithoutExtension(packageComponent.ProjectFullName);
 			var projectDirectory = System.IO.Path.GetDirectoryName(packageComponent.ProjectFullName);
 			var packageComponentDirectory = System.IO.Path.Combine(packageComponentsDirectory, projectName);
 
-			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Package Component Windows Service");
+			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Package Component Windows Application");
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectName: {0}", projectName);
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  ProjectDirectory: {0}", projectDirectory);
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "  PackageComponentDirectory: {0}", packageComponentDirectory);
@@ -78,71 +78,6 @@ namespace ISI.Cake.Addin.PackageComponents
 				}
 			}
 
-			var areaDirectories = new List<string>();
-			areaDirectories.Add(projectDirectory);
-			var projectAreasDirectory = System.IO.Path.Combine(projectDirectory, "Areas");
-			if (System.IO.Directory.Exists(projectAreasDirectory))
-			{
-				areaDirectories.AddRange(System.IO.Directory.GetDirectories(projectAreasDirectory, "*", System.IO.SearchOption.TopDirectoryOnly));
-			}
-			foreach (var areaDirectory in areaDirectories)
-			{
-				foreach (var path in new[]
-				{
-					"wwwroot",
-					"Content",
-					"JavaScripts",
-					"Scripts",
-					"StyleSheets",
-					"Views",
-					"favicon.ico",
-					"Web.config",
-				})
-				{
-					var contentPath = System.IO.Path.Combine(areaDirectory, path);
-
-					if (System.IO.File.Exists(contentPath))
-					{
-						var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentPath);
-
-						var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
-
-						System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(packageComponentContentPath));
-
-						System.IO.File.Copy(contentPath, packageComponentContentPath);
-					}
-
-					if (System.IO.Directory.Exists(contentPath))
-					{
-						{
-							var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentPath);
-
-							var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
-
-							System.IO.Directory.CreateDirectory(packageComponentContentPath);
-						}
-
-						foreach (var contentDirectoryName in System.IO.Directory.GetDirectories(contentPath, "*", System.IO.SearchOption.AllDirectories))
-						{
-							var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentDirectoryName);
-
-							var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
-
-							System.IO.Directory.CreateDirectory(packageComponentContentPath);
-						}
-
-						foreach (var contentFullName in System.IO.Directory.GetFiles(contentPath, "*", System.IO.SearchOption.AllDirectories))
-						{
-							var relativeContentPath = System.IO.Path.GetRelativePath(projectDirectory, contentFullName);
-
-							var packageComponentContentPath = System.IO.Path.Combine(packageComponentDirectory, relativeContentPath);
-
-							System.IO.File.Copy(contentFullName, packageComponentContentPath, true);
-						}
-					}
-				}
-			}
-
 			if (!packageComponent.DoNotXmlTransformConfigs)
 			{
 				cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
@@ -182,7 +117,7 @@ namespace ISI.Cake.Addin.PackageComponents
 			CopyCmsData(projectDirectory, packageComponentDirectory);
 
 			CopyDeploymentFiles(projectDirectory, packageComponentDirectory);
-			
+
 			packageComponent.AfterBuildPackageComponent?.Invoke(packageComponentsDirectory);
 
 			cakeContext.Log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Finish");

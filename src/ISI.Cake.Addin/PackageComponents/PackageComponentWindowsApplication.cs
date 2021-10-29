@@ -19,7 +19,7 @@ using System.Text;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
-	public class PackageComponentConsoleApplication : IPackageComponent
+	public class PackageComponentWindowsApplication : IPackageComponent
 	{
 		public string ProjectFullName { get; set; }
 		

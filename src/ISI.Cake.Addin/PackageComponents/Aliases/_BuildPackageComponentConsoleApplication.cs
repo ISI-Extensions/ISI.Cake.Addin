@@ -78,36 +78,39 @@ namespace ISI.Cake.Addin.PackageComponents
 				}
 			}
 
-			cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
+			if (!packageComponent.DoNotXmlTransformConfigs)
 			{
-				ProjectFullName = packageComponent.ProjectFullName,
-				DestinationDirectory = packageComponentDirectory,
-				MoveConfigurationKey = true,
-				TransformedFileSuffix = ".sample",
-			});
-
-			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.config*", System.IO.SearchOption.TopDirectoryOnly))
-			{
-				var projectConfigFullName = System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}.exe{1}", projectName, System.IO.Path.GetFileName(appConfigFullName).Substring(3)));
-
-				if (System.IO.File.Exists(projectConfigFullName))
+				cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
 				{
-					System.IO.File.Delete(projectConfigFullName);
+					ProjectFullName = packageComponent.ProjectFullName,
+					DestinationDirectory = packageComponentDirectory,
+					MoveConfigurationKey = true,
+					TransformedFileSuffix = ".sample",
+				});
+
+				foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.config*", System.IO.SearchOption.TopDirectoryOnly))
+				{
+					var projectConfigFullName = System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}.exe{1}", projectName, System.IO.Path.GetFileName(appConfigFullName).Substring(3)));
+
+					if (System.IO.File.Exists(projectConfigFullName))
+					{
+						System.IO.File.Delete(projectConfigFullName);
+					}
+
+					System.IO.File.Move(appConfigFullName, projectConfigFullName);
 				}
 
-				System.IO.File.Move(appConfigFullName, projectConfigFullName);
-			}
-
-			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.*.config", System.IO.SearchOption.TopDirectoryOnly))
-			{
-				System.IO.File.Delete(appConfigFullName);
-			}
-
-			{
-				var appConfigFullName = System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}.exe.config", projectName));
-				if (System.IO.File.Exists(appConfigFullName))
+				foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "app.*.config", System.IO.SearchOption.TopDirectoryOnly))
 				{
-					System.IO.File.Move(appConfigFullName, string.Format("{0}.sample", appConfigFullName));
+					System.IO.File.Delete(appConfigFullName);
+				}
+
+				{
+					var appConfigFullName = System.IO.Path.Combine(packageComponentDirectory, string.Format("{0}.exe.config", projectName));
+					if (System.IO.File.Exists(appConfigFullName))
+					{
+						System.IO.File.Move(appConfigFullName, string.Format("{0}.sample", appConfigFullName));
+					}
 				}
 			}
 

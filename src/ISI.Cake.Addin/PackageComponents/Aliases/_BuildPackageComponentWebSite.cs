@@ -139,29 +139,32 @@ namespace ISI.Cake.Addin.PackageComponents
 			//		.WithTarget("_CopyWebApplication"));
 			//}
 
-			cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
+			if (!packageComponent.DoNotXmlTransformConfigs)
 			{
-				ProjectFullName = packageComponent.ProjectFullName,
-				DestinationDirectory = packageComponentDirectory,
-				MoveConfigurationKey = true,
-				TransformedFileSuffix = ".sample",
-			});
-
-			foreach (var webConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.config*", System.IO.SearchOption.TopDirectoryOnly))
-			{
-				System.IO.File.Move(webConfigFullName, System.IO.Path.Combine(packageComponentDirectory, System.IO.Path.GetFileName(webConfigFullName)));
-			}
-						
-			foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.*.config", System.IO.SearchOption.TopDirectoryOnly))
-			{
-				System.IO.File.Delete(appConfigFullName);
-			}
-
-			{
-				var webConfigFullName = System.IO.Path.Combine(packageComponentDirectory, "web.config");
-				if (System.IO.File.Exists(webConfigFullName))
+				cakeContext.XmlTransformConfigsInProject(new ISI.Cake.Addin.XmlTransform.XmlTransformConfigsInProjectRequest()
 				{
-					System.IO.File.Move(webConfigFullName, string.Format("{0}.sample", webConfigFullName));
+					ProjectFullName = packageComponent.ProjectFullName,
+					DestinationDirectory = packageComponentDirectory,
+					MoveConfigurationKey = true,
+					TransformedFileSuffix = ".sample",
+				});
+
+				foreach (var webConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.config*", System.IO.SearchOption.TopDirectoryOnly))
+				{
+					System.IO.File.Move(webConfigFullName, System.IO.Path.Combine(packageComponentDirectory, System.IO.Path.GetFileName(webConfigFullName)));
+				}
+
+				foreach (var appConfigFullName in System.IO.Directory.GetFiles(packageComponentDirectory, "web.*.config", System.IO.SearchOption.TopDirectoryOnly))
+				{
+					System.IO.File.Delete(appConfigFullName);
+				}
+
+				{
+					var webConfigFullName = System.IO.Path.Combine(packageComponentDirectory, "web.config");
+					if (System.IO.File.Exists(webConfigFullName))
+					{
+						System.IO.File.Move(webConfigFullName, string.Format("{0}.sample", webConfigFullName));
+					}
 				}
 			}
 

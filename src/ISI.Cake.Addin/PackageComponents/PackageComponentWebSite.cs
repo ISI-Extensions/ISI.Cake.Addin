@@ -25,6 +25,8 @@ namespace ISI.Cake.Addin.PackageComponents
 		
 		public string IconFullName { get; set; }
 
+		public bool DoNotXmlTransformConfigs { get; set; }
+
 		public List<string> ExcludeFiles { get; set; } = new List<string>(new[]
 		{
 			"*.xml",

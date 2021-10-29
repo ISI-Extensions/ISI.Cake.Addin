@@ -52,6 +52,10 @@ namespace ISI.Cake.Addin.PackageComponents
 				{
 					switch (packageComponent)
 					{
+						case PackageComponentWindowsApplication packageComponentWindowsApplication:
+							BuildPackageComponentWindowsApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentWindowsApplication);
+							break;
+
 						case PackageComponentConsoleApplication packageComponentConsoleApplication:
 							BuildPackageComponentConsoleApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentConsoleApplication);
 							break;
