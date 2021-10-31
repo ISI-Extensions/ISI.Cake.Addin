@@ -57,7 +57,18 @@ namespace ISI.Cake.Addin.JenkinsService
 				JobIds = request.JobIds.ToNullCheckedArray(),
 				FilterByJobIdPrefix = request.FilterByJobIdPrefix,
 				FilterByJobIdSuffix = request.FilterByJobIdSuffix,
+
 				IgnorePackageIds = request.IgnorePackageIds.ToNullCheckedArray(),
+				NugetPackageKeys = request.NugetPackageKeys.ToNullCheckedArray(source => new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.NugetPackageKey()
+				{
+					PackageId = source.PackageId,
+					PackageVersion = source.PackageVersion,
+				}),
+				UpsertAssemblyRedirectsNugetPackageKeys = request.UpsertAssemblyRedirectsNugetPackageKeys.ToNullCheckedArray(source => new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.NugetPackageKey()
+				{
+					PackageId = source.PackageId,
+					PackageVersion = source.PackageVersion,
+				}),
 			});
 
 			return response;
