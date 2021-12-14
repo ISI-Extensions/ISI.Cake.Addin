@@ -20,15 +20,12 @@ using Cake.Core.Diagnostics;
 
 namespace ISI.Cake.Addin.Extensions
 {
-	public static class WarmUpWebServiceExtension
+	public static class WarmUpWebServiceExtensions
 	{
-		public static readonly HashSet<string> WarmedUpWebServiceUrls = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+		public static readonly HashSet<string> WarmedUpWebServiceHosts = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
 		public static void WarmUpWebService(this IWarmUpWebService request, global::Cake.Core.Diagnostics.ICakeLog log)
 		{
-			System.Net.ServicePointManager.Expect100Continue = true;
-			System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls;
-
 			if (request.WarmUpWebService)
 			{
 				var webServiceUrls = new[]
@@ -39,7 +36,9 @@ namespace ISI.Cake.Addin.Extensions
 
 				foreach (var webServiceUrl in webServiceUrls)
 				{
-					if (!WarmedUpWebServiceUrls.Contains(webServiceUrl))
+					var webServerHost = (new UriBuilder(webServiceUrl)).Host;
+
+					if (!WarmedUpWebServiceHosts.Contains(webServerHost))
 					{
 						log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Warming up: {0}", webServiceUrl);
 
@@ -73,11 +72,11 @@ namespace ISI.Cake.Addin.Extensions
 									throw;
 								}
 
-								System.Threading.Thread.Sleep(5000);
+								System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
 							}
 						}
 
-						WarmedUpWebServiceUrls.Add(webServiceUrl);
+						WarmedUpWebServiceHosts.Add(webServerHost);
 					}
 				}
 			}

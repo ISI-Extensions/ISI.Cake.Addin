@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,35 +15,25 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Cake.Core.Diagnostics;
 
-namespace ISI.Cake.Addin.PackageComponents
+namespace ISI.Cake.Addin.Extensions
 {
-	public static partial class Aliases
+	public static class MSBuildPlatformExtensions
 	{
-		private static void CopyCmsData(string projectDirectory, string packageComponentDirectory)
+		public static ISI.Extensions.VisualStudio.MSBuildPlatform GetMSBuildPlatform(this global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
 		{
-			var cmsDataDirectory = System.IO.Path.Combine(projectDirectory, "CMS.DATA");
-			if (System.IO.Directory.Exists(cmsDataDirectory))
+			switch (msBuildPlatform)
 			{
-				foreach (var sourceDirectory in System.IO.Directory.GetDirectories(cmsDataDirectory, "*", System.IO.SearchOption.AllDirectories))
-				{
-					var relativeDirectory = sourceDirectory.Substring(cmsDataDirectory.Length);
-
-					var targetDirectory = System.IO.Path.Combine(packageComponentDirectory, "CMS.DATA", relativeDirectory);
-					System.IO.Directory.CreateDirectory(targetDirectory);
-
-					foreach (var sourceFullName in System.IO.Directory.GetFiles(sourceDirectory, "*", System.IO.SearchOption.TopDirectoryOnly))
-					{
-						var fileName = System.IO.Path.GetFileName(sourceFullName);
-
-						var targetFullName = System.IO.Path.Combine(targetDirectory, fileName);
-
-						System.IO.File.Copy(sourceFullName, targetFullName, true);
-					}
-				}
+				case global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic:
+					return ISI.Extensions.VisualStudio.MSBuildPlatform.Automatic;
+				case global::Cake.Common.Tools.MSBuild.MSBuildPlatform.x86:
+					return ISI.Extensions.VisualStudio.MSBuildPlatform.x86;
+				case global::Cake.Common.Tools.MSBuild.MSBuildPlatform.x64:
+					return ISI.Extensions.VisualStudio.MSBuildPlatform.x64;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(msBuildPlatform), msBuildPlatform, null);
 			}
 		}
 	}

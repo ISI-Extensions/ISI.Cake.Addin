@@ -12,13 +12,17 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
+using Cake.Common.IO;
+using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Cake.Common.IO;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
@@ -34,54 +38,67 @@ namespace ISI.Cake.Addin.PackageComponents
 				request.PackageName = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetFileNameWithoutExtension(request.PackageFullName)));
 			}
 
-			using (var tempDirectory = new ISI.Extensions.IO.Path.TempDirectory())
+			var logger = new CakeContextLogger(cakeContext);
+
+			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(logger, new ISI.Extensions.Nuget.NugetApi(logger))), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
+
+			packagerApi.PackageComponents(new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentsRequest()
 			{
-				var packageComponentsDirectory = tempDirectory.FullName;
-
-				if (!request.CleanupTempDirectories)
-				{
-					packageComponentsDirectory = ISI.Extensions.IO.Path.GetTempDirectoryName();
-				}
-
-				if (!string.IsNullOrWhiteSpace(request.SubDirectory))
-				{
-					packageComponentsDirectory = System.IO.Path.Combine(packageComponentsDirectory, request.SubDirectory);
-				}
-
-				foreach (var packageComponent in request.PackageComponents)
+				Configuration = request.Configuration,
+				Platform = request.Platform.GetMSBuildPlatform(),
+				SubDirectory = request.SubDirectory,
+				PackageComponents = request.PackageComponents.ToNullCheckedArray(packageComponent =>
 				{
 					switch (packageComponent)
 					{
-						case PackageComponentWindowsApplication packageComponentWindowsApplication:
-							BuildPackageComponentWindowsApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentWindowsApplication);
-							break;
-
 						case PackageComponentConsoleApplication packageComponentConsoleApplication:
-							BuildPackageComponentConsoleApplication(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentConsoleApplication);
-							break;
-
-						case PackageComponentWindowsService packageComponentWindowsService:
-							BuildPackageComponentWindowsService(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentWindowsService);
-							break;
-
+							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentConsoleApplication()
+							{
+								ProjectFullName = packageComponentConsoleApplication.ProjectFullName,
+								IconFullName = packageComponentConsoleApplication.IconFullName,
+								DoNotXmlTransformConfigs = packageComponentConsoleApplication.DoNotXmlTransformConfigs,
+								ExcludeFiles = packageComponentConsoleApplication.ExcludeFiles,
+								AfterBuildPackageComponent = packageComponentDirectory => packageComponentConsoleApplication.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
 						case PackageComponentWebSite packageComponentWebSite:
-							BuildPackageComponentWebSite(cakeContext, request.Configuration, request.Platform, packageComponentsDirectory, request.AssemblyVersionFiles, packageComponentWebSite);
-							break;
-
+							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWebSite()
+							{
+								ProjectFullName = packageComponentWebSite.ProjectFullName,
+								IconFullName = packageComponentWebSite.IconFullName,
+								DoNotXmlTransformConfigs = packageComponentWebSite.DoNotXmlTransformConfigs,
+								ExcludeFiles = packageComponentWebSite.ExcludeFiles,
+								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWebSite.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
+						case PackageComponentWindowsApplication packageComponentWindowsApplication:
+							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWindowsApplication()
+							{
+								ProjectFullName = packageComponentWindowsApplication.ProjectFullName,
+								IconFullName = packageComponentWindowsApplication.IconFullName,
+								DoNotXmlTransformConfigs = packageComponentWindowsApplication.DoNotXmlTransformConfigs,
+								ExcludeFiles = packageComponentWindowsApplication.ExcludeFiles,
+								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWindowsApplication.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
+						case PackageComponentWindowsService packageComponentWindowsService:
+							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWindowsService()
+							{
+								ProjectFullName = packageComponentWindowsService.ProjectFullName,
+								IconFullName = packageComponentWindowsService.IconFullName,
+								DoNotXmlTransformConfigs = packageComponentWindowsService.DoNotXmlTransformConfigs,
+								ExcludeFiles = packageComponentWindowsService.ExcludeFiles,
+								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWindowsService.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
 						default:
 							throw new ArgumentOutOfRangeException(nameof(packageComponent));
 					}
-				}
-
-				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(request.PackageFullName));
-
-				cakeContext.Zip(cakeContext.Directory(tempDirectory.FullName), cakeContext.File(request.PackageFullName));
-
-				if (!string.IsNullOrWhiteSpace(request.PackageVersion) && !string.IsNullOrWhiteSpace(request.PackageBuildDateTimeStamp))
-				{
-					System.IO.File.WriteAllText(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(request.PackageFullName), string.Format("{0}.Current.DateTimeStamp.Version.txt", request.PackageName)), string.Format("{0}|{1}", request.PackageBuildDateTimeStamp, request.PackageVersion));
-				}
-			}
+				}),
+				PackageFullName = request.PackageFullName,
+				PackageName = request.PackageName,
+				PackageVersion = request.PackageVersion,
+				PackageBuildDateTimeStamp = request.PackageBuildDateTimeStamp,
+				AssemblyVersionFiles = request.AssemblyVersionFiles,
+				CleanupTempDirectories = request.CleanupTempDirectories,
+				AddToLog = description => logger.LogInformation(description),
+			});
 
 			return response;
 		}

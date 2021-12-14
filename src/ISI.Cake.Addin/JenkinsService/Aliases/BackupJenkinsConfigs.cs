@@ -34,9 +34,9 @@ namespace ISI.Cake.Addin.JenkinsService
 
 			var response = new BackupJenkinsConfigsResponse();
 
-			var solutionApi = new ISI.Extensions.Scm.JenkinsServiceApi(logger);
+			var jenkinsServiceApi = new ISI.Extensions.Scm.JenkinsServiceApi(logger);
 
-			solutionApi.BackupJenkinsConfigs(new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.BackupJenkinsConfigsRequest()
+			jenkinsServiceApi.BackupJenkinsConfigs(new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.BackupJenkinsConfigsRequest()
 			{
 				SettingsFullName = request.SettingsFullName,
 				JenkinsServiceUrl = request.JenkinsServiceUrl,

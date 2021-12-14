@@ -20,20 +20,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Cake.Common.IO;
 using Cake.Common.Solution.Project.Properties;
-using LogLevel = Cake.Core.Diagnostics.LogLevel;
-using Verbosity = Cake.Core.Diagnostics.Verbosity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void ResetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, AssemblyVersionFileDictionary assemblyVersionFiles)
+		public static void ResetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary assemblyVersionFiles)
 		{
-			foreach (var assemblyVersionFile in assemblyVersionFiles.Values)
+			ServiceProvider.Initialize();
+
+			var logger = new CakeContextLogger(cakeContext);
+
+			var codeGenerationApi = new ISI.Extensions.VisualStudio.CodeGenerationApi(logger);
+
+			codeGenerationApi.ResetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeGenerationApi.ResetAssemblyVersionFilesRequest()
 			{
-				System.IO.File.WriteAllText(assemblyVersionFile.FullName, assemblyVersionFile.AssemblyFileContent);
-			}
+				AssemblyVersionFiles = assemblyVersionFiles,
+			});
 		}
 	}
 }

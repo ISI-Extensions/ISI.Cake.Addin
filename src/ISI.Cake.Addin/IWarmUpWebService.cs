@@ -23,6 +23,6 @@ namespace ISI.Cake.Addin
 	{
 		string WebServiceUrl { get; }
 		bool WarmUpWebService { get; }
-		int WarmUpWebServiceMaxTries { get; set; }
+		int WarmUpWebServiceMaxTries { get; }
 	}
 }

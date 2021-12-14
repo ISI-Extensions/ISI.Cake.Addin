@@ -28,15 +28,18 @@ namespace ISI.Cake.Addin
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void SetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, AssemblyVersionFileDictionary assemblyVersionFiles)
+		public static void SetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary assemblyVersionFiles)
 		{
-			foreach (var assemblyVersionFile in assemblyVersionFiles.Values)
+			ServiceProvider.Initialize();
+
+			var logger = new CakeContextLogger(cakeContext);
+
+			var codeGenerationApi = new ISI.Extensions.VisualStudio.CodeGenerationApi(logger);
+
+			codeGenerationApi.SetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeGenerationApi.SetAssemblyVersionFilesRequest()
 			{
-				cakeContext.CreateAssemblyInfo(cakeContext.File(assemblyVersionFile.FullName), new AssemblyInfoSettings()
-				{
-					Version = assemblyVersionFile.AssemblyVersion,
-				});
-			}
+				AssemblyVersionFiles = assemblyVersionFiles,
+			});
 		}
 	}
 }

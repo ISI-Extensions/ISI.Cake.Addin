@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.PackageComponents
 		public string PackageVersion { get; set; }
 		public string PackageBuildDateTimeStamp { get; set; }
 
-		public AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }
+		public ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }
 
 		public bool CleanupTempDirectories { get; set; } = true;
 	}
