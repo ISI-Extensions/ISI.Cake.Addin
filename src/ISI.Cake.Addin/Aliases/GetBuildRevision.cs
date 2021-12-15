@@ -13,6 +13,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 #endregion
  
+using Cake.Common.IO;
+using Cake.Common.Solution.Project.Properties;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +30,18 @@ namespace ISI.Cake.Addin
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static string GetBuildRevision(this global::Cake.Core.ICakeContext cakeContext, DateTime? utcDateTime = null)
 		{
-			var jan1st2000 = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-			utcDateTime ??= DateTime.UtcNow;
+			ServiceProvider.Initialize();
 
-			return string.Format("{0}.{1}", Math.Floor((utcDateTime.Value.Date - jan1st2000).TotalDays), Math.Floor(((utcDateTime.Value - utcDateTime.Value.Date).TotalSeconds) / 2));
+			var logger = new CakeContextLogger(cakeContext);
+
+			var serialization = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Serialization.ISerialization>();
+
+			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, serialization, new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
+
+			return solutionApi.GetBuildRevision(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetBuildRevisionRequest()
+			{
+				UtcDateTime = utcDateTime,
+			}).BuildRevision;
 		}
 	}
 }
