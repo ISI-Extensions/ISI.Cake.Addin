@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin
 {
@@ -38,9 +39,13 @@ namespace ISI.Cake.Addin
 
 			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, serialization, new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
 
+			var solutionDirectory = cakeContext.Directory("./").Path.MakeAbsolute(cakeContext.Environment).FullPath;
+
 			return solutionApi.GetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetAssemblyVersionFilesRequest()
 			{
-				Solution = cakeContext.File("./").Path.FullPath,
+				Solution = solutionDirectory,
+				RootAssemblyVersionKey = rootAssemblyVersionKey,
+				BuildRevision = buildRevision,
 			}).AssemblyVersionFiles;
 		}
 	}
