@@ -18,29 +18,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cake.Common.IO;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin
 {
-	public partial class NupkgSignRequest
+	public static partial class Aliases
 	{
-		public IEnumerable<string> NupkgFullNames { get; set; }
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static global::Cake.Common.IO.Paths.ConvertableFilePath GetNullableFile(this global::Cake.Core.ICakeContext cakeContext, string fileName, bool checkForExistence = false)
+		{
+			if (!string.IsNullOrWhiteSpace(fileName))
+			{
+				if (!checkForExistence || System.IO.File.Exists(fileName))
+				{
+					return cakeContext.File(fileName);
+				}
+			}
 
-		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
-		
-		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
-
-		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
-		public string CertificatePassword { get; set; }
-		public string CertificateStoreName { get; set; } = "My";
-		public string CertificateStoreLocation { get; set; } = "CurrentUser";
-		public string CertificateSubjectName { get; set; }
-		public string CertificateFingerprint { get; set; }
-
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
-
-		public bool OverwriteAnyExistingSignature { get; set; } = false;
-
-		public NupkgSignToolVerbosity Verbosity { get; set; } = NupkgSignToolVerbosity.Normal;
+			return null;
+		}
 	}
 }

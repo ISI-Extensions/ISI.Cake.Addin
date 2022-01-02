@@ -19,16 +19,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.Vsix
 {
-	public partial class NupkgSignRequest
+	public partial class VsixSignRequest
 	{
-		public IEnumerable<string> NupkgFullNames { get; set; }
+		public string VsixFullName { get; set; }
 
 		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
 		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
-		
-		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 
 		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
 		public string CertificatePassword { get; set; }
@@ -40,7 +38,5 @@ namespace ISI.Cake.Addin.Nuget
 		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
 
 		public bool OverwriteAnyExistingSignature { get; set; } = false;
-
-		public NupkgSignToolVerbosity Verbosity { get; set; } = NupkgSignToolVerbosity.Normal;
 	}
 }

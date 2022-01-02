@@ -18,29 +18,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.Vsix
 {
-	public partial class NupkgSignRequest
+	public static partial class Aliases
 	{
-		public IEnumerable<string> NupkgFullNames { get; set; }
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static VsixSignResponse VsixSign(this global::Cake.Core.ICakeContext cakeContext, VsixSignRequest request)
+		{
+			var response = new VsixSignResponse();
 
-		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
-		
-		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
+			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
 
-		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
-		public string CertificatePassword { get; set; }
-		public string CertificateStoreName { get; set; } = "My";
-		public string CertificateStoreLocation { get; set; } = "CurrentUser";
-		public string CertificateSubjectName { get; set; }
-		public string CertificateFingerprint { get; set; }
+			codeSigningApi.VsixSign(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignRequest()
+			{
+				VsixFullName = request.VsixFullName,
+				TimeStampUri = request.TimeStampUri,
+				TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToVsixSignDigestAlgorithm(),
+				CertificatePath = request.CertificatePath?.FullPath,
+				CertificatePassword = request.CertificatePassword,
+				CertificateStoreName = request.CertificateStoreName,
+				CertificateStoreLocation = request.CertificateStoreLocation,
+				CertificateSubjectName = request.CertificateSubjectName,
+				CertificateFingerprint = request.CertificateFingerprint,
+				DigestAlgorithm = request.DigestAlgorithm.ToVsixSignDigestAlgorithm(),
+				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
+			});
 
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
-
-		public bool OverwriteAnyExistingSignature { get; set; } = false;
-
-		public NupkgSignToolVerbosity Verbosity { get; set; } = NupkgSignToolVerbosity.Normal;
+			return response;
+		}
 	}
 }

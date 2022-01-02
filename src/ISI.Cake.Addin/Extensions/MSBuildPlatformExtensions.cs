@@ -22,7 +22,7 @@ namespace ISI.Cake.Addin.Extensions
 {
 	public static class MSBuildPlatformExtensions
 	{
-		public static ISI.Extensions.VisualStudio.MSBuildPlatform GetMSBuildPlatform(this global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
+		public static ISI.Extensions.VisualStudio.MSBuildPlatform ToMSBuildPlatform(this global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
 		{
 			switch (msBuildPlatform)
 			{

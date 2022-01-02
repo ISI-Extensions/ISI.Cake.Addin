@@ -74,16 +74,17 @@ Task("Sign")
 	.IsDependentOn("Build")
 	.Does(() =>
 	{
-		if (configuration.Equals("Release"))
+		if (settings.CodeSigning.DoCodeSigning && configuration.Equals("Release"))
 		{
 			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake.*.dll");
-			Sign(files, new SignToolSignSettings {
-						TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
-						TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-						CertPath = settings.CodeSigning.CertificateFileName,
-						Password = settings.CodeSigning.CertificatePassword,
-						DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
-
+			Sign(files, new SignToolSignSettings()
+			{
+				TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+				TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
+				CertThumbprint = settings.CodeSigning.CertificateFingerprint,
+				CertPath = settings.CodeSigning.CertificateFileName,
+				Password = settings.CodeSigning.CertificatePassword,
+				DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
 			});
 		}
 	});
@@ -134,13 +135,18 @@ Task("Nuget")
 			DeleteFile(nuspecFile);
 
 			var nupgkFile = File(nugetDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg");
-			NupkgSign(new ISI.Cake.Addin.Nuget.NupkgSignRequest()
+
+			if(settings.CodeSigning.DoCodeSigning)
 			{
-				NupkgFullNames = new [] { nupgkFile.Path.FullPath },
-				TimestamperUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-				CertificatePath = File(settings.CodeSigning.CertificateFileName),
-				CertificatePassword = settings.CodeSigning.CertificatePassword,
-			});
+				NupkgSign(new ISI.Cake.Addin.Nuget.NupkgSignRequest()
+				{
+					NupkgFullNames = new [] { nupgkFile.Path.FullPath },
+					TimestamperUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
+					CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
+					CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
+					CertificatePassword = settings.CodeSigning.CertificatePassword,
+				});
+			}
 
 			NupkgPush(new ISI.Cake.Addin.Nuget.NupkgPushRequest()
 			{

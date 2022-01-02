@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.Nuget
 {
@@ -34,8 +35,8 @@ namespace ISI.Cake.Addin.Nuget
 			{
 				NupkgFullNames = request.NupkgFullNames,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimestamperUri = request.TimestamperUri,
-				TimestampHashAlgorithm = request.TimestampHashAlgorithm,
+				TimeStampUri = request.TimeStampUri,
+				TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToNupkgSignDigestAlgorithm(),
 				OutputDirectory = request.OutputDirectory?.FullPath,
 				CertificatePath = request.CertificatePath?.FullPath,
 				CertificatePassword = request.CertificatePassword,
@@ -43,7 +44,7 @@ namespace ISI.Cake.Addin.Nuget
 				CertificateStoreLocation = request.CertificateStoreLocation,
 				CertificateSubjectName = request.CertificateSubjectName,
 				CertificateFingerprint = request.CertificateFingerprint,
-				HashAlgorithm = request.HashAlgorithm,
+				DigestAlgorithm = request.DigestAlgorithm.ToNupkgSignDigestAlgorithm(),
 				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
 				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
 			});

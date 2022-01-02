@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2021, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,32 +15,42 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Cake.Core.Diagnostics;
+using SignToolDigestAlgorithm = Cake.Common.Tools.SignTool.SignToolDigestAlgorithm;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.Extensions
 {
-	public partial class NupkgSignRequest
+	public static class SignToolDigestAlgorithmExtensions
 	{
-		public IEnumerable<string> NupkgFullNames { get; set; }
+		public static ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignDigestAlgorithm ToNupkgSignDigestAlgorithm(this global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm signToolDigestAlgorithm)
+		{
+			switch (signToolDigestAlgorithm)
+			{
+				case SignToolDigestAlgorithm.Sha1:
+					return ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignDigestAlgorithm.Sha1;
 
-		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
-		
-		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
+				case SignToolDigestAlgorithm.Sha256:
+					return ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignDigestAlgorithm.Sha256;
 
-		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
-		public string CertificatePassword { get; set; }
-		public string CertificateStoreName { get; set; } = "My";
-		public string CertificateStoreLocation { get; set; } = "CurrentUser";
-		public string CertificateSubjectName { get; set; }
-		public string CertificateFingerprint { get; set; }
+				default:
+					throw new ArgumentOutOfRangeException(nameof(signToolDigestAlgorithm), signToolDigestAlgorithm, null);
+			}
+		}
 
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+		public static ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignDigestAlgorithm ToVsixSignDigestAlgorithm(this global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm signToolDigestAlgorithm)
+		{
+			switch (signToolDigestAlgorithm)
+			{
+				case SignToolDigestAlgorithm.Sha1:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignDigestAlgorithm.Sha1;
 
-		public bool OverwriteAnyExistingSignature { get; set; } = false;
+				case SignToolDigestAlgorithm.Sha256:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignDigestAlgorithm.Sha256;
 
-		public NupkgSignToolVerbosity Verbosity { get; set; } = NupkgSignToolVerbosity.Normal;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(signToolDigestAlgorithm), signToolDigestAlgorithm, null);
+			}
+		}
 	}
 }
