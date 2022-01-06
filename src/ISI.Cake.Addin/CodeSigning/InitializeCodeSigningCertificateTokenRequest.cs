@@ -18,12 +18,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.Vsix
+namespace ISI.Cake.Addin.CodeSigning
 {
-	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-Vsix-AddIn")]
-	public static partial class Aliases
+	public partial class InitializeCodeSigningCertificateTokenRequest
 	{
+		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
+		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }
+		public string CodeSigningCertificateTokenContainerName { get; set; }
+		public string CodeSigningCertificateTokenPassword { get; set; }
 	}
 }

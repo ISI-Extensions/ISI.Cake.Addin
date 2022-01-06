@@ -18,10 +18,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.Vsix
+namespace ISI.Cake.Addin.CodeSigning
 {
-	public partial class VsixSignResponse
+	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-CodeSigning-AddIn")]
+	public static partial class Aliases
 	{
 	}
 }

@@ -12,38 +12,31 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
+using ISI.Cake.Addin.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.Vsix
+namespace ISI.Cake.Addin.CodeSigning
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static VsixSignResponse VsixSign(this global::Cake.Core.ICakeContext cakeContext, VsixSignRequest request)
+		public static VsixSignResponse InitializeCodeSigningCertificateToken(this global::Cake.Core.ICakeContext cakeContext, InitializeCodeSigningCertificateTokenRequest request)
 		{
 			var response = new VsixSignResponse();
 
 			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
 
-			codeSigningApi.VsixSign(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignRequest()
+			codeSigningApi.InitializeCodeSigningCertificateToken(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.InitializeCodeSigningCertificateTokenRequest()
 			{
-				VsixFullName = request.VsixFullName,
-				TimeStampUri = request.TimeStampUri,
-				TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToVsixSignDigestAlgorithm(),
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				DigestAlgorithm = request.DigestAlgorithm.ToVsixSignDigestAlgorithm(),
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
+				CodeSigningCertificateTokenCertificateFileName = request.CodeSigningCertificateTokenCertificateFileName,
+				CodeSigningCertificateTokenCryptographicProvider = request.CodeSigningCertificateTokenCryptographicProvider,
+				CodeSigningCertificateTokenContainerName = request.CodeSigningCertificateTokenContainerName,
+				CodeSigningCertificateTokenPassword = request.CodeSigningCertificateTokenPassword,
 			});
 
 			return response;
