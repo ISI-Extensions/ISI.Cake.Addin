@@ -76,7 +76,15 @@ Task("Sign")
 	{
 		if (settings.CodeSigning.DoCodeSigning && configuration.Equals("Release"))
 		{
-			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake.*.dll");
+			InitializeCodeSigningCertificateToken(new ISI.Cake.Addin.CodeSigning.InitializeCodeSigningCertificateTokenRequest()
+			{
+				CodeSigningCertificateTokenCertificateFileName = settings.CodeSigning.Token.CertificateFileName,
+				CodeSigningCertificateTokenCryptographicProvider = settings.CodeSigning.Token.CryptographicProvider,
+				CodeSigningCertificateTokenContainerName = settings.CodeSigning.Token.ContainerName,
+				CodeSigningCertificateTokenPassword = settings.CodeSigning.Token.Password,
+			});
+
+			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake*.dll");
 			Sign(files, new SignToolSignSettings()
 			{
 				TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
