@@ -12,12 +12,13 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.XmlTransform
 {
@@ -28,21 +29,18 @@ namespace ISI.Cake.Addin.XmlTransform
 		{
 			var response = new XmlTransformConfigResponse();
 
-			var xmlTransformableDocument = new Microsoft.Web.XmlTransform.XmlTransformableDocument();
-			xmlTransformableDocument.PreserveWhitespace = true;
-			xmlTransformableDocument.Load(request.SourceConfigFullName);
+			var logger = new CakeContextLogger(cakeContext);
 
-			var xmlTransformation = new Microsoft.Web.XmlTransform.XmlTransformation(request.TransformConfigFullName, true, new XmlTransformationLogger(cakeContext));
+			var xmlTransformApi = new ISI.Extensions.VisualStudio.XmlTransformApi(logger);
 
-			response.Success = xmlTransformation.Apply(xmlTransformableDocument);
-
-			if (response.Success)
+			response.Success = xmlTransformApi.XmlTransformConfig(new ISI.Extensions.VisualStudio.DataTransferObjects.XmlTransformApi.XmlTransformConfigRequest()
 			{
-				using (var stream = new System.IO.FileStream(request.TargetConfigFullName, System.IO.FileMode.OpenOrCreate))
-				{
-					xmlTransformableDocument.Save(stream);
-				}
-			}
+				SourceConfigFullName = request.SourceConfigFullName,
+				TransformConfigFullName = request.TransformConfigFullName,
+				TargetConfigFullName = request.TargetConfigFullName,
+				Logger = logger,
+				AddToLog = description => logger.LogInformation(description),
+			}).Success;
 
 			return response;
 		}
