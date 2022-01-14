@@ -27,19 +27,19 @@ namespace ISI.Cake.Addin.Extensions
 			switch (platformTarget)
 			{
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.MSIL:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.x86;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.MSIL;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.x86:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.x64;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.x86;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.x64:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARM;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.x64;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.ARM:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.Win32;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARM;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.Win32:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARM64;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.Win32;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.ARM64:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARMv6;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARM64;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.ARMv6:
-					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARMv7;
+					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARMv6;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.ARMv7:
 					return ISI.Extensions.VisualStudio.BuildPlatformTarget.ARMv7;
 				case global::Cake.Common.Tools.MSBuild.PlatformTarget.ARMv7s:
