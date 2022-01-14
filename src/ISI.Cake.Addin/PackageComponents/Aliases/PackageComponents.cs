@@ -45,7 +45,8 @@ namespace ISI.Cake.Addin.PackageComponents
 			packagerApi.PackageComponents(new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentsRequest()
 			{
 				Configuration = request.Configuration,
-				Platform = request.Platform.ToMSBuildPlatform(),
+				BuildPlatform = request.BuildPlatform.ToMSBuildPlatform(),
+				PlatformTarget = request.PlatformTarget.ToBuildPlatformTarget(),
 				SubDirectory = request.SubDirectory,
 				PackageComponents = request.PackageComponents.ToNullCheckedArray(packageComponent =>
 				{

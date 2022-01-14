@@ -24,7 +24,8 @@ namespace ISI.Cake.Addin.PackageComponents
 	public partial class PackageComponentsRequest
 	{
 		public string Configuration { get; set; }
-		public global::Cake.Common.Tools.MSBuild.MSBuildPlatform Platform { get; set; } = global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic;
+		public global::Cake.Common.Tools.MSBuild.MSBuildPlatform BuildPlatform { get; set; } = global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic;
+		public global::Cake.Common.Tools.MSBuild.PlatformTarget PlatformTarget { get; set; } = global::Cake.Common.Tools.MSBuild.PlatformTarget.MSIL;
 
 		public string SubDirectory { get; set; }
 
