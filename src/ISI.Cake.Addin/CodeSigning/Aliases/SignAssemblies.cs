@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
@@ -35,7 +36,7 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				codeSigningApi.SignAssemblies(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.SignAssembliesRequest()
 				{
-					AssemblyFullNames = request.AssemblyFullNames,
+					AssemblyFullNames = request.AssemblyPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					TimeStampUri = request.TimeStampUri,
 					TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
@@ -56,7 +57,7 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					RemoteCodeSigningServiceUrl = request.RemoteCodeSigningServiceUri.ToString(),
 					RemoteCodeSigningServicePassword = request.RemoteCodeSigningServicePassword,
-					AssemblyFullNames = request.AssemblyFullNames,
+					AssemblyFullNames = request.AssemblyPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
 					Verbosity = request.Verbosity.ToRemoteCodeSigningVerbosity(),
