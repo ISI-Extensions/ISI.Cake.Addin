@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.CodeSigning
 {
 	public partial class SignVsixesRequest
 	{
-		public IEnumerable<global::Cake.Common.IO.Paths.ConvertableFilePath> VsixPaths { get; set; }
+		public global::Cake.Core.IO.FilePathCollection VsixPaths { get; set; }
 
 		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 

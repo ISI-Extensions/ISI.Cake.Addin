@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.CodeSigning
 {
 	public partial class SignNupkgsRequest
 	{
-		public IEnumerable<global::Cake.Common.IO.Paths.ConvertableFilePath> NupkgPaths { get; set; }
+		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
 
 		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 

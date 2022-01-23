@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.CodeSigning
 {
 	public partial class SignAssembliesRequest
 	{
-		public IEnumerable<global::Cake.Common.IO.Paths.ConvertableFilePath> AssemblyPaths { get; set; }
+		public global::Cake.Core.IO.FilePathCollection AssemblyPaths { get; set; }
 
 		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 
