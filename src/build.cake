@@ -76,22 +76,18 @@ Task("Sign")
 	{
 		if (settings.CodeSigning.DoCodeSigning && configuration.Equals("Release"))
 		{
-			InitializeCodeSigningCertificateToken(new ISI.Cake.Addin.CodeSigning.InitializeCodeSigningCertificateTokenRequest()
-			{
-				CodeSigningCertificateTokenCertificateFileName = settings.CodeSigning.Token.CertificateFileName,
-				CodeSigningCertificateTokenCryptographicProvider = settings.CodeSigning.Token.CryptographicProvider,
-				CodeSigningCertificateTokenContainerName = settings.CodeSigning.Token.ContainerName,
-				CodeSigningCertificateTokenPassword = settings.CodeSigning.Token.Password,
-			});
-
 			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake*.dll");
-			Sign(files, new SignToolSignSettings()
+
+			SignAssemblies(new ISI.Cake.Addin.CodeSigning.SignAssembliesRequest()
 			{
-				TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+				AssemblyPaths = files,
+				RemoteCodeSigningServiceUri = GetNullableUri(settings.CodeSigning.RemoteCodeSigningServiceUrl),
+				RemoteCodeSigningServicePassword = settings.CodeSigning.RemoteCodeSigningServicePassword,
 				TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-				CertThumbprint = settings.CodeSigning.CertificateFingerprint,
-				CertPath = GetNullableFile(settings.CodeSigning.CertificateFileName),
-				Password = settings.CodeSigning.CertificatePassword,
+				TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+				CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
+				CertificatePassword = settings.CodeSigning.CertificatePassword,
+				CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
 				DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
 			});
 		}
@@ -162,7 +158,7 @@ Task("Nuget")
 
 			NupkgPush(new ISI.Cake.Addin.Nuget.NupkgPushRequest()
 			{
-				NupkgFullNames = new [] { nupgkFile.Path.FullPath },
+				NupkgPaths = new [] { nupgkFile },
 				ApiKey = settings.Nuget.ApiKey,
 				RepositoryName = settings.Nuget.RepositoryName,
 				RepositoryUri = GetNullableUri(settings.Nuget.RepositoryUrl),
