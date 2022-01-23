@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				codeSigningApi.SignNupkgs(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.SignNupkgsRequest()
 				{
-					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
+					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.Path.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
 					TimeStampUri = request.TimeStampUri,
@@ -60,7 +60,7 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					RemoteCodeSigningServiceUrl = request.RemoteCodeSigningServiceUri.ToString(),
 					RemoteCodeSigningServicePassword = request.RemoteCodeSigningServicePassword,
-					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
+					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.Path.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
 					Verbosity = request.Verbosity.ToRemoteCodeSigningVerbosity(),

@@ -146,11 +146,13 @@ Task("Nuget")
 
 			if(settings.CodeSigning.DoCodeSigning)
 			{
-				NupkgSign(new ISI.Cake.Addin.Nuget.NupkgSignRequest()
+				SignNupkgs(new ISI.Cake.Addin.CodeSigning.SignNupkgsRequest()
 				{
-					NupkgFullNames = new [] { nupgkFile.Path.FullPath },
-					TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+					NupkgPaths = new [] { nupgkFile },
+					RemoteCodeSigningServiceUri = GetNullableUri(settings.CodeSigning.RemoteCodeSigningServiceUrl),
+					RemoteCodeSigningServicePassword = settings.CodeSigning.RemoteCodeSigningServicePassword,
 					TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
+					TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
 					CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
 					CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
 					CertificatePassword = settings.CodeSigning.CertificatePassword,
