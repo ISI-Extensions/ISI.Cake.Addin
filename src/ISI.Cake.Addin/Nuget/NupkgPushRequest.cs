@@ -21,7 +21,7 @@ namespace ISI.Cake.Addin.Nuget
 {
 	public class NupkgPushRequest
 	{
-		public IEnumerable<string> NupkgFullNames { get; set; }
+		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
 
 		public string ApiKey { get; set; }
 		

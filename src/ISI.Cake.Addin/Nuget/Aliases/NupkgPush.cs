@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Nuget
 {
@@ -32,7 +33,7 @@ namespace ISI.Cake.Addin.Nuget
 
 			nugetApi.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPushRequest()
 			{
-				NupkgFullNames = request.NupkgFullNames,
+				NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(nupkgPath => nupkgPath.FullPath),
 				ApiKey = request.ApiKey,
 				RepositoryName = request.RepositoryName,
 				RepositoryUri = request.RepositoryUri,
