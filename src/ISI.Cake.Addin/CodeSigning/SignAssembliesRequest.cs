@@ -18,38 +18,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.CodeSigning
 {
-	public static partial class Aliases
+	public partial class SignAssembliesRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static NupkgSignResponse NupkgSign(this global::Cake.Core.ICakeContext cakeContext, NupkgSignRequest request)
-		{
-			var response = new NupkgSignResponse();
+		public string[] AssemblyFullNames { get; set; }
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 
-			nugetApi.NupkgSign(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignRequest()
-			{
-				NupkgFullNames = request.NupkgFullNames,
-				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
-				TimeStampUri = request.TimeStampUri,
-				TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToNupkgSignDigestAlgorithm(),
-				OutputDirectory = request.OutputDirectory?.FullPath,
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				DigestAlgorithm = request.DigestAlgorithm.ToNupkgSignDigestAlgorithm(),
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-				Verbosity = ISI.Extensions.Enum<ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignVerbosity>.Convert(request.Verbosity),
-			});
+		public Uri RemoteCodeSigningServiceUri { get; set; }
+		public string RemoteCodeSigningServicePassword { get; set; }
 
-			return response;
-		}
+		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
+		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+
+		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
+		public string CertificatePassword { get; set; }
+		public string CertificateStoreName { get; set; } = "My";
+		public string CertificateStoreLocation { get; set; } = "CurrentUser";
+		public string CertificateSubjectName { get; set; }
+		public string CertificateFingerprint { get; set; }
+
+		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+
+		public bool OverwriteAnyExistingSignature { get; set; } = false;
+
+		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
 	}
 }

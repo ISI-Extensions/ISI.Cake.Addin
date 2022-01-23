@@ -17,36 +17,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Cake.Core.Diagnostics;
-using SignToolDigestAlgorithm = Cake.Common.Tools.SignTool.SignToolDigestAlgorithm;
 
 namespace ISI.Cake.Addin.Extensions
 {
 	public static class SignToolDigestAlgorithmExtensions
 	{
-		public static ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignDigestAlgorithm ToNupkgSignDigestAlgorithm(this global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm signToolDigestAlgorithm)
+		public static ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm ToCodeSigningDigestAlgorithm(this global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm signToolDigestAlgorithm)
 		{
 			switch (signToolDigestAlgorithm)
 			{
-				case SignToolDigestAlgorithm.Sha1:
-					return ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignDigestAlgorithm.Sha1;
+				case global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha1:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha1;
 
-				case SignToolDigestAlgorithm.Sha256:
-					return ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgSignDigestAlgorithm.Sha256;
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(signToolDigestAlgorithm), signToolDigestAlgorithm, null);
-			}
-		}
-
-		public static ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignDigestAlgorithm ToVsixSignDigestAlgorithm(this global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm signToolDigestAlgorithm)
-		{
-			switch (signToolDigestAlgorithm)
-			{
-				case SignToolDigestAlgorithm.Sha1:
-					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignDigestAlgorithm.Sha1;
-
-				case SignToolDigestAlgorithm.Sha256:
-					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignDigestAlgorithm.Sha256;
+				case global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha256;
 
 				default:
 					throw new ArgumentOutOfRangeException(nameof(signToolDigestAlgorithm), signToolDigestAlgorithm, null);

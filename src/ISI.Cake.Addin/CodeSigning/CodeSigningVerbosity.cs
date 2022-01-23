@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,38 +15,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
-	public static partial class Aliases
+	public enum CodeSigningVerbosity
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static VsixSignResponse VsixSign(this global::Cake.Core.ICakeContext cakeContext, VsixSignRequest request)
-		{
-			var response = new VsixSignResponse();
-
-			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
-
-			codeSigningApi.VsixSign(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.VsixSignRequest()
-			{
-				VsixFullName = request.VsixFullName,
-				TimeStampUri = request.TimeStampUri,
-				TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToVsixSignDigestAlgorithm(),
-				CertificatePath = request.CertificatePath?.FullPath,
-				CertificatePassword = request.CertificatePassword,
-				CertificateStoreName = request.CertificateStoreName,
-				CertificateStoreLocation = request.CertificateStoreLocation,
-				CertificateSubjectName = request.CertificateSubjectName,
-				CertificateFingerprint = request.CertificateFingerprint,
-				DigestAlgorithm = request.DigestAlgorithm.ToVsixSignDigestAlgorithm(),
-				OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-			});
-
-			return response;
-		}
+		Normal,
+		Quiet,
+		Detailed,
 	}
 }

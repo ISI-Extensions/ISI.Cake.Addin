@@ -25,9 +25,9 @@ namespace ISI.Cake.Addin.CodeSigning
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static VsixSignResponse InitializeCodeSigningCertificateToken(this global::Cake.Core.ICakeContext cakeContext, InitializeCodeSigningCertificateTokenRequest request)
+		public static SignVsixesResponse InitializeCodeSigningCertificateToken(this global::Cake.Core.ICakeContext cakeContext, InitializeCodeSigningCertificateTokenRequest request)
 		{
-			var response = new VsixSignResponse();
+			var response = new SignVsixesResponse();
 
 			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
 

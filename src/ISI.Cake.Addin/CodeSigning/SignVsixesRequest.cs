@@ -21,7 +21,29 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
-	public partial class VsixSignResponse
+	public partial class SignVsixesRequest
 	{
+		public string[] VsixFullNames { get; set; }
+
+		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
+
+		public Uri RemoteCodeSigningServiceUri { get; set; }
+		public string RemoteCodeSigningServicePassword { get; set; }
+
+		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
+		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+
+		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
+		public string CertificatePassword { get; set; }
+		public string CertificateStoreName { get; set; } = "My";
+		public string CertificateStoreLocation { get; set; } = "CurrentUser";
+		public string CertificateSubjectName { get; set; }
+		public string CertificateFingerprint { get; set; }
+
+		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+
+		public bool OverwriteAnyExistingSignature { get; set; } = false;
+
+		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
 	}
 }
