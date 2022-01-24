@@ -138,13 +138,13 @@ Task("Nuget")
 
 			DeleteFile(nuspecFile);
 
-			var nupgkFile = File(nugetDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg");
+			var nupgkFiles = GetFiles(nugetDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg");
 
 			if(settings.CodeSigning.DoCodeSigning)
 			{
 				SignNupkgs(new ISI.Cake.Addin.CodeSigning.SignNupkgsRequest()
 				{
-					NupkgPaths = new [] { nupgkFile },
+					NupkgPaths = nupgkFiles,
 					RemoteCodeSigningServiceUri = GetNullableUri(settings.CodeSigning.RemoteCodeSigningServiceUrl),
 					RemoteCodeSigningServicePassword = settings.CodeSigning.RemoteCodeSigningServicePassword,
 					TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
@@ -158,7 +158,7 @@ Task("Nuget")
 
 			NupkgPush(new ISI.Cake.Addin.Nuget.NupkgPushRequest()
 			{
-				NupkgPaths = new [] { nupgkFile },
+				NupkgPaths = nupgkFiles,
 				ApiKey = settings.Nuget.ApiKey,
 				RepositoryName = settings.Nuget.RepositoryName,
 				RepositoryUri = GetNullableUri(settings.Nuget.RepositoryUrl),
