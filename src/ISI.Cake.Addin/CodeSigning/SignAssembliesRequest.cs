@@ -30,6 +30,11 @@ namespace ISI.Cake.Addin.CodeSigning
 		public Uri RemoteCodeSigningServiceUri { get; set; }
 		public string RemoteCodeSigningServicePassword { get; set; }
 
+		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
+		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }
+		public string CodeSigningCertificateTokenContainerName { get; set; }
+		public string CodeSigningCertificateTokenPassword { get; set; }
+
 		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
 		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
 

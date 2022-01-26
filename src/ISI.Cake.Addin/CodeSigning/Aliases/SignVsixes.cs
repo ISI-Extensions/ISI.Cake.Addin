@@ -38,6 +38,10 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					VsixFullNames = request.VsixPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
+					CodeSigningCertificateTokenCertificateFileName = request.CodeSigningCertificateTokenCertificateFileName,
+					CodeSigningCertificateTokenCryptographicProvider = request.CodeSigningCertificateTokenCryptographicProvider,
+					CodeSigningCertificateTokenContainerName = request.CodeSigningCertificateTokenContainerName,
+					CodeSigningCertificateTokenPassword = request.CodeSigningCertificateTokenPassword,
 					TimeStampUri = request.TimeStampUri,
 					TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
 					CertificateFileName = request.CertificatePath?.FullPath,
