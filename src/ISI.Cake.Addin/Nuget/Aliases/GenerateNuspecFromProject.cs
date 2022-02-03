@@ -34,6 +34,7 @@ namespace ISI.Cake.Addin.Nuget
 			{
 				ProjectFullName = request.ProjectFullName,
 				TryGetPackageVersion = request.TryGetPackageVersion,
+				BuildTargetFrameworks = false,
 			}).Nuspec;
 
 			return response;

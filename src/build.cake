@@ -1,4 +1,5 @@
-#addin nuget:?package=Cake.FileHelpers&version=4.0.1
+//dotnet tool install Cake.Tool -g
+#addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=ISI.Cake.AddIn&loaddependencies=true
 
 //mklink /D Secrets S:\
