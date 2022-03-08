@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				codeSigningApi.SignVsixes(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.SignVsixesRequest()
 				{
-					VsixFullNames = request.VsixPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
+					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					CodeSigningCertificateTokenCertificateFileName = request.CodeSigningCertificateTokenCertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = request.CodeSigningCertificateTokenCryptographicProvider,
@@ -63,7 +63,7 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					RemoteCodeSigningServiceUrl = request.RemoteCodeSigningServiceUri.ToString(),
 					RemoteCodeSigningServicePassword = request.RemoteCodeSigningServicePassword,
-					VsixFullNames = request.VsixPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
+					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
 					Verbosity = request.Verbosity.ToRemoteCodeSigningVerbosity(),
