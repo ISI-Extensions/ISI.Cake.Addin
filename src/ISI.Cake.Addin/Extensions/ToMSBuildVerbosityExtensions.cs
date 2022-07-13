@@ -19,28 +19,29 @@ using System.Text;
 
 namespace ISI.Cake.Addin.Extensions
 {
-	public static class MSBuildVersionExtensions
+	public static class ToMSBuildVerbosityExtensions
 	{
-		public static ISI.Extensions.VisualStudio.MSBuildVersion ToMSBuildVersion(this global::Cake.Common.Tools.MSBuild.MSBuildVersion msBuildVersion)
+		public static ISI.Extensions.VisualStudio.MSBuildVerbosity ToMSBuildVerbosity(this global::Cake.Core.Diagnostics.Verbosity msBuildVerbosity)
 		{
-			switch (msBuildVersion)
+			switch (msBuildVerbosity)
 			{
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild20:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild35:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild4:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild12:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild14:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild15:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild16:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuildCustomVS:
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuildNETCustom:
-					return ISI.Extensions.VisualStudio.MSBuildVersion.MSBuild16;
+				case global::Cake.Core.Diagnostics.Verbosity.Quiet:
+					return ISI.Extensions.VisualStudio.MSBuildVerbosity.Quiet;
 
-				case global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild17:
-					return ISI.Extensions.VisualStudio.MSBuildVersion.MSBuild17;
+				case global::Cake.Core.Diagnostics.Verbosity.Minimal:
+					return ISI.Extensions.VisualStudio.MSBuildVerbosity.Minimal;
+
+				case global::Cake.Core.Diagnostics.Verbosity.Normal:
+					return ISI.Extensions.VisualStudio.MSBuildVerbosity.Normal;
+
+				case global::Cake.Core.Diagnostics.Verbosity.Verbose:
+					return ISI.Extensions.VisualStudio.MSBuildVerbosity.Verbose;
+
+				case global::Cake.Core.Diagnostics.Verbosity.Diagnostic:
+					return ISI.Extensions.VisualStudio.MSBuildVerbosity.Diagnostic;
 
 				default:
-					throw new ArgumentOutOfRangeException(nameof(msBuildVersion), msBuildVersion, null);
+					throw new ArgumentOutOfRangeException(nameof(msBuildVerbosity), msBuildVerbosity, null);
 			}
 		}
 	}

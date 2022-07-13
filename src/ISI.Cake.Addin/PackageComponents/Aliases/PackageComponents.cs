@@ -48,6 +48,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				BuildVersion = request.BuildVersion.ToMSBuildVersion(),
 				BuildPlatform = request.BuildPlatform.ToMSBuildPlatform(),
 				PlatformTarget = request.PlatformTarget.ToBuildPlatformTarget(),
+				BuildVerbosity = request.BuildVerbosity.ToMSBuildVerbosity(),
 				SubDirectory = request.SubDirectory,
 				PackageComponents = request.PackageComponents.ToNullCheckedArray(packageComponent =>
 				{

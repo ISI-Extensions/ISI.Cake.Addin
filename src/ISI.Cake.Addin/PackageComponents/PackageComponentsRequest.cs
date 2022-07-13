@@ -27,6 +27,7 @@ namespace ISI.Cake.Addin.PackageComponents
 		public global::Cake.Common.Tools.MSBuild.MSBuildVersion BuildVersion { get; set; } = global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild16;
 		public global::Cake.Common.Tools.MSBuild.MSBuildPlatform BuildPlatform { get; set; } = global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic;
 		public global::Cake.Common.Tools.MSBuild.PlatformTarget PlatformTarget { get; set; } = global::Cake.Common.Tools.MSBuild.PlatformTarget.MSIL;
+		public global::Cake.Core.Diagnostics.Verbosity BuildVerbosity { get; set; } = global::Cake.Core.Diagnostics.Verbosity.Quiet;
 
 		public string SubDirectory { get; set; }
 
