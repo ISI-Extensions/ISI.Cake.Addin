@@ -1,40 +1,35 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
-		<LangVersion>latest</LangVersion>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Deterministic>false</Deterministic>
-		<Platforms>AnyCPU;x64</Platforms>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Include="..\ISI.Cake.Addin.AssemblyInfo.cs" Link="Properties\ISI.Cake.Addin.AssemblyInfo.cs" />
-		<Compile Include="..\ISI.Cake.Addin.Version.cs" Link="Properties\ISI.Cake.Addin.Version.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="..\ISI.Cake.Addin.licenseheader" Link="ISI.Cake.Addin.licenseheader" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Cake.Common" Version="2.2.0" />
-	  <PackageReference Include="Cake.Core" Version="2.2.0" />
-	  <PackageReference Include="ISI.Extensions" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.Cake" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.Git" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8229.40801" />
-	  <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8229.40801" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-	  <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
-	  <PackageReference Include="NuGet.Frameworks" Version="6.2.1" />
-	  <PackageReference Include="NuGet.Versioning" Version="6.2.1" />
-	</ItemGroup>
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\ISI.Cake.Addin.AssemblyInfo.cs" Link="Properties\ISI.Cake.Addin.AssemblyInfo.cs" />
+    <Compile Include="..\ISI.Cake.Addin.Version.cs" Link="Properties\ISI.Cake.Addin.Version.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ISI.Cake.Addin.licenseheader" Link="ISI.Cake.Addin.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Cake.Common" Version="2.2.0" />
+    <PackageReference Include="Cake.Core" Version="2.2.0" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.Cake" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8236.34098" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8236.34098" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
+    <PackageReference Include="NuGet.Frameworks" Version="6.2.1" />
+    <PackageReference Include="NuGet.Versioning" Version="6.2.1" />
+  </ItemGroup>
 </Project>
