@@ -16,17 +16,17 @@
   <ItemGroup>
     <PackageReference Include="Cake.Common" Version="2.2.0" />
     <PackageReference Include="Cake.Core" Version="2.2.0" />
-    <PackageReference Include="ISI.Extensions" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.Cake" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8253.23932" />
-    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8253.23932" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.Cake" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8255.28487" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8255.28487" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
     <PackageReference Include="NuGet.Frameworks" Version="6.2.1" />

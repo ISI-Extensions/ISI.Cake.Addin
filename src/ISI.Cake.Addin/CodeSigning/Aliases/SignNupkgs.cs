@@ -53,6 +53,7 @@ namespace ISI.Cake.Addin.CodeSigning
 					CertificateFingerprint = request.CertificateFingerprint,
 					DigestAlgorithm = request.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
 					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
+					RunAsync = request.RunAsync,
 					Verbosity = request.Verbosity.ToCodeSigningVerbosity(),
 				});
 			}
@@ -67,6 +68,7 @@ namespace ISI.Cake.Addin.CodeSigning
 					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
+					RunAsync = request.RunAsync,
 					Verbosity = request.Verbosity.ToRemoteCodeSigningVerbosity(),
 				});
 			}

@@ -48,6 +48,8 @@ namespace ISI.Cake.Addin.CodeSigning
 		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
 
 		public bool OverwriteAnyExistingSignature { get; set; } = false;
+		
+		public bool RunAsync { get; set; } = false;
 
 		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
 	}

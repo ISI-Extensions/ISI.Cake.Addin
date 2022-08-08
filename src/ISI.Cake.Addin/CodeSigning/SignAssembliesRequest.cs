@@ -49,6 +49,8 @@ namespace ISI.Cake.Addin.CodeSigning
 
 		public bool OverwriteAnyExistingSignature { get; set; } = false;
 
+		public bool RunAsync { get; set; } = false;
+
 		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
 	}
 }
