@@ -82,18 +82,16 @@ Task("Sign")
 			SignAssemblies(new ISI.Cake.Addin.CodeSigning.SignAssembliesRequest()
 			{
 				AssemblyPaths = files,
-				RemoteCodeSigningServiceUri = GetNullableUri(settings.CodeSigning.RemoteCodeSigningServiceUrl),
-				RemoteCodeSigningServicePassword = settings.CodeSigning.RemoteCodeSigningServicePassword,
 				CodeSigningCertificateTokenCertificateFileName = settings.CodeSigning.Token.CertificateFileName,
 				CodeSigningCertificateTokenCryptographicProvider = settings.CodeSigning.Token.CryptographicProvider,
 				CodeSigningCertificateTokenContainerName = settings.CodeSigning.Token.ContainerName,
 				CodeSigningCertificateTokenPassword = settings.CodeSigning.Token.Password,
 				TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-				TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+				TimeStampDigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.TimeStampDigestAlgorithm),
 				CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
 				CertificatePassword = settings.CodeSigning.CertificatePassword,
 				CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
-				DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+				DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.CodeDigestAlgorithm),
 				RunAsync = settings.CodeSigning.RunAsync,
 			});
 		}
@@ -151,18 +149,16 @@ Task("Nuget")
 				SignNupkgs(new ISI.Cake.Addin.CodeSigning.SignNupkgsRequest()
 				{
 					NupkgPaths = nupgkFiles,
-					RemoteCodeSigningServiceUri = GetNullableUri(settings.CodeSigning.RemoteCodeSigningServiceUrl),
-					RemoteCodeSigningServicePassword = settings.CodeSigning.RemoteCodeSigningServicePassword,
 					CodeSigningCertificateTokenCertificateFileName = settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = settings.CodeSigning.Token.ContainerName,
 					CodeSigningCertificateTokenPassword = settings.CodeSigning.Token.Password,
 					TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-					TimeStampDigestAlgorithm = SignToolDigestAlgorithm.Sha256,
-					CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
+					TimeStampDigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.TimeStampDigestAlgorithm),
 					CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
 					CertificatePassword = settings.CodeSigning.CertificatePassword,
-					DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+					CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
+					DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.CodeDigestAlgorithm),
 					RunAsync = settings.CodeSigning.RunAsync,
 				});
 			}
