@@ -26,11 +26,33 @@ namespace ISI.Cake.Addin.CodeSigning
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static SignAssembliesResponse SignAssemblies(this global::Cake.Core.ICakeContext cakeContext, SignAssembliesRequest request)
+		public static SignAssembliesResponse SignAssemblies(this global::Cake.Core.ICakeContext cakeContext, ISignAssembliesRequest request)
 		{
 			var response = new SignAssembliesResponse();
 
-			if (request.RemoteCodeSigningServiceUri == null)
+			var signAssembliesRequest = request as SignAssembliesRequest;
+
+			if (request is SignAssembliesUsingSettingsRequest signAssembliesUsingSettingsRequest)
+			{
+				signAssembliesRequest = new SignAssembliesRequest()
+				{
+					AssemblyPaths = signAssembliesUsingSettingsRequest.AssemblyPaths,
+					OutputDirectory = signAssembliesUsingSettingsRequest.OutputDirectory,
+					CodeSigningCertificateTokenCertificateFileName = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
+					CodeSigningCertificateTokenCryptographicProvider = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
+					CodeSigningCertificateTokenContainerName = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
+					CodeSigningCertificateTokenPassword = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.Password,
+					TimeStampUri = cakeContext.GetNullableUri(signAssembliesUsingSettingsRequest.Settings.CodeSigning.TimeStampUrl),
+					TimeStampDigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signAssembliesUsingSettingsRequest.Settings.CodeSigning.TimeStampDigestAlgorithm),
+					CertificatePath = cakeContext.GetNullableFile(signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificateFileName),
+					CertificatePassword = signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificatePassword,
+					CertificateFingerprint = signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificateFingerprint,
+					DigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signAssembliesUsingSettingsRequest.Settings.CodeSigning.DigestAlgorithm),
+					RunAsync = signAssembliesUsingSettingsRequest.Settings.CodeSigning.RunAsync,
+				};
+			}
+
+			if (signAssembliesRequest.RemoteCodeSigningServiceUri == null)
 			{
 				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
 
@@ -38,20 +60,20 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					AssemblyFullNames = request.AssemblyPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
-					CodeSigningCertificateTokenCertificateFileName = request.CodeSigningCertificateTokenCertificateFileName,
-					CodeSigningCertificateTokenCryptographicProvider = request.CodeSigningCertificateTokenCryptographicProvider,
-					CodeSigningCertificateTokenContainerName = request.CodeSigningCertificateTokenContainerName,
-					CodeSigningCertificateTokenPassword = request.CodeSigningCertificateTokenPassword,
-					TimeStampUri = request.TimeStampUri,
-					TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
-					CertificateFileName = request.CertificatePath?.FullPath,
-					CertificatePassword = request.CertificatePassword,
-					CertificateSubjectName = request.CertificateSubjectName,
-					CertificateFingerprint = request.CertificateFingerprint,
-					DigestAlgorithm = request.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
-					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-					RunAsync = request.RunAsync,
-					Verbosity = request.Verbosity.ToCodeSigningVerbosity(),
+					CodeSigningCertificateTokenCertificateFileName = signAssembliesRequest.CodeSigningCertificateTokenCertificateFileName,
+					CodeSigningCertificateTokenCryptographicProvider = signAssembliesRequest.CodeSigningCertificateTokenCryptographicProvider,
+					CodeSigningCertificateTokenContainerName = signAssembliesRequest.CodeSigningCertificateTokenContainerName,
+					CodeSigningCertificateTokenPassword = signAssembliesRequest.CodeSigningCertificateTokenPassword,
+					TimeStampUri = signAssembliesRequest.TimeStampUri,
+					TimeStampDigestAlgorithm = signAssembliesRequest.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					CertificateFileName = signAssembliesRequest.CertificatePath?.FullPath,
+					CertificatePassword = signAssembliesRequest.CertificatePassword,
+					CertificateSubjectName = signAssembliesRequest.CertificateSubjectName,
+					CertificateFingerprint = signAssembliesRequest.CertificateFingerprint,
+					DigestAlgorithm = signAssembliesRequest.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					OverwriteAnyExistingSignature = signAssembliesRequest.OverwriteAnyExistingSignature,
+					RunAsync = signAssembliesRequest.RunAsync,
+					Verbosity = signAssembliesRequest.Verbosity.ToCodeSigningVerbosity(),
 				});
 			}
 			else
@@ -60,13 +82,13 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				remoteCodeSigningApi.SignAssemblies(new ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.SignAssembliesRequest()
 				{
-					RemoteCodeSigningServiceUrl = request.RemoteCodeSigningServiceUri.ToString(),
-					RemoteCodeSigningServicePassword = request.RemoteCodeSigningServicePassword,
+					RemoteCodeSigningServiceUrl = signAssembliesRequest.RemoteCodeSigningServiceUri.ToString(),
+					RemoteCodeSigningServicePassword = signAssembliesRequest.RemoteCodeSigningServicePassword,
 					AssemblyFullNames = request.AssemblyPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
-					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-					RunAsync = request.RunAsync,
-					Verbosity = request.Verbosity.ToRemoteCodeSigningVerbosity(),
+					OverwriteAnyExistingSignature = signAssembliesRequest.OverwriteAnyExistingSignature,
+					RunAsync = signAssembliesRequest.RunAsync,
+					Verbosity = signAssembliesRequest.Verbosity.ToRemoteCodeSigningVerbosity(),
 				});
 			}
 

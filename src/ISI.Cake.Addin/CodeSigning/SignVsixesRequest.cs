@@ -21,7 +21,14 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
-	public partial class SignVsixesRequest
+	public interface ISignVsixesRequest
+	{
+		global::Cake.Core.IO.FilePathCollection VsixPaths { get; }
+
+		global::Cake.Core.IO.DirectoryPath OutputDirectory { get; }
+	}
+
+	public class SignVsixesRequest : ISignVsixesRequest
 	{
 		public global::Cake.Core.IO.FilePathCollection VsixPaths { get; set; }
 
@@ -52,5 +59,14 @@ namespace ISI.Cake.Addin.CodeSigning
 		public bool RunAsync { get; set; } = false;
 
 		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
+	}
+
+	public class SignVsixesUsingSettingsRequest : ISignVsixesRequest
+	{
+		public global::Cake.Core.IO.FilePathCollection VsixPaths { get; set; }
+
+		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

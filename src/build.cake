@@ -91,7 +91,7 @@ Task("Sign")
 				CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
 				CertificatePassword = settings.CodeSigning.CertificatePassword,
 				CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
-				DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.CodeDigestAlgorithm),
+				DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.DigestAlgorithm),
 				RunAsync = settings.CodeSigning.RunAsync,
 			});
 		}
@@ -158,7 +158,7 @@ Task("Nuget")
 					CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
 					CertificatePassword = settings.CodeSigning.CertificatePassword,
 					CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
-					DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.CodeDigestAlgorithm),
+					DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.DigestAlgorithm),
 					RunAsync = settings.CodeSigning.RunAsync,
 				});
 			}

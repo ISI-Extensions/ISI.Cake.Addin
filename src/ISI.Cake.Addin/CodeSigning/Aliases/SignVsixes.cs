@@ -26,11 +26,33 @@ namespace ISI.Cake.Addin.CodeSigning
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static SignVsixesResponse SignVsixes(this global::Cake.Core.ICakeContext cakeContext, SignVsixesRequest request)
+		public static SignVsixesResponse SignVsixes(this global::Cake.Core.ICakeContext cakeContext, ISignVsixesRequest request)
 		{
 			var response = new SignVsixesResponse();
 
-			if (request.RemoteCodeSigningServiceUri == null)
+			var signVsixesRequest = request as SignVsixesRequest;
+
+			if (request is SignVsixesUsingSettingsRequest signVsixesUsingSettingsRequest)
+			{
+				signVsixesRequest = new SignVsixesRequest()
+				{
+					VsixPaths = signVsixesUsingSettingsRequest.VsixPaths,
+					OutputDirectory = signVsixesUsingSettingsRequest.OutputDirectory,
+					CodeSigningCertificateTokenCertificateFileName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
+					CodeSigningCertificateTokenCryptographicProvider = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
+					CodeSigningCertificateTokenContainerName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
+					CodeSigningCertificateTokenPassword = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.Password,
+					TimeStampUri = cakeContext.GetNullableUri(signVsixesUsingSettingsRequest.Settings.CodeSigning.TimeStampUrl),
+					TimeStampDigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signVsixesUsingSettingsRequest.Settings.CodeSigning.TimeStampDigestAlgorithm),
+					CertificatePath = cakeContext.GetNullableFile(signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificateFileName),
+					CertificatePassword = signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificatePassword,
+					CertificateFingerprint = signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificateFingerprint,
+					DigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signVsixesUsingSettingsRequest.Settings.CodeSigning.DigestAlgorithm),
+					RunAsync = signVsixesUsingSettingsRequest.Settings.CodeSigning.RunAsync,
+				};
+			}
+
+			if (signVsixesRequest.RemoteCodeSigningServiceUri == null)
 			{
 				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
 
@@ -38,22 +60,22 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
-					CodeSigningCertificateTokenCertificateFileName = request.CodeSigningCertificateTokenCertificateFileName,
-					CodeSigningCertificateTokenCryptographicProvider = request.CodeSigningCertificateTokenCryptographicProvider,
-					CodeSigningCertificateTokenContainerName = request.CodeSigningCertificateTokenContainerName,
-					CodeSigningCertificateTokenPassword = request.CodeSigningCertificateTokenPassword,
-					TimeStampUri = request.TimeStampUri,
-					TimeStampDigestAlgorithm = request.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
-					CertificateFileName = request.CertificatePath?.FullPath,
-					CertificatePassword = request.CertificatePassword,
-					CertificateStoreName = request.CertificateStoreName,
-					CertificateStoreLocation = request.CertificateStoreLocation,
-					CertificateSubjectName = request.CertificateSubjectName,
-					CertificateFingerprint = request.CertificateFingerprint,
-					DigestAlgorithm = request.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
-					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-					RunAsync = request.RunAsync,
-					Verbosity = request.Verbosity.ToCodeSigningVerbosity(),
+					CodeSigningCertificateTokenCertificateFileName = signVsixesRequest.CodeSigningCertificateTokenCertificateFileName,
+					CodeSigningCertificateTokenCryptographicProvider = signVsixesRequest.CodeSigningCertificateTokenCryptographicProvider,
+					CodeSigningCertificateTokenContainerName = signVsixesRequest.CodeSigningCertificateTokenContainerName,
+					CodeSigningCertificateTokenPassword = signVsixesRequest.CodeSigningCertificateTokenPassword,
+					TimeStampUri = signVsixesRequest.TimeStampUri,
+					TimeStampDigestAlgorithm = signVsixesRequest.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					CertificateFileName = signVsixesRequest.CertificatePath?.FullPath,
+					CertificatePassword = signVsixesRequest.CertificatePassword,
+					CertificateStoreName = signVsixesRequest.CertificateStoreName,
+					CertificateStoreLocation = signVsixesRequest.CertificateStoreLocation,
+					CertificateSubjectName = signVsixesRequest.CertificateSubjectName,
+					CertificateFingerprint = signVsixesRequest.CertificateFingerprint,
+					DigestAlgorithm = signVsixesRequest.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					OverwriteAnyExistingSignature = signVsixesRequest.OverwriteAnyExistingSignature,
+					RunAsync = signVsixesRequest.RunAsync,
+					Verbosity = signVsixesRequest.Verbosity.ToCodeSigningVerbosity(),
 				});
 			}
 			else
@@ -62,13 +84,13 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				remoteCodeSigningApi.SignVsixes(new ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.SignVsixesRequest()
 				{
-					RemoteCodeSigningServiceUrl = request.RemoteCodeSigningServiceUri.ToString(),
-					RemoteCodeSigningServicePassword = request.RemoteCodeSigningServicePassword,
+					RemoteCodeSigningServiceUrl = signVsixesRequest.RemoteCodeSigningServiceUri.ToString(),
+					RemoteCodeSigningServicePassword = signVsixesRequest.RemoteCodeSigningServicePassword,
 					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
-					OverwriteAnyExistingSignature = request.OverwriteAnyExistingSignature,
-					RunAsync = request.RunAsync,
-					Verbosity = request.Verbosity.ToRemoteCodeSigningVerbosity(),
+					OverwriteAnyExistingSignature = signVsixesRequest.OverwriteAnyExistingSignature,
+					RunAsync = signVsixesRequest.RunAsync,
+					Verbosity = signVsixesRequest.Verbosity.ToRemoteCodeSigningVerbosity(),
 				});
 			}
 
