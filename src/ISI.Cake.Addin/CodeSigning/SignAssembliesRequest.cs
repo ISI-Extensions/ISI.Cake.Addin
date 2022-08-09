@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public string CodeSigningCertificateTokenPassword { get; set; }
 
 		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+		public CodeSigningDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
 
 		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
 		public string CertificatePassword { get; set; }
@@ -45,7 +45,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public string CertificateSubjectName { get; set; }
 		public string CertificateFingerprint { get; set; }
 
-		public global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm DigestAlgorithm { get; set; } = global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256;
+		public CodeSigningDigestAlgorithm DigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
 
 		public bool OverwriteAnyExistingSignature { get; set; } = false;
 

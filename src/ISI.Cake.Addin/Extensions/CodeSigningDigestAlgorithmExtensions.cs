@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
@@ -19,38 +19,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.CodeSigning
+namespace ISI.Cake.Addin.Extensions
 {
-	public partial class SignNupkgsRequest
+	public static class CodeSigningDigestAlgorithmExtensions
 	{
-		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
+		public static ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm ToCodeSigningDigestAlgorithm(this ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm codeSigningDigestAlgorithm)
+		{
+			switch (codeSigningDigestAlgorithm)
+			{
+				case ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm.Sha1:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha1;
 
-		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
+				case ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm.Sha256:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha256;
 
-		public Uri RemoteCodeSigningServiceUri { get; set; }
-		public string RemoteCodeSigningServicePassword { get; set; }
+				case ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm.Sha384:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha384;
 
-		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
-		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }
-		public string CodeSigningCertificateTokenContainerName { get; set; }
-		public string CodeSigningCertificateTokenPassword { get; set; }
+				case ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm.Sha512:
+					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha512;
 
-		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
-		public CodeSigningDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
-
-		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
-		public string CertificatePassword { get; set; }
-		public string CertificateStoreName { get; set; } = "My";
-		public string CertificateStoreLocation { get; set; } = "CurrentUser";
-		public string CertificateSubjectName { get; set; }
-		public string CertificateFingerprint { get; set; }
-
-		public CodeSigningDigestAlgorithm DigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
-
-		public bool OverwriteAnyExistingSignature { get; set; } = false;
-		
-		public bool RunAsync { get; set; } = false;
-
-		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(codeSigningDigestAlgorithm), codeSigningDigestAlgorithm, null);
+			}
+		}
 	}
 }

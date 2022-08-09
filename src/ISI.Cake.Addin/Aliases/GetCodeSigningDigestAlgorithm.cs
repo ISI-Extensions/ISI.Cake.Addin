@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,26 +15,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Cake.Core.Diagnostics;
+using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Extensions
+namespace ISI.Cake.Addin
 {
-	public static class SignToolDigestAlgorithmExtensions
+	public static partial class Aliases
 	{
-		public static ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm ToCodeSigningDigestAlgorithm(this global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm signToolDigestAlgorithm)
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm GetCodeSigningDigestAlgorithm(this global::Cake.Core.ICakeContext cakeContext, string digestAlgorithm)
 		{
-			switch (signToolDigestAlgorithm)
-			{
-				case global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha1:
-					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha1;
-
-				case global::Cake.Common.Tools.SignTool.SignToolDigestAlgorithm.Sha256:
-					return ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningDigestAlgorithm.Sha256;
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(signToolDigestAlgorithm), signToolDigestAlgorithm, null);
-			}
+			return ISI.Extensions.Enum<ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm>.Parse(digestAlgorithm, ISI.Cake.Addin.CodeSigning.CodeSigningDigestAlgorithm.Sha256);
 		}
 	}
 }

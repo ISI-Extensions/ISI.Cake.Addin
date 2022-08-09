@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,42 +15,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
-	public partial class SignNupkgsRequest
+	public enum CodeSigningDigestAlgorithm
 	{
-		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
-
-		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
-
-		public Uri RemoteCodeSigningServiceUri { get; set; }
-		public string RemoteCodeSigningServicePassword { get; set; }
-
-		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
-		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }
-		public string CodeSigningCertificateTokenContainerName { get; set; }
-		public string CodeSigningCertificateTokenPassword { get; set; }
-
-		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
-		public CodeSigningDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
-
-		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
-		public string CertificatePassword { get; set; }
-		public string CertificateStoreName { get; set; } = "My";
-		public string CertificateStoreLocation { get; set; } = "CurrentUser";
-		public string CertificateSubjectName { get; set; }
-		public string CertificateFingerprint { get; set; }
-
-		public CodeSigningDigestAlgorithm DigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
-
-		public bool OverwriteAnyExistingSignature { get; set; } = false;
-		
-		public bool RunAsync { get; set; } = false;
-
-		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
+		Sha1,
+		Sha256,
+		Sha384,
+		Sha512,
 	}
 }

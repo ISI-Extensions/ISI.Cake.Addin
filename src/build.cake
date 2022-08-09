@@ -94,6 +94,7 @@ Task("Sign")
 				CertificatePassword = settings.CodeSigning.CertificatePassword,
 				CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
 				DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+				RunAsync = settings.CodeSigning.RunAsync,
 			});
 		}
 	});
@@ -162,6 +163,7 @@ Task("Nuget")
 					CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
 					CertificatePassword = settings.CodeSigning.CertificatePassword,
 					DigestAlgorithm = SignToolDigestAlgorithm.Sha256,
+					RunAsync = settings.CodeSigning.RunAsync,
 				});
 			}
 
