@@ -79,20 +79,10 @@ Task("Sign")
 		{
 			var files = GetFiles("./**/bin/" + configuration + "/**/ISI.Cake*.dll");
 
-			SignAssemblies(new ISI.Cake.Addin.CodeSigning.SignAssembliesRequest()
+			SignAssemblies(new ISI.Cake.Addin.CodeSigning.SignAssembliesUsingSettingsRequest()
 			{
 				AssemblyPaths = files,
-				CodeSigningCertificateTokenCertificateFileName = settings.CodeSigning.Token.CertificateFileName,
-				CodeSigningCertificateTokenCryptographicProvider = settings.CodeSigning.Token.CryptographicProvider,
-				CodeSigningCertificateTokenContainerName = settings.CodeSigning.Token.ContainerName,
-				CodeSigningCertificateTokenPassword = settings.CodeSigning.Token.Password,
-				TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-				TimeStampDigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.TimeStampDigestAlgorithm),
-				CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
-				CertificatePassword = settings.CodeSigning.CertificatePassword,
-				CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
-				DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.DigestAlgorithm),
-				RunAsync = settings.CodeSigning.RunAsync,
+				Settings = settings,
 			});
 		}
 	});
@@ -149,21 +139,11 @@ Task("Nuget")
 				SignNupkgs(new ISI.Cake.Addin.CodeSigning.SignNupkgsRequest()
 				{
 					NupkgPaths = nupgkFiles,
-					CodeSigningCertificateTokenCertificateFileName = settings.CodeSigning.Token.CertificateFileName,
-					CodeSigningCertificateTokenCryptographicProvider = settings.CodeSigning.Token.CryptographicProvider,
-					CodeSigningCertificateTokenContainerName = settings.CodeSigning.Token.ContainerName,
-					CodeSigningCertificateTokenPassword = settings.CodeSigning.Token.Password,
-					TimeStampUri = GetNullableUri(settings.CodeSigning.TimeStampUrl),
-					TimeStampDigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.TimeStampDigestAlgorithm),
-					CertificatePath = GetNullableFile(settings.CodeSigning.CertificateFileName),
-					CertificatePassword = settings.CodeSigning.CertificatePassword,
-					CertificateFingerprint = settings.CodeSigning.CertificateFingerprint,
-					DigestAlgorithm = GetCodeSigningDigestAlgorithm(settings.CodeSigning.DigestAlgorithm),
-					RunAsync = settings.CodeSigning.RunAsync,
+					Settings = settings,
 				});
 			}
 
-			NupkgPush(new ISI.Cake.Addin.Nuget.NupkgPushRequest()
+			NupkgPush(new ISI.Cake.Addin.Nuget.SignNupkgsUsingSettingsRequest()
 			{
 				NupkgPaths = nupgkFiles,
 				ApiKey = settings.Nuget.ApiKey,
