@@ -24,13 +24,13 @@ namespace ISI.Cake.Addin.PackageComponents
 	public partial class PackageComponentsRequest
 	{
 		public string Configuration { get; set; }
-		public global::Cake.Common.Tools.MSBuild.MSBuildVersion BuildVersion { get; set; } = global::Cake.Common.Tools.MSBuild.MSBuildVersion.MSBuild16;
+		public global::Cake.Common.Tools.MSBuild.MSBuildVersion? BuildVersion { get; set; }
 		public global::Cake.Common.Tools.MSBuild.MSBuildPlatform BuildPlatform { get; set; } = global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic;
 		public global::Cake.Common.Tools.MSBuild.PlatformTarget PlatformTarget { get; set; } = global::Cake.Common.Tools.MSBuild.PlatformTarget.MSIL;
 		public global::Cake.Core.Diagnostics.Verbosity BuildVerbosity { get; set; } = global::Cake.Core.Diagnostics.Verbosity.Quiet;
 
+		public string Solution { get; set; }
 		public string SubDirectory { get; set; }
-
 		public IPackageComponent[] PackageComponents { get; set; }
 
 		public string PackageFullName { get; set; }

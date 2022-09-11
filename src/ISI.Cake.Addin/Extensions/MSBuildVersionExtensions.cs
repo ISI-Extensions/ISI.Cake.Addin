@@ -21,6 +21,16 @@ namespace ISI.Cake.Addin.Extensions
 {
 	public static class MSBuildVersionExtensions
 	{
+		public static ISI.Extensions.VisualStudio.MSBuildVersion ToMSBuildVersion(this global::Cake.Common.Tools.MSBuild.MSBuildVersion? msBuildVersion)
+		{
+			if (msBuildVersion.HasValue)
+			{
+				return msBuildVersion.Value.ToMSBuildVersion();
+			}
+
+			return ISI.Extensions.VisualStudio.MSBuildVersion.Automatic;
+		}
+
 		public static ISI.Extensions.VisualStudio.MSBuildVersion ToMSBuildVersion(this global::Cake.Common.Tools.MSBuild.MSBuildVersion msBuildVersion)
 		{
 			switch (msBuildVersion)

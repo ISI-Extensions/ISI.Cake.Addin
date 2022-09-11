@@ -12,7 +12,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using Cake.Common.IO;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
@@ -40,7 +40,8 @@ namespace ISI.Cake.Addin.PackageComponents
 
 			var logger = new CakeContextLogger(cakeContext);
 
-			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(logger, new ISI.Extensions.Nuget.NugetApi(logger))), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(logger);
+			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, nugetApi, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(logger, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
 
 			packagerApi.PackageComponents(new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentsRequest()
 			{
@@ -49,6 +50,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				BuildPlatform = request.BuildPlatform.ToMSBuildPlatform(),
 				PlatformTarget = request.PlatformTarget.ToBuildPlatformTarget(),
 				BuildVerbosity = request.BuildVerbosity.ToMSBuildVerbosity(),
+				Solution = request.Solution,
 				SubDirectory = request.SubDirectory,
 				PackageComponents = request.PackageComponents.ToNullCheckedArray(packageComponent =>
 				{
