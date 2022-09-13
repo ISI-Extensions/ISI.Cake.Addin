@@ -26,8 +26,19 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string ServicesManagerUrl { get; set; }
 		public string Password { get; set; }
 
+		public string ArtifactVersionDateTimeStampUrl { get; set; }
+		public string ArtifactDownloadUrl { get; set; }
+
 		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
+
+		public UpdateServicesManagerRequest()
+		{
+			var updateServicesManagerRequest = new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.UpdateServicesManagerRequest();
+
+			ArtifactVersionDateTimeStampUrl = updateServicesManagerRequest.ArtifactVersionDateTimeStampUrl;
+			ArtifactDownloadUrl = updateServicesManagerRequest.ArtifactDownloadUrl;
+		}
 	}
 }

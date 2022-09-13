@@ -37,6 +37,9 @@ namespace ISI.Cake.Addin.DeploymentManager
 			{
 				ServicesManagerUrl = request.ServicesManagerUrl,
 				Password = request.Password,
+
+				ArtifactVersionDateTimeStampUrl = request.ArtifactVersionDateTimeStampUrl,
+				ArtifactDownloadUrl = request.ArtifactDownloadUrl,
 			});
 
 			response.CurrentVersion = apiResponse.CurrentVersion;
