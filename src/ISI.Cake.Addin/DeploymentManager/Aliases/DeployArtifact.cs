@@ -34,7 +34,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
-			var toVersion = new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.DateTimeStampVersion(request.ToDateTimeStamp).Version.ToString();
+			var toVersion = new ISI.Extensions.Scm.DateTimeStampVersion(request.ToDateTimeStamp).Version.ToString();
 			if (string.IsNullOrWhiteSpace(toVersion))
 			{
 				toVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
