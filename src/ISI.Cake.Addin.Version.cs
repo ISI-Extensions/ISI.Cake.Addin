@@ -5,5 +5,5 @@
 //------------------------------------------------------------------------------
 using System.Reflection;
 
-[assembly: AssemblyVersion("2022.1.8291.3505")]
+[assembly: AssemblyVersion("2022.1.*")]
 
