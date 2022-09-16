@@ -34,27 +34,34 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
-			var toVersion = new ISI.Extensions.Scm.DateTimeStampVersion(request.ToDateTimeStamp).Version.ToString();
-			if (string.IsNullOrWhiteSpace(toVersion))
+			var versionIsAlreadyDeployed = false;
+			var toVersion = string.Empty;
+
+			if (!string.IsNullOrWhiteSpace(request.ArtifactDateTimeStampVersionUrl))
 			{
-				toVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+				toVersion = new ISI.Extensions.Scm.DateTimeStampVersion(request.ToDateTimeStamp)?.Version?.ToString() ?? string.Empty;
+
+				if (string.IsNullOrWhiteSpace(toVersion))
+				{
+					toVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+					{
+						BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
+						AuthenticationToken = request.AuthenticationToken,
+						ArtifactName = request.ArtifactName,
+						Environment = request.FromEnvironment,
+					})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
+				}
+
+				var currentVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 				{
 					BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 					AuthenticationToken = request.AuthenticationToken,
 					ArtifactName = request.ArtifactName,
-					Environment = request.FromEnvironment,
+					Environment = request.ToEnvironment,
 				})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
+
+				versionIsAlreadyDeployed = !string.IsNullOrWhiteSpace(toVersion) && !string.IsNullOrWhiteSpace(currentVersion) && string.Equals(toVersion, currentVersion, StringComparison.InvariantCultureIgnoreCase);
 			}
-
-			var currentVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
-			{
-				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
-				AuthenticationToken = request.AuthenticationToken,
-				ArtifactName = request.ArtifactName,
-				Environment = request.ToEnvironment,
-			})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
-
-			var versionIsAlreadyDeployed = string.Equals(toVersion, currentVersion, StringComparison.InvariantCultureIgnoreCase);
 
 			if (versionIsAlreadyDeployed)
 			{
