@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using ISI.Extensions.Telephony.Calls.VoiceCommands;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
@@ -33,6 +34,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
+
+			var applicationIsInUse = false;
 
 			var versionIsAlreadyDeployed = false;
 			var toVersion = string.Empty;
@@ -71,7 +74,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 			{
 				var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
 
-				response.Success = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
+				var deployArtifactResponse = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
 				{
 					ServicesManagerUrl = request.ServicesManagerUrl,
 					Password = request.Password,
@@ -84,6 +87,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 					FromEnvironment = request.FromEnvironment,
 					ToEnvironment = request.ToEnvironment,
 					ConfigurationKey = request.ConfigurationKey,
+					WaitForFileLocksMaxTimeOut = request.WaitForFileLocksMaxTimeOut,
 					Components = request.Components.ToNullCheckedArray(component =>
 					{
 						switch (component)
@@ -133,12 +137,22 @@ namespace ISI.Cake.Addin.DeploymentManager
 					}),
 					SetDeployedVersion = request.SetDeployedVersion,
 					RunAsync = request.RunAsync,
-				}).Success;
+				});
+
+				applicationIsInUse = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => deployComponentResponse.InUse);
+				versionIsAlreadyDeployed = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => deployComponentResponse.SameVersion);
+
+				response.Success = deployArtifactResponse.Success;
 			}
 
-			if (!response.Success && (!versionIsAlreadyDeployed || request.ThrowExceptionWhenVersionIsAlreadyDeployed))
+			if (applicationIsInUse && request.ThrowExceptionWhenComponentInUse)
 			{
-				throw new Exception("Deployment Failed");
+				throw new Exception("Deployment Failed, Application is in use");
+			}
+
+			if (versionIsAlreadyDeployed && request.ThrowExceptionWhenVersionIsAlreadyDeployed)
+			{
+				throw new Exception("Deployment Failed, Version is already Deployed");
 			}
 
 			return response;
