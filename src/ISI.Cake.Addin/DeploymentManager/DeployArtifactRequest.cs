@@ -38,8 +38,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public TimeSpan? WaitForFileLocksMaxTimeOut { get; set; }
 		public IEnumerable<IDeployComponent> Components { get; set; }
 		public bool SetDeployedVersion { get; set; } = true;
-		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = false;
-		public bool ThrowExceptionWhenComponentInUse { get; set; } = false;
+		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = true;
+		public bool ThrowExceptionWhenComponentInUse { get; set; } = true;
 		public bool RunAsync { get; set; } = true;
 
 		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
