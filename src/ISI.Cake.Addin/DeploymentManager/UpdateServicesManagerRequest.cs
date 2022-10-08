@@ -32,7 +32,6 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = false;
 		public bool ThrowExceptionWhenWouldNotStart { get; set; } = true;
-		public bool ThrowExceptionWhenNotSuccessful { get; set; } = true;
 
 		public string ArtifactDateTimeStampVersionUrl { get; set; }
 		public string ArtifactDownloadUrl { get; set; }
