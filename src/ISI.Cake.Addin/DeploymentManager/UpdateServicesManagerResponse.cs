@@ -27,5 +27,6 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string Log { get; set; }
 		public string NewVersion { get; set; }
 		public bool? SameVersion { get; set; }
+		public bool WouldNotStart { get; set; }
 	}
 }

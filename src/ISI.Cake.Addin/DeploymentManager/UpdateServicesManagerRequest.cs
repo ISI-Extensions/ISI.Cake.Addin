@@ -25,6 +25,14 @@ namespace ISI.Cake.Addin.DeploymentManager
 	{
 		public string ServicesManagerUrl { get; set; }
 		public string Password { get; set; }
+		
+		public int VerificationWaitInSeconds { get; set; } = 90;
+		public int VerificationMaxTries { get; set; } = 10;
+		public int VerificationExceptionSleepForInSeconds { get; set; } = 20;
+
+		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = false;
+		public bool ThrowExceptionWhenWouldNotStart { get; set; } = true;
+		public bool ThrowExceptionWhenNotSuccessful { get; set; } = true;
 
 		public string ArtifactDateTimeStampVersionUrl { get; set; }
 		public string ArtifactDownloadUrl { get; set; }

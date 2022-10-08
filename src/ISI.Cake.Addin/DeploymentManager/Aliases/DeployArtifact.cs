@@ -36,6 +36,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
 			var applicationIsInUse = false;
+			var wouldNotStart = false;
 
 			var versionIsAlreadyDeployed = false;
 			var toVersion = string.Empty;
@@ -140,6 +141,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 				});
 
 				applicationIsInUse = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => deployComponentResponse.InUse);
+				wouldNotStart = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => (deployComponentResponse is ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployWindowsServiceResponse deployWindowsServiceResponse) && deployWindowsServiceResponse.WouldNotStart);
 				versionIsAlreadyDeployed = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => deployComponentResponse.SameVersion);
 
 				response.Success = deployArtifactResponse.Success;
@@ -153,6 +155,16 @@ namespace ISI.Cake.Addin.DeploymentManager
 			if (versionIsAlreadyDeployed && request.ThrowExceptionWhenVersionIsAlreadyDeployed)
 			{
 				throw new Exception("Deployment Failed, Version is already Deployed");
+			}
+
+			if (wouldNotStart && request.ThrowExceptionWhenWouldNotStart)
+			{
+				throw new Exception("Deployment Failed, Would Not Start");
+			}
+
+			if (!response.Success && request.ThrowExceptionWhenNotSuccessful)
+			{
+				throw new Exception("Deployment Failed");
 			}
 
 			return response;

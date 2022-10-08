@@ -40,6 +40,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public bool SetDeployedVersion { get; set; } = true;
 		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = true;
 		public bool ThrowExceptionWhenComponentInUse { get; set; } = true;
+		public bool ThrowExceptionWhenWouldNotStart { get; set; } = true;
+		public bool ThrowExceptionWhenNotSuccessful { get; set; } = true;
 		public bool RunAsync { get; set; } = true;
 
 		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
