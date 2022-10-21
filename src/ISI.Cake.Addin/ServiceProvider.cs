@@ -60,6 +60,7 @@ namespace ISI.Cake.Addin
 					.AddSingleton<ISI.Extensions.Git.GitApi>()
 					.AddSingleton<ISI.Extensions.Scm.SourceControlClientApi>()
 					.AddSingleton<ISI.Extensions.Cake.CakeApi>()
+					.AddSingleton<ISI.Extensions.NAnt.NAntApi>()
 					.AddSingleton<ISI.Extensions.Scm.BuildScriptApi>()
 					.AddSingleton<ISI.Extensions.Nuget.NugetApi>()
 					.AddSingleton<ISI.Extensions.VisualStudio.SolutionApi>()

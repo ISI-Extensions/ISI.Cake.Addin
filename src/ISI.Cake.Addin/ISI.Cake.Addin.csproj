@@ -22,6 +22,7 @@
     <PackageReference Include="ISI.Extensions.Git" Version="10.0.8329.26412" />
     <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8329.26412" />
     <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8329.26412" />
+    <PackageReference Include="ISI.Extensions.NAnt" Version="10.0.8329.26412" />
     <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8329.26412" />
     <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8329.26412" />
     <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8329.26412" />
