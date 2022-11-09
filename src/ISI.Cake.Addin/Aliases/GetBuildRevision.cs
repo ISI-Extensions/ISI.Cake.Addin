@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin
 
 			var serialization = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Serialization.ISerialization>();
 
-			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, serialization, new ISI.Extensions.VisualStudio.VisualStudioSettings(serialization), new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
+			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, serialization, new ISI.Extensions.VisualStudio.VisualStudioSettings(serialization), new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.ProjectApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
 
 			return solutionApi.GetBuildRevision(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetBuildRevisionRequest()
 			{
