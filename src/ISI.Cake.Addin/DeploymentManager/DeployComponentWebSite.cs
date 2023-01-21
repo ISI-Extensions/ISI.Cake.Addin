@@ -21,6 +21,14 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public class DeployComponentWebSite : IDeployComponent
 	{
+		public string PauseComponentUrl { get; set; }
+		public string CheckComponentCanDeployStatusUrl { get; set; }
+		public TimeSpan? CheckComponentCanDeployStatusInterval { get; set; }
+		public TimeSpan? CheckComponentCanDeployStatusTimeout { get; set; }
+		public int? CheckComponentCanDeployStatusHttpStatus { get; set; }
+		public string CheckComponentCanDeployStatusJsonPath { get; set; }
+		public string CheckComponentCanDeployStatusJsonPathValue { get; set; }
+		public TimeSpan? WaitForFileLocksMaxTimeOut { get; set; }
 		public string PackageFolder { get; set; }
 		public string DeployToSubfolder { get; set; }
 		public IEnumerable<string> ExcludeFiles { get; set; }

@@ -88,24 +88,21 @@ namespace ISI.Cake.Addin.DeploymentManager
 					FromEnvironment = request.FromEnvironment,
 					ToEnvironment = request.ToEnvironment,
 					ConfigurationKey = request.ConfigurationKey,
-					WaitForFileLocksMaxTimeOut = request.WaitForFileLocksMaxTimeOut,
 					Components = request.Components.ToNullCheckedArray(component =>
 					{
 						switch (component)
 						{
-							case DeployComponent deployComponent:
-								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponent()
-								{
-									ComponentType = deployComponent.ComponentType,
-									PackageFolder = deployComponent.PackageFolder,
-									DeployToSubfolder = deployComponent.DeployToSubfolder,
-									ApplicationExe = deployComponent.ApplicationExe,
-									ExcludeFiles = deployComponent.ExcludeFiles,
-								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
-
 							case DeployComponentConsoleApplication deployComponentConsoleApplication:
 								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentConsoleApplication()
 								{
+									PauseComponentUrl = deployComponentConsoleApplication.PauseComponentUrl,
+									CheckComponentCanDeployStatusUrl = deployComponentConsoleApplication.CheckComponentCanDeployStatusUrl,
+									CheckComponentCanDeployStatusInterval = deployComponentConsoleApplication.CheckComponentCanDeployStatusInterval,
+									CheckComponentCanDeployStatusTimeout = deployComponentConsoleApplication.CheckComponentCanDeployStatusTimeout,
+									CheckComponentCanDeployStatusHttpStatus = deployComponentConsoleApplication.CheckComponentCanDeployStatusHttpStatus,
+									CheckComponentCanDeployStatusJsonPath = deployComponentConsoleApplication.CheckComponentCanDeployStatusJsonPath,
+									CheckComponentCanDeployStatusJsonPathValue = deployComponentConsoleApplication.CheckComponentCanDeployStatusJsonPathValue,
+									WaitForFileLocksMaxTimeOut = deployComponentConsoleApplication.WaitForFileLocksMaxTimeOut,
 									PackageFolder = deployComponentConsoleApplication.PackageFolder,
 									DeployToSubfolder = deployComponentConsoleApplication.DeployToSubfolder,
 									ConsoleApplicationExe = deployComponentConsoleApplication.ConsoleApplicationExe,
@@ -117,6 +114,14 @@ namespace ISI.Cake.Addin.DeploymentManager
 							case DeployComponentWebSite deployComponentWebSite:
 								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWebSite()
 								{
+									PauseComponentUrl = deployComponentWebSite.PauseComponentUrl,
+									CheckComponentCanDeployStatusUrl = deployComponentWebSite.CheckComponentCanDeployStatusUrl,
+									CheckComponentCanDeployStatusInterval = deployComponentWebSite.CheckComponentCanDeployStatusInterval,
+									CheckComponentCanDeployStatusTimeout = deployComponentWebSite.CheckComponentCanDeployStatusTimeout,
+									CheckComponentCanDeployStatusHttpStatus = deployComponentWebSite.CheckComponentCanDeployStatusHttpStatus,
+									CheckComponentCanDeployStatusJsonPath = deployComponentWebSite.CheckComponentCanDeployStatusJsonPath,
+									CheckComponentCanDeployStatusJsonPathValue = deployComponentWebSite.CheckComponentCanDeployStatusJsonPathValue,
+									WaitForFileLocksMaxTimeOut = deployComponentWebSite.WaitForFileLocksMaxTimeOut,
 									PackageFolder = deployComponentWebSite.PackageFolder,
 									DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
 									ExcludeFiles = deployComponentWebSite.ExcludeFiles,
@@ -125,6 +130,14 @@ namespace ISI.Cake.Addin.DeploymentManager
 							case DeployComponentWindowsService deployComponentWindowsService:
 								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWindowsService()
 								{
+									PauseComponentUrl = deployComponentWindowsService.PauseComponentUrl,
+									CheckComponentCanDeployStatusUrl = deployComponentWindowsService.CheckComponentCanDeployStatusUrl,
+									CheckComponentCanDeployStatusInterval = deployComponentWindowsService.CheckComponentCanDeployStatusInterval,
+									CheckComponentCanDeployStatusTimeout = deployComponentWindowsService.CheckComponentCanDeployStatusTimeout,
+									CheckComponentCanDeployStatusHttpStatus = deployComponentWindowsService.CheckComponentCanDeployStatusHttpStatus,
+									CheckComponentCanDeployStatusJsonPath = deployComponentWindowsService.CheckComponentCanDeployStatusJsonPath,
+									CheckComponentCanDeployStatusJsonPathValue = deployComponentWindowsService.CheckComponentCanDeployStatusJsonPathValue,
+									WaitForFileLocksMaxTimeOut = deployComponentWindowsService.WaitForFileLocksMaxTimeOut,
 									PackageFolder = deployComponentWindowsService.PackageFolder,
 									DeployToSubfolder = deployComponentWindowsService.DeployToSubfolder,
 									WindowsServiceExe = deployComponentWindowsService.WindowsServiceExe,
