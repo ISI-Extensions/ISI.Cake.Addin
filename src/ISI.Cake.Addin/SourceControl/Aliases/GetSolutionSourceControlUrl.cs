@@ -26,27 +26,18 @@ namespace ISI.Cake.Addin.SourceControl
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.Solution.SolutionParserResult solution)
-		{
-			var solutionDirectory = cakeContext.Directory("./").Path.MakeAbsolute(cakeContext.Environment);
-
-			return GetSolutionSourceControlUrl(cakeContext, solutionDirectory);
-		}
-
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath solutionFile)
-		{
-			return GetSolutionSourceControlUrl(cakeContext, solutionFile.GetDirectory());
-		}
-
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.DirectoryPath solutionDirectory)
+		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, string solutionFullName = null)
 		{
 			var sourceControlClientApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
+			
+			if (string.IsNullOrWhiteSpace(solutionFullName))
+			{
+				solutionFullName = cakeContext.Environment.WorkingDirectory.FullPath;
+			}
 
 			var getRootDirectoryResponse = sourceControlClientApi.GetRootDirectory(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.GetRootDirectoryRequest()
 			{
-				FullName = solutionDirectory.FullPath,
+				FullName = solutionFullName,
 			});
 
 			return getRootDirectoryResponse?.Uri?.ToString();

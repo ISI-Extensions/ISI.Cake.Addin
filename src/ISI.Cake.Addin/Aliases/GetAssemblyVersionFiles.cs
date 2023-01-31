@@ -31,20 +31,11 @@ namespace ISI.Cake.Addin
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.Solution.SolutionParserResult solution, string rootAssemblyVersionKey, string buildRevision)
 		{
-			var solutionDirectory = cakeContext.Directory("./").Path.MakeAbsolute(cakeContext.Environment);
-
-			return GetAssemblyVersionFiles(cakeContext, solutionDirectory, rootAssemblyVersionKey, buildRevision);
+			return GetAssemblyVersionFiles(cakeContext, rootAssemblyVersionKey, buildRevision);
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath solutionFile, string rootAssemblyVersionKey, string buildRevision)
-		{
-
-			return GetAssemblyVersionFiles(cakeContext, solutionFile.GetDirectory(), rootAssemblyVersionKey, buildRevision);
-		}
-
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.DirectoryPath solutionDirectory, string rootAssemblyVersionKey, string buildRevision)
+		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, string rootAssemblyVersionKey, string buildRevision)
 		{
 			ServiceProvider.Initialize();
 
@@ -56,7 +47,7 @@ namespace ISI.Cake.Addin
 
 			return solutionApi.GetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetAssemblyVersionFilesRequest()
 			{
-				Solution = solutionDirectory.FullPath,
+				Solution = cakeContext.Environment.WorkingDirectory.FullPath,
 				RootAssemblyVersionKey = rootAssemblyVersionKey,
 				BuildRevision = buildRevision,
 			}).AssemblyVersionFiles;
