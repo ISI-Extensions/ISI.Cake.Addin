@@ -29,9 +29,9 @@ namespace ISI.Cake.Addin.SourceControl
 		{
 			var response = new CommitWorkingCopyResponse();
 
-			var svnApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
+			var sourceControlClientApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
 
-			response.Success = svnApi.CommitWorkingCopy(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitWorkingCopyRequest()
+			response.Success = sourceControlClientApi.CommitWorkingCopy(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitWorkingCopyRequest()
 			{
 				FullName = request.FullName,
 				LogMessage = request.LogMessage,

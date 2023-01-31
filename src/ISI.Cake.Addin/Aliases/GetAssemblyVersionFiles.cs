@@ -31,6 +31,21 @@ namespace ISI.Cake.Addin
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.Solution.SolutionParserResult solution, string rootAssemblyVersionKey, string buildRevision)
 		{
+			var solutionDirectory = cakeContext.Directory("./").Path.MakeAbsolute(cakeContext.Environment);
+
+			return GetAssemblyVersionFiles(cakeContext, solutionDirectory, rootAssemblyVersionKey, buildRevision);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath solutionFile, string rootAssemblyVersionKey, string buildRevision)
+		{
+
+			return GetAssemblyVersionFiles(cakeContext, solutionFile.GetDirectory(), rootAssemblyVersionKey, buildRevision);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.DirectoryPath solutionDirectory, string rootAssemblyVersionKey, string buildRevision)
+		{
 			ServiceProvider.Initialize();
 
 			var logger = new CakeContextLogger(cakeContext);
@@ -39,11 +54,9 @@ namespace ISI.Cake.Addin
 
 			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(logger, serialization, new ISI.Extensions.VisualStudio.VisualStudioSettings(serialization), new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.ProjectApi(logger), new ISI.Extensions.Nuget.NugetApi(logger));
 
-			var solutionDirectory = cakeContext.Directory("./").Path.MakeAbsolute(cakeContext.Environment).FullPath;
-
 			return solutionApi.GetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetAssemblyVersionFilesRequest()
 			{
-				Solution = solutionDirectory,
+				Solution = solutionDirectory.FullPath,
 				RootAssemblyVersionKey = rootAssemblyVersionKey,
 				BuildRevision = buildRevision,
 			}).AssemblyVersionFiles;

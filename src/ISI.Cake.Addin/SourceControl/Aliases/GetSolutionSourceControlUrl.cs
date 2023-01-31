@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -12,32 +12,44 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
+using Cake.Common.IO;
 
 namespace ISI.Cake.Addin.SourceControl
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static CommitResponse SourceControlCommit(this global::Cake.Core.ICakeContext cakeContext, CommitRequest request)
+		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.Solution.SolutionParserResult solution)
 		{
-			var response = new CommitResponse();
+			var solutionDirectory = cakeContext.Directory("./").Path.MakeAbsolute(cakeContext.Environment);
 
+			return GetSolutionSourceControlUrl(cakeContext, solutionDirectory);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath solutionFile)
+		{
+			return GetSolutionSourceControlUrl(cakeContext, solutionFile.GetDirectory());
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static string GetSolutionSourceControlUrl(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.DirectoryPath solutionDirectory)
+		{
 			var sourceControlClientApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
 
-			response.Success = sourceControlClientApi.Commit(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitRequest()
+			var getRootDirectoryResponse = sourceControlClientApi.GetRootDirectory(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.GetRootDirectoryRequest()
 			{
-				FullNames = request.FullNames,
-				LogMessage = request.LogMessage,
-			}).Success;
+				FullName = solutionDirectory.FullPath,
+			});
 
-			return response;
+			return getRootDirectoryResponse?.Uri?.ToString();
 		}
 	}
 }
