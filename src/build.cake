@@ -20,12 +20,13 @@ var buildRevision = GetBuildRevision(buildDateTime);
 var assemblyVersion = GetAssemblyVersion(ParseAssemblyInfo(assemblyVersionFile).AssemblyVersion, buildRevision);
 Information("AssemblyVersion: {0}", assemblyVersion);
 
-var nugetDirectory = "../Nuget";
+var nugetPackOutputDirectory = Argument("NugetPackOutputDirectory", "../Nuget");
 
 Task("Clean")
 	.Does(() =>
 	{
-		// Clean solution directories.
+		Information("Cleaning Projects ...");
+
 		foreach(var projectPath in solution.Projects.Select(p => p.Path.GetDirectory()))
 		{
 			Information("Cleaning {0}", projectPath);
@@ -33,9 +34,8 @@ Task("Clean")
 			CleanDirectories(projectPath + "/**/obj/" + configuration);
 		}
 
-		CleanDirectories(nugetDirectory);
-
-		Information("Cleaning Projects ...");
+		Information("Cleaning {0}", nugetPackOutputDirectory);
+		CleanDirectories(nugetPackOutputDirectory);
 	});
 
 Task("NugetPackageRestore")
@@ -91,6 +91,9 @@ Task("Nuget")
 	.IsDependentOn("Sign")
 	.Does(() =>
 	{
+		var sourceControlUrl = GetSolutionSourceControlUrl();
+		var nupkgFiles = new FilePathCollection();
+
 		foreach(var project in solution.Projects.Where(project => project.Path.FullPath.EndsWith(".csproj")))
 		{
 			Information(project.Name);
@@ -101,7 +104,7 @@ Task("Nuget")
 			}).Nuspec;
 			nuspec.Version = assemblyVersion;
 			nuspec.IconUri = GetNullableUri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");
-			nuspec.ProjectUri = GetNullableUri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin");
+			nuspec.ProjectUri = GetNullableUri(sourceControlUrl);
 			nuspec.Title = project.Name;
 			nuspec.Description = project.Name;
 			nuspec.Copyright = string.Format("Copyright (c) {0}, Integrated Solutions, Inc.", DateTime.Now.Year);
@@ -127,35 +130,42 @@ Task("Nuget")
 				},
 				NoPackageAnalysis = false,
 				Symbols = false,
-				OutputDirectory = nugetDirectory,
+				OutputDirectory = nugetPackOutputDirectory,
 			});
 
 			DeleteFile(nuspecFile);
 
-			var nupgkFiles = GetFiles(nugetDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg");
+			nupkgFiles.Add(File(nugetPackOutputDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg"));
 
 			if(settings.CodeSigning.DoCodeSigning)
 			{
 				SignNupkgs(new ISI.Cake.Addin.CodeSigning.SignNupkgsUsingSettingsRequest()
 				{
-					NupkgPaths = nupgkFiles,
+					NupkgPaths = nupkgFiles,
 					Settings = settings,
 				});
 			}
-
-			NupkgPush(new ISI.Cake.Addin.Nuget.NupkgPushRequest()
-			{
-				NupkgPaths = nupgkFiles,
-				ApiKey = settings.Nuget.ApiKey,
-				RepositoryName = settings.Nuget.RepositoryName,
-				RepositoryUri = GetNullableUri(settings.Nuget.RepositoryUrl),
-				PackageChunksRepositoryUri = GetNullableUri(settings.Nuget.PackageChunksRepositoryUrl),
-			});
 		}
 	});
 
-Task("Default")
+Task("Publish")
 	.IsDependentOn("Nuget")
+	.Does(() =>
+	{
+		var nupkgFiles = GetFiles(MakeAbsolute(Directory(nugetPackOutputDirectory)) + "/*.nupkg");
+
+		NupkgPush(new ISI.Cake.Addin.Nuget.NupkgPushRequest()
+		{
+			NupkgPaths = nupkgFiles,
+			ApiKey = settings.Nuget.ApiKey,
+			RepositoryName = settings.Nuget.RepositoryName,
+			RepositoryUri = GetNullableUri(settings.Nuget.RepositoryUrl),
+			PackageChunksRepositoryUri = GetNullableUri(settings.Nuget.PackageChunksRepositoryUrl),
+		});
+	});
+
+Task("Default")
+	.IsDependentOn("Publish")
 	.Does(() => 
 	{
 		Information("No target provided. Starting default task");

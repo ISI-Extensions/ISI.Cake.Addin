@@ -40,7 +40,7 @@ namespace ISI.Cake.Addin.SourceControl
 				FullName = solutionFullName,
 			});
 
-			return getRootDirectoryResponse?.Uri?.ToString();
+			return getRootDirectoryResponse?.SourceControlUri?.ToString();
 		}
 	}
 }
