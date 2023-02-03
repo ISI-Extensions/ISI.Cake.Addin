@@ -29,8 +29,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		{
 			var response = new GetArtifactDateTimeStampResponse();
 
-			request.WarmUpWebService(cakeContext.Log);
-
 			response.ArtifactDateTimeStamp = (new ISI.Extensions.Scm.DateTimeStampVersion(request.DateTimeStamp)).DateTimeStamp?.ToString();
 
 			return response;
