@@ -34,7 +34,7 @@ namespace ISI.Cake.Addin.Nuget
 			nugetApi.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPushRequest()
 			{
 				NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(nupkgPath => nupkgPath.FullPath),
-				ApiKey = request.ApiKey,
+				NugetApiKey = request.NugetApiKey,
 				RepositoryName = request.RepositoryName,
 				RepositoryUri = request.RepositoryUri,
 				PackageChunksRepositoryUri = request.PackageChunksRepositoryUri,

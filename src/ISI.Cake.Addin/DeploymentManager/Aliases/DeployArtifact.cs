@@ -33,7 +33,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			request.WarmUpWebService(cakeContext.Log);
 
-			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
+			var buildArtifactsApi = new ISI.Extensions.Scm.BuildArtifactsApi(new CakeContextLogger(cakeContext));
 
 			var applicationIsInUse = false;
 			var wouldNotStart = false;
@@ -47,20 +47,20 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 				if (string.IsNullOrWhiteSpace(toVersion))
 				{
-					toVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+					toVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 					{
-						BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
-						AuthenticationToken = request.AuthenticationToken,
-						ArtifactName = request.ArtifactName,
+						BuildArtifactsApiUrl = request.BuildArtifactsApiUrl,
+						BuildArtifactsApiKey = request.BuildArtifactsApiKey,
+						BuildArtifactName = request.BuildArtifactName,
 						Environment = request.FromEnvironment,
 					})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
 				}
 
-				var currentVersion = buildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+				var currentVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 				{
-					BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
-					AuthenticationToken = request.AuthenticationToken,
-					ArtifactName = request.ArtifactName,
+					BuildArtifactsApiUrl = request.BuildArtifactsApiUrl,
+					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
+					BuildArtifactName = request.BuildArtifactName,
 					Environment = request.ToEnvironment,
 				})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
 
@@ -78,10 +78,10 @@ namespace ISI.Cake.Addin.DeploymentManager
 				var deployArtifactResponse = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
 				{
 					ServicesManagerUrl = request.ServicesManagerUrl,
-					Password = request.Password,
-					BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
-					AuthenticationToken = request.AuthenticationToken,
-					ArtifactName = request.ArtifactName,
+					ServicesManagerApiKey = request.ServicesManagerApiKey,
+					BuildArtifactsApiUrl = request.BuildArtifactsApiUrl,
+					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
+					BuildArtifactName = request.BuildArtifactName,
 					ArtifactDateTimeStampVersionUrl = request.ArtifactDateTimeStampVersionUrl,
 					ArtifactDownloadUrl = request.ArtifactDownloadUrl,
 					ToDateTimeStamp = request.ToDateTimeStamp,

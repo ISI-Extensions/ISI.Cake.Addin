@@ -24,13 +24,22 @@ namespace ISI.Cake.Addin.DeploymentManager
 	public partial class DeployArtifactRequest : IWarmUpWebService
 	{
 		public string ServicesManagerUrl { get; set; }
-		public string Password { get; set; }
-		public string AuthenticationToken { get; set; }
 
-		public string ArtifactName { get; set; }
-		public string BuildArtifactManagementUrl { get; set; }
+		public string Password { set => ServicesManagerApiKey = value; }
+		public string ServicesManagerApiKey { get; set; }
+
+		public string BuildArtifactManagementUrl { set => BuildArtifactsApiUrl = value; }
+		public string BuildArtifactsApiUrl { get; set; }
+
+		public string AuthenticationToken { set => BuildArtifactsApiKey = value; }
+		public string BuildArtifactsApiKey { get; set; }
+
+		public string ArtifactName { set => BuildArtifactName = value; }
+		public string BuildArtifactName { get; set; }
+
 		public string ArtifactDateTimeStampVersionUrl { get; set; }
 		public string ArtifactDownloadUrl { get; set; }
+
 		public string ToDateTimeStamp { get; set; }
 		public string FromEnvironment { get; set; }
 		public string ToEnvironment { get; set; }

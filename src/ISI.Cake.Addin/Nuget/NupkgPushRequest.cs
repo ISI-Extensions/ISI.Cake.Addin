@@ -23,8 +23,9 @@ namespace ISI.Cake.Addin.Nuget
 	{
 		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
 
-		public string ApiKey { get; set; }
-		
+		public string ApiKey { set => NugetApiKey = value; }
+		public string NugetApiKey { get; set; }
+
 		public string RepositoryName { get; set; }
 		
 		public Uri RepositoryUri { get; set; }

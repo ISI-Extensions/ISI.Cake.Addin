@@ -24,8 +24,10 @@ namespace ISI.Cake.Addin.DeploymentManager
 	public partial class UpdateServicesManagerRequest : IWarmUpWebService
 	{
 		public string ServicesManagerUrl { get; set; }
-		public string Password { get; set; }
-		
+
+		public string Password { set => ServicesManagerApiKey = value; }
+		public string ServicesManagerApiKey { get; set; }
+
 		public int VerificationWaitInSeconds { get; set; } = 90;
 		public int VerificationMaxTries { get; set; } = 10;
 		public int VerificationExceptionSleepForInSeconds { get; set; } = 20;

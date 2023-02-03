@@ -23,11 +23,15 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public partial class GetArtifactDateTimeStampVersionRequest : IWarmUpWebService
 	{
-		public string BuildArtifactManagementUrl { get; set; }
-		public string AuthenticationToken { get; set; }
+		public string BuildArtifactManagementUrl { set => BuildArtifactsApiUrl = value; }
+		public string BuildArtifactsApiUrl { get; set; }
+
+		public string AuthenticationToken { set => BuildArtifactsApiKey = value; }
+		public string BuildArtifactsApiKey { get; set; }
+
 		public string DateTimeStampVersion { get; set; }
 
-		string IWarmUpWebService.WebServiceUrl => BuildArtifactManagementUrl;
+		string IWarmUpWebService.WebServiceUrl => BuildArtifactsApiUrl;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}

@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 			var apiResponse = deploymentManagerApi.UpdateServicesManager(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.UpdateServicesManagerRequest()
 			{
 				ServicesManagerUrl = request.ServicesManagerUrl,
-				Password = request.Password,
+				Password = request.ServicesManagerApiKey,
 
 				VerificationWaitInSeconds = request.VerificationWaitInSeconds,
 				VerificationMaxTries = request.VerificationMaxTries,
