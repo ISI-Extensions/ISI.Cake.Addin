@@ -28,6 +28,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public string SourceFileName { get; set; }
 		public string ArtifactName { get; set; }
 		public string DateTimeStamp { get; set; }
+		public string Version { get; set; }
+		public string DateTimeStampVersion { get; set; }
 
 		public int MaxTries { get; set; } = 3;
 

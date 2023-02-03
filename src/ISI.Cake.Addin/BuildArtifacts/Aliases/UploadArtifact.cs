@@ -32,6 +32,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
+			
+			var dateTimeStampVersion = (string.IsNullOrWhiteSpace(request.DateTimeStampVersion) ? new ISI.Extensions.Scm.DateTimeStampVersion(request.DateTimeStamp, request.Version) : new ISI.Extensions.Scm.DateTimeStampVersion(request.DateTimeStampVersion));
 
 			buildArtifactApi.UploadArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.UploadArtifactRequest()
 			{
@@ -39,7 +41,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				AuthenticationToken = request.AuthenticationToken,
 				SourceFileName = request.SourceFileName,
 				ArtifactName = request.ArtifactName,
-				DateTimeStamp = request.DateTimeStamp,
+				DateTimeStampVersion = dateTimeStampVersion,
 				MaxTries = request.MaxTries,
 			});
 

@@ -33,13 +33,15 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactApi(new CakeContextLogger(cakeContext));
 
+			var dateTimeStampVersion = (string.IsNullOrWhiteSpace(request.DateTimeStampVersion) ? new ISI.Extensions.Scm.DateTimeStampVersion(request.DateTimeStamp, request.Version) : new ISI.Extensions.Scm.DateTimeStampVersion(request.DateTimeStampVersion));
+			
 			response.Status = buildArtifactApi.SetArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactApi.SetArtifactEnvironmentDateTimeStampVersionRequest()
 			{
 				BuildArtifactManagementUrl = request.BuildArtifactManagementUrl,
 				AuthenticationToken = request.AuthenticationToken,
 				ArtifactName = request.ArtifactName,
 				Environment = request.Environment,
-				DateTimeStampVersion = request.DateTimeStampVersion,
+				DateTimeStampVersion = dateTimeStampVersion,
 			}).Status;
 
 			return response;
