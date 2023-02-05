@@ -41,18 +41,18 @@ namespace ISI.Cake.Addin.Extensions
 			}
 		}
 
-		public static ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity ToRemoteCodeSigningVerbosity(this ISI.Cake.Addin.CodeSigning.CodeSigningVerbosity codeSigningVerbosity)
+		public static ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity ToRemoteCodeSigningVerbosity(this ISI.Cake.Addin.CodeSigning.CodeSigningVerbosity codeSigningVerbosity)
 		{
 			switch (codeSigningVerbosity)
 			{
 				case ISI.Cake.Addin.CodeSigning.CodeSigningVerbosity.Normal:
-					return ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity.Normal;
+					return ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity.Normal;
 
 				case ISI.Cake.Addin.CodeSigning.CodeSigningVerbosity.Quiet:
-					return ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity.Quiet;
+					return ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity.Quiet;
 
 				case ISI.Cake.Addin.CodeSigning.CodeSigningVerbosity.Detailed:
-					return ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity.Detailed;
+					return ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.CodeSigningVerbosity.Detailed;
 
 				default:
 					throw new ArgumentOutOfRangeException(nameof(codeSigningVerbosity), codeSigningVerbosity, null);

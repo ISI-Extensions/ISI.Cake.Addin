@@ -34,9 +34,9 @@ namespace ISI.Cake.Addin.JenkinsService
 
 			var response = new UpdateNugetPackagesResponse();
 
-			var jenkinsServiceApi = new ISI.Extensions.Scm.JenkinsServiceApi(logger);
+			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.Rest.JenkinsServiceApi(logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			jenkinsServiceApi.UpdateNugetPackages(new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
+			jenkinsServiceApi.UpdateNugetPackages(new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
 			{
 				SettingsFullName = request.SettingsFullName,
 				JenkinsServiceUrl = request.JenkinsServiceUrl,
@@ -59,12 +59,12 @@ namespace ISI.Cake.Addin.JenkinsService
 				FilterByJobIdSuffix = request.FilterByJobIdSuffix,
 
 				IgnorePackageIds = request.IgnorePackageIds.ToNullCheckedArray(),
-				NugetPackageKeys = request.NugetPackageKeys.ToNullCheckedArray(source => new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.NugetPackageKey()
+				NugetPackageKeys = request.NugetPackageKeys.ToNullCheckedArray(source => new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.NugetPackageKey()
 				{
 					PackageId = source.PackageId,
 					PackageVersion = source.PackageVersion,
 				}),
-				UpsertAssemblyRedirectsNugetPackageKeys = request.UpsertAssemblyRedirectsNugetPackageKeys.ToNullCheckedArray(source => new ISI.Extensions.Scm.DataTransferObjects.JenkinsServiceApi.NugetPackageKey()
+				UpsertAssemblyRedirectsNugetPackageKeys = request.UpsertAssemblyRedirectsNugetPackageKeys.ToNullCheckedArray(source => new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.NugetPackageKey()
 				{
 					PackageId = source.PackageId,
 					PackageVersion = source.PackageVersion,

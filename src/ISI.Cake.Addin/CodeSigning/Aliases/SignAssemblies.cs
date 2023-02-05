@@ -78,9 +78,9 @@ namespace ISI.Cake.Addin.CodeSigning
 			}
 			else
 			{
-				var remoteCodeSigningApi = new ISI.Extensions.Scm.RemoteCodeSigningApi(new CakeContextLogger(cakeContext));
+				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-				remoteCodeSigningApi.SignAssemblies(new ISI.Extensions.Scm.DataTransferObjects.RemoteCodeSigningApi.SignAssembliesRequest()
+				remoteCodeSigningApi.SignAssemblies(new ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.SignAssembliesRequest()
 				{
 					RemoteCodeSigningServiceUrl = signAssembliesRequest.RemoteCodeSigningServiceUri.ToString(),
 					RemoteCodeSigningServicePassword = signAssembliesRequest.RemoteCodeSigningServicePassword,
