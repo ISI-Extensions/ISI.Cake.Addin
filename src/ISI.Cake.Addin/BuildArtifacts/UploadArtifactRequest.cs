@@ -34,9 +34,22 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public string ArtifactName { set => BuildArtifactName = value; }
 		public string BuildArtifactName { get; set; }
 		
-		public string DateTimeStamp { get; set; }
-		public string Version { get; set; }
-		public string DateTimeStampVersion { get; set; }
+		public string DateTimeStamp
+		{
+			get => DateTimeStampVersion.DateTimeStamp.ToString();
+			set => DateTimeStampVersion.DateTimeStamp = new ISI.Extensions.Scm.DateTimeStamp(value);
+		}
+		public string Version
+		{
+			get => DateTimeStampVersion.Version?.ToString();
+			set => DateTimeStampVersion.Version = (string.IsNullOrWhiteSpace(value) ? null : System.Version.Parse(value));
+		}
+		private ISI.Extensions.Scm.DateTimeStampVersion _dateTimeStampVersion = null;
+		public ISI.Extensions.Scm.DateTimeStampVersion DateTimeStampVersion
+		{
+			get => _dateTimeStampVersion ?? new ISI.Extensions.Scm.DateTimeStampVersion();
+			set => _dateTimeStampVersion = value;
+		}
 
 		public int MaxTries { get; set; } = 3;
 
