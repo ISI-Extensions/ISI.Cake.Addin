@@ -38,7 +38,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				BuildArtifactsApiUrl = request.BuildArtifactsApiUrl,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactName = request.BuildArtifactName,
-				DateTimeStamp = new(request.DateTimeStamp),
+				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,
 				TargetFileName = request.TargetFileName,
 			});
 
