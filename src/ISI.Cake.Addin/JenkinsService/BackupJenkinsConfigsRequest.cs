@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.JenkinsService
 {
-	public partial class BackupJenkinsConfigsRequest
+	public class BackupJenkinsConfigsRequest
 	{
 		public string SettingsFullName { get; set; }
 

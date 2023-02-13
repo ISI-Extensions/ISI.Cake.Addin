@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public partial class UpdateServicesManagerRequest : IWarmUpWebService
+	public class UpdateServicesManagerRequest : IWarmUpWebService
 	{
 		public string ServicesManagerUrl { get; set; }
 

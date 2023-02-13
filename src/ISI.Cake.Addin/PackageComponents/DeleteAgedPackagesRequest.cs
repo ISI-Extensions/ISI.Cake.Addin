@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
-	public partial class DeleteAgedPackagesRequest
+	public class DeleteAgedPackagesRequest
 	{
 		public string PackagesDirectory { get; set; }
 

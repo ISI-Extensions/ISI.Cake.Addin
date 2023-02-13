@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public partial class NupkgPackRequest
+	public class NupkgPackRequest
 	{
 		public string NuspecFullName { get; set; }
 		public string OutputDirectory { get; set; }

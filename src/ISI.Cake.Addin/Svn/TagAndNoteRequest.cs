@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Svn
 {
-	public partial class TagAndNoteRequest
+	public class TagAndNoteRequest
 	{
 		public string WorkingCopyDirectory { get; set; }
 		public string Version { get; set; }

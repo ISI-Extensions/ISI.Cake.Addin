@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public partial class NupkgPushResponse
+	public class NupkgPushResponse
 	{
 	}
 }

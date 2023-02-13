@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.SourceControl
 {
-	public partial class CommitWorkingCopyResponse
+	public class CommitWorkingCopyResponse
 	{
 		public bool Success { get; set; }
 	}

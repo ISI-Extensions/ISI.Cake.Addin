@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.JenkinsService
 {
-	public partial class NugetPackageKey
+	public class NugetPackageKey
 	{
 		public string PackageId { get; set; }
 		public string PackageVersion { get; set; }

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
-	public partial class DeleteAgedPackagesResponse
+	public class DeleteAgedPackagesResponse
 	{
 	}
 }

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.JenkinsService
 {
-	public partial class UpdateNugetPackagesResponse
+	public class UpdateNugetPackagesResponse
 	{
 	}
 }

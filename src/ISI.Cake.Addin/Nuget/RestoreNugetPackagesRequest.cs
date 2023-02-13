@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public partial class RestoreNugetPackagesRequest
+	public class RestoreNugetPackagesRequest
 	{
 		public string Solution { get; set; }
 		public string PackagesConfigFileName { get; set; }

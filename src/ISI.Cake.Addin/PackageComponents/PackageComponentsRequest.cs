@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
-	public partial class PackageComponentsRequest
+	public class PackageComponentsRequest
 	{
 		public string Configuration { get; set; }
 		public global::Cake.Common.Tools.MSBuild.MSBuildVersion? BuildVersion { get; set; }
@@ -35,8 +35,12 @@ namespace ISI.Cake.Addin.PackageComponents
 
 		public string PackageFullName { get; set; }
 		public string PackageName { get; set; }
-		public string PackageVersion { get; set; }
-		public string PackageBuildDateTimeStamp { get; set; }
+
+		[Obsolete("use PackageBuildDateTimeStampVersion instead")]
+		public string PackageVersion { set => (PackageBuildDateTimeStampVersion ??= new ISI.Extensions.Scm.DateTimeStampVersion()).Version = (string.IsNullOrWhiteSpace(value) ? null : new Version(value)); }
+		[Obsolete("use PackageBuildDateTimeStampVersion instead")]
+		public string PackageBuildDateTimeStamp { set => (PackageBuildDateTimeStampVersion ??= new ISI.Extensions.Scm.DateTimeStampVersion()).DateTimeStamp =  new(value); }
+		public ISI.Extensions.Scm.DateTimeStampVersion PackageBuildDateTimeStampVersion { get; set; }
 
 		public ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }
 

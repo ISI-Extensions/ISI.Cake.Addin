@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.FileStore
 {
-	public partial class UploadFileResponse
+	public class UploadFileResponse
 	{
 	}
 }

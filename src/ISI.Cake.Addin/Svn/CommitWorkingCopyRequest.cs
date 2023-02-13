@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Svn
 {
-	public partial class CommitWorkingCopyRequest
+	public class CommitWorkingCopyRequest
 	{
 		public string UserName { get; set; }
 		public string Password { get; set; }

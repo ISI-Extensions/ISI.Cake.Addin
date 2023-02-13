@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -24,6 +24,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
+		[Obsolete("use GetDateTimeStampVersion instead")]
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static GetArtifactDateTimeStampVersionResponse GetArtifactDateTimeStampVersion(this global::Cake.Core.ICakeContext cakeContext, GetArtifactDateTimeStampVersionRequest request)
 		{

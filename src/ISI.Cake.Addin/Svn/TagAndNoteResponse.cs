@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Svn
 {
-	public partial class TagAndNoteResponse
+	public class TagAndNoteResponse
 	{
 	}
 }

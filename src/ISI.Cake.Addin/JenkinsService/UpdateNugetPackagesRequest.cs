@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.JenkinsService
 {
-	public partial class UpdateNugetPackagesRequest
+	public class UpdateNugetPackagesRequest
 	{
 		public string SettingsFullName { get; set; }
 

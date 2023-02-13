@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public partial class GenerateNuspecFromProjectRequest
+	public class GenerateNuspecFromProjectRequest
 	{
 		public string ProjectFullName { get; set; }
 		public ISI.Extensions.Nuget.DataTransferObjects.NugetApi.TryGetPackageVersion TryGetPackageVersion { get; set; } = null;

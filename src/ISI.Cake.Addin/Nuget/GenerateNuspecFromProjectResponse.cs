@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public partial class GenerateNuspecFromProjectResponse
+	public class GenerateNuspecFromProjectResponse
 	{
 		public ISI.Extensions.Nuget.Nuspec Nuspec { get; set; }	
 	}

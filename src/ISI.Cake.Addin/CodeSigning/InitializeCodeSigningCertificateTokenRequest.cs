@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
-	public partial class InitializeCodeSigningCertificateTokenRequest
+	public class InitializeCodeSigningCertificateTokenRequest
 	{
 		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
 		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public partial class DeployArtifactResponse
+	public class DeployArtifactResponse
 	{
 		public bool Success { get; set; }
 	}

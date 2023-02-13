@@ -21,14 +21,17 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public partial class GetBuildArtifactEnvironmentDateTimeStampVersionRequest : IWarmUpWebService
+	public class GetBuildArtifactEnvironmentDateTimeStampVersionRequest : IWarmUpWebService
 	{
+		[Obsolete("use BuildArtifactsApiUrl instead")]
 		public string BuildArtifactManagementUrl { set => BuildArtifactsApiUrl = value; }
 		public string BuildArtifactsApiUrl { get; set; }
 
+		[Obsolete("use BuildArtifactsApiKey instead")]
 		public string AuthenticationToken { set => BuildArtifactsApiKey = value; }
 		public string BuildArtifactsApiKey { get; set; }
 
+		[Obsolete("use BuildArtifactName instead")]
 		public string ArtifactName { set => BuildArtifactName = value; }
 		public string BuildArtifactName { get; set; }
 		

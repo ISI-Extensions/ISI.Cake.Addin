@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public partial class GetBuildArtifactEnvironmentDateTimeStampVersionResponse
+	public class GetBuildArtifactEnvironmentDateTimeStampVersionResponse
 	{
 		public ISI.Extensions.Scm.DateTimeStampVersion DateTimeStampVersion { get; set; }
 	}

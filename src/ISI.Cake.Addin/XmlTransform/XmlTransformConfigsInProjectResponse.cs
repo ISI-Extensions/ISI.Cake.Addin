@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.XmlTransform
 {
-	public partial class XmlTransformConfigsInProjectResponse
+	public class XmlTransformConfigsInProjectResponse
 	{
 	}
 }
