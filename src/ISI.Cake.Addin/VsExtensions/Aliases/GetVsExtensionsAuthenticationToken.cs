@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -18,28 +18,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.Scm
+namespace ISI.Cake.Addin.VsExtensions
 {
 	public static partial class Aliases
 	{
-		[Obsolete("use Api specific method instead")]
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetAuthenticationTokenResponse GetAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetAuthenticationTokenRequest request)
+		public static GetVsExtensionsAuthenticationTokenResponse GetVsExtensionsAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetVsExtensionsAuthenticationTokenRequest request)
 		{
-			var response = new GetAuthenticationTokenResponse();
-			
-			request.WarmUpWebService(cakeContext.Log);
+			var response = new GetVsExtensionsAuthenticationTokenResponse();
 
-			var scmApi = new ISI.Extensions.Scm.ScmApi(new CakeContextLogger(cakeContext));
+			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.Rest.VsExtensionsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			response.AuthenticationToken = scmApi.GetAuthenticationToken(new ISI.Extensions.Scm.DataTransferObjects.ScmApi.GetAuthenticationTokenRequest()
+			var getAuthenticationTokenResponse = vsExtensionsApi.GetAuthenticationToken(new ISI.Services.SCM.VsExtensions.Rest.DataTransferObjects.VsExtensionsApi.GetAuthenticationTokenRequest()
 			{
-				ScmManagementUrl = request.ScmManagementUri.ToString(),
+				VsExtensionsApiUri = request.VsExtensionsApiUri,
+
 				UserName = request.UserName,
 				Password = request.Password,
-			}).AuthenticationToken;
+			});
+
+			response.AuthenticationToken = getAuthenticationTokenResponse.AuthenticationToken;
 
 			return response;
 		}

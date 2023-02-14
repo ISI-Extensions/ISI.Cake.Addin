@@ -20,13 +20,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.VsExtensions
+namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public class GetAuthenticationTokenRequest
+	public class GetBuildArtifactsAuthenticationTokenResponse
 	{
-		public Uri VsExtensionsApiUri { get; set; }
-
-		public string UserName { get; set; }
-		public string Password { get; set; }
+		public string AuthenticationToken { get; set; }
 	}
 }

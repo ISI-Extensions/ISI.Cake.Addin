@@ -22,22 +22,11 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.VsExtensions
 {
-	public static partial class Aliases
+	public class GetVsExtensionsAuthenticationTokenRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static string GetAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetAuthenticationTokenRequest request)
-		{
-			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.Rest.VsExtensionsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+		public Uri VsExtensionsApiUri { get; set; }
 
-			var getAuthenticationTokenResponse = vsExtensionsApi.GetAuthenticationToken(new ISI.Services.SCM.VsExtensions.Rest.DataTransferObjects.VsExtensionsApi.GetAuthenticationTokenRequest()
-			{
-				VsExtensionsApiUri = request.VsExtensionsApiUri,
-
-				UserName = request.UserName,
-				Password = request.Password,
-			});
-
-			return getAuthenticationTokenResponse.AuthenticationToken;
-		}
+		public string UserName { get; set; }
+		public string Password { get; set; }
 	}
 }

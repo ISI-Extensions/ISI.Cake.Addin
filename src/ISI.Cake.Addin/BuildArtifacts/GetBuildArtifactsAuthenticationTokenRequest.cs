@@ -19,7 +19,7 @@ using System.Text;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public class GetAuthenticationTokenRequest
+	public class GetBuildArtifactsAuthenticationTokenRequest
 	{
 		public Uri BuildArtifactsApiUri { get; set; }
 

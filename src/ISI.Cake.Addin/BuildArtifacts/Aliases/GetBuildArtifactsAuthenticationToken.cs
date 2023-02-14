@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -12,34 +12,35 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.Scm
+namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
-		[Obsolete("use Api specific method instead")]
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetAuthenticationTokenResponse GetAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetAuthenticationTokenRequest request)
+		public static GetBuildArtifactsAuthenticationTokenResponse GetBuildArtifactsAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetBuildArtifactsAuthenticationTokenRequest request)
 		{
-			var response = new GetAuthenticationTokenResponse();
-			
-			request.WarmUpWebService(cakeContext.Log);
+			var response = new GetBuildArtifactsAuthenticationTokenResponse();
 
-			var scmApi = new ISI.Extensions.Scm.ScmApi(new CakeContextLogger(cakeContext));
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			response.AuthenticationToken = scmApi.GetAuthenticationToken(new ISI.Extensions.Scm.DataTransferObjects.ScmApi.GetAuthenticationTokenRequest()
+			var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetAuthenticationTokenRequest()
 			{
-				ScmManagementUrl = request.ScmManagementUri.ToString(),
+				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+
 				UserName = request.UserName,
 				Password = request.Password,
-			}).AuthenticationToken;
+			});
+
+			response.AuthenticationToken = getAuthenticationTokenResponse.AuthenticationToken;
 
 			return response;
 		}

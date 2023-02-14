@@ -18,27 +18,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.BuildArtifacts
+namespace ISI.Cake.Addin.VsExtensions
 {
-	public static partial class Aliases
+	public class GetVsExtensionsAuthenticationTokenResponse
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static string GetAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetAuthenticationTokenRequest request)
-		{
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
-
-			var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetAuthenticationTokenRequest()
-			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
-
-				UserName = request.UserName,
-				Password = request.Password,
-			});
-
-			return getAuthenticationTokenResponse.AuthenticationToken;
-		}
+		public string AuthenticationToken { get; set; }
 	}
 }
