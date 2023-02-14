@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -18,32 +18,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.BuildArtifacts
+namespace ISI.Cake.Addin.VsExtensions
 {
-	public static partial class Aliases
+	public class GetAuthenticationTokenRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static UploadArtifactResponse UploadArtifact(this global::Cake.Core.ICakeContext cakeContext, UploadArtifactRequest request)
-		{
-			var response = new UploadArtifactResponse();
-			
-			request.WarmUpWebService(cakeContext.Log);
+		public Uri VsExtensionsApiUri { get; set; }
 
-			var buildArtifactsApi = new ISI.Extensions.Scm.BuildArtifactsApi(new CakeContextLogger(cakeContext));
-			
-			buildArtifactsApi.UploadBuildArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactRequest()
-			{
-				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
-				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				SourceFileName = request.SourceFileName,
-				BuildArtifactName = request.BuildArtifactName,
-				DateTimeStampVersion = request.DateTimeStampVersion,
-				MaxTries = request.MaxTries,
-			});
-
-			return response;
-		}
+		public string UserName { get; set; }
+		public string Password { get; set; }
 	}
 }

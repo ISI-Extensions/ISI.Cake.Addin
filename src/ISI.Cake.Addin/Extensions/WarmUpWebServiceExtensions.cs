@@ -30,8 +30,8 @@ namespace ISI.Cake.Addin.Extensions
 			{
 				var webServiceUrls = new[]
 				{
-					(new UriBuilder(request.WebServiceUrl) {Query = string.Empty}).Uri.ToString(),
-					(new UriBuilder(request.WebServiceUrl) {Path = string.Empty, Query = string.Empty}).Uri.ToString(),
+					(new UriBuilder(request.WebServiceUri) {Query = string.Empty}).Uri.ToString(),
+					(new UriBuilder(request.WebServiceUri) {Path = string.Empty, Query = string.Empty}).Uri.ToString(),
 				};
 
 				foreach (var webServiceUrl in webServiceUrls)

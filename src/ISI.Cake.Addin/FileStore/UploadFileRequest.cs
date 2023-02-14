@@ -23,16 +23,19 @@ namespace ISI.Cake.Addin.FileStore
 {
 	public class UploadFileRequest : IWarmUpWebService
 	{
-		public int MaxFileSegmentSize { get; set; } = 2000000;
-
-		public string FileStoreUrl { get; set; }
+		[Obsolete("use FileStoreUri instead")]
+		public string FileStoreUrl  { set => FileStoreUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		public Uri FileStoreUri { get; set; }
+		
 		public string UserName { get; set; }
 		public string Password { get; set; }
 		public string Version { get; set; }
 		public Guid FileStoreUuid { get; set; }
 		public string FileName { get; set; }
 
-		string IWarmUpWebService.WebServiceUrl => FileStoreUrl;
+		public int MaxFileSegmentSize { get; set; } = 2000000;
+
+		Uri IWarmUpWebService.WebServiceUri => FileStoreUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}

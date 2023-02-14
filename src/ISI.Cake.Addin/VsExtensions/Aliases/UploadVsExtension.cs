@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -12,35 +12,31 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.BuildArtifacts
+namespace ISI.Cake.Addin.VsExtensions
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static UploadArtifactResponse UploadArtifact(this global::Cake.Core.ICakeContext cakeContext, UploadArtifactRequest request)
+		public static UploadVsExtensionResponse UploadVsExtension(this global::Cake.Core.ICakeContext cakeContext, UploadVsExtensionRequest request)
 		{
-			var response = new UploadArtifactResponse();
-			
-			request.WarmUpWebService(cakeContext.Log);
+			var response = new UploadVsExtensionResponse();
 
-			var buildArtifactsApi = new ISI.Extensions.Scm.BuildArtifactsApi(new CakeContextLogger(cakeContext));
-			
-			buildArtifactsApi.UploadBuildArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactRequest()
+			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.Rest.VsExtensionsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+
+			vsExtensionsApi.UploadVsExtension(new ISI.Services.SCM.VsExtensions.Rest.DataTransferObjects.VsExtensionsApi.UploadVsExtensionFileRequest()
 			{
-				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
-				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				SourceFileName = request.SourceFileName,
-				BuildArtifactName = request.BuildArtifactName,
-				DateTimeStampVersion = request.DateTimeStampVersion,
-				MaxTries = request.MaxTries,
+				VsExtensionsApiUri = request.VsExtensionsApiUri,
+				VsExtensionsApiKey = request.VsExtensionsApiKey,
+
+				VsExtensionFileName = request.VsExtensionPath.FullPath,
 			});
 
 			return response;

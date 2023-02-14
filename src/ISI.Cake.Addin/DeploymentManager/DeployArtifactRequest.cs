@@ -23,15 +23,19 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public class DeployArtifactRequest : IWarmUpWebService
 	{
-		public string ServicesManagerUrl { get; set; }
+		[Obsolete("use ServicesManagerUri instead")]
+		public string ServicesManagerUrl  { set => ServicesManagerUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		public Uri ServicesManagerUri { get; set; }
 
 		[Obsolete("use ServicesManagerApiKey instead")]
 		public string Password { set => ServicesManagerApiKey = value; }
 		public string ServicesManagerApiKey { get; set; }
 
-		[Obsolete("use BuildArtifactsApiUrl instead")]
-		public string BuildArtifactManagementUrl { set => BuildArtifactsApiUrl = value; }
-		public string BuildArtifactsApiUrl { get; set; }
+		[Obsolete("use BuildArtifactsApiUri instead")]
+		public string BuildArtifactManagementUrl  { set => BuildArtifactsApiUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		[Obsolete("use BuildArtifactsApiUri instead")]
+		public string BuildArtifactsApiUrl { set => BuildArtifactsApiUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		public Uri BuildArtifactsApiUri { get; set; }
 
 		[Obsolete("use BuildArtifactsApiKey instead")]
 		public string AuthenticationToken { set => BuildArtifactsApiKey = value; }
@@ -56,7 +60,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public bool ThrowExceptionWhenNotSuccessful { get; set; } = true;
 		public bool RunAsync { get; set; } = true;
 
-		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
+		Uri IWarmUpWebService.WebServiceUri => ServicesManagerUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}

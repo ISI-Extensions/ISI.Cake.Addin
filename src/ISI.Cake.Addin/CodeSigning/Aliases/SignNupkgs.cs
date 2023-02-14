@@ -38,6 +38,8 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					NupkgPaths = signNupkgsUsingSettingsRequest.NupkgPaths,
 					OutputDirectory = signNupkgsUsingSettingsRequest.OutputDirectory,
+					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceUrl),
+					RemoteCodeSigningServicePassword = signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServicePassword,
 					CodeSigningCertificateTokenCertificateFileName = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,

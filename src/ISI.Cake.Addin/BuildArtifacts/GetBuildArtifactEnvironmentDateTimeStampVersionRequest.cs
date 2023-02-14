@@ -23,9 +23,11 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public class GetBuildArtifactEnvironmentDateTimeStampVersionRequest : IWarmUpWebService
 	{
-		[Obsolete("use BuildArtifactsApiUrl instead")]
-		public string BuildArtifactManagementUrl { set => BuildArtifactsApiUrl = value; }
-		public string BuildArtifactsApiUrl { get; set; }
+		[Obsolete("use BuildArtifactsApiUri instead")]
+		public string BuildArtifactManagementUrl  { set => BuildArtifactsApiUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		[Obsolete("use BuildArtifactsApiUri instead")]
+		public string BuildArtifactsApiUrl { set => BuildArtifactsApiUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		public Uri BuildArtifactsApiUri { get; set; }
 
 		[Obsolete("use BuildArtifactsApiKey instead")]
 		public string AuthenticationToken { set => BuildArtifactsApiKey = value; }
@@ -37,7 +39,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		
 		public string Environment { get; set; }
 
-		string IWarmUpWebService.WebServiceUrl => BuildArtifactsApiUrl;
+		Uri IWarmUpWebService.WebServiceUri => BuildArtifactsApiUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}

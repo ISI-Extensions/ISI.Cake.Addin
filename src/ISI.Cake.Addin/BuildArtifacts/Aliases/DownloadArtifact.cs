@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			buildArtifactApi.DownloadBuildArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.DownloadBuildArtifactRequest()
 			{
-				BuildArtifactsApiUrl = request.BuildArtifactsApiUrl,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactName = request.BuildArtifactName,
 				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,

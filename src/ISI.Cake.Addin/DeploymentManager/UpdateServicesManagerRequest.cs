@@ -23,7 +23,9 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public class UpdateServicesManagerRequest : IWarmUpWebService
 	{
-		public string ServicesManagerUrl { get; set; }
+		[Obsolete("use ServicesManagerUri instead")]
+		public string ServicesManagerUrl  { set => ServicesManagerUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		public Uri ServicesManagerUri { get; set; }
 
 		public string Password { set => ServicesManagerApiKey = value; }
 		public string ServicesManagerApiKey { get; set; }
@@ -38,7 +40,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string ArtifactDateTimeStampVersionUrl { get; set; }
 		public string ArtifactDownloadUrl { get; set; }
 
-		string IWarmUpWebService.WebServiceUrl => ServicesManagerUrl;
+		Uri IWarmUpWebService.WebServiceUri => ServicesManagerUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 

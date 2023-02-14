@@ -38,6 +38,8 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					VsixPaths = signVsixesUsingSettingsRequest.VsixPaths,
 					OutputDirectory = signVsixesUsingSettingsRequest.OutputDirectory,
+					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceUrl),
+					RemoteCodeSigningServicePassword = signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServicePassword,
 					CodeSigningCertificateTokenCertificateFileName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,

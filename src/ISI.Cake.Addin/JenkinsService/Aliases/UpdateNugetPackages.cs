@@ -39,7 +39,7 @@ namespace ISI.Cake.Addin.JenkinsService
 			jenkinsServiceApi.UpdateNugetPackages(new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
 			{
 				SettingsFullName = request.SettingsFullName,
-				JenkinsServiceUrl = request.JenkinsServiceUrl,
+				JenkinsServiceUrl = request.JenkinsServiceUri.ToString(),
 				JenkinsServicePassword = request.JenkinsServicePassword,
 
 				JenkinsUrl = request.JenkinsUrl,

@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2022, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -19,31 +19,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static UploadArtifactResponse UploadArtifact(this global::Cake.Core.ICakeContext cakeContext, UploadArtifactRequest request)
+		public static string GetAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetAuthenticationTokenRequest request)
 		{
-			var response = new UploadArtifactResponse();
-			
-			request.WarmUpWebService(cakeContext.Log);
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			var buildArtifactsApi = new ISI.Extensions.Scm.BuildArtifactsApi(new CakeContextLogger(cakeContext));
-			
-			buildArtifactsApi.UploadBuildArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactRequest()
+			var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetAuthenticationTokenRequest()
 			{
-				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
-				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				SourceFileName = request.SourceFileName,
-				BuildArtifactName = request.BuildArtifactName,
-				DateTimeStampVersion = request.DateTimeStampVersion,
-				MaxTries = request.MaxTries,
+				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+
+				UserName = request.UserName,
+				Password = request.Password,
 			});
 
-			return response;
+			return getAuthenticationTokenResponse.AuthenticationToken;
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace ISI.Cake.Addin
 {
 	public interface IWarmUpWebService
 	{
-		string WebServiceUrl { get; }
+		Uri WebServiceUri { get; }
 		bool WarmUpWebService { get; }
 		int WarmUpWebServiceMaxTries { get; }
 	}

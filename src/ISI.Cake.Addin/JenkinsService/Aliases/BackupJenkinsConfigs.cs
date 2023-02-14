@@ -39,7 +39,7 @@ namespace ISI.Cake.Addin.JenkinsService
 			jenkinsServiceApi.BackupJenkinsConfigs(new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.BackupJenkinsConfigsRequest()
 			{
 				SettingsFullName = request.SettingsFullName,
-				JenkinsServiceUrl = request.JenkinsServiceUrl,
+				JenkinsServiceUrl = request.JenkinsServiceUri.ToString(),
 				JenkinsServicePassword = request.JenkinsServicePassword,
 				JenkinsUrl = request.JenkinsUrl,
 				JenkinsUserName = request.JenkinsUserName,

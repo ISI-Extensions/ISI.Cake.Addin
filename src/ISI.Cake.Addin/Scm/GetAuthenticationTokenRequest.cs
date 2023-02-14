@@ -23,11 +23,14 @@ namespace ISI.Cake.Addin.Scm
 {
 	public class GetAuthenticationTokenRequest : IWarmUpWebService
 	{
-		public string ScmManagementUrl { get; set; }
+		[Obsolete("use ScmManagementUri instead")]
+		public string ScmManagementUrl  { set => ScmManagementUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
+		public Uri ScmManagementUri { get; set; }
+
 		public string UserName { get; set; }
 		public string Password { get; set; }
 
-		string IWarmUpWebService.WebServiceUrl => ScmManagementUrl;
+		Uri IWarmUpWebService.WebServiceUri => ScmManagementUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}

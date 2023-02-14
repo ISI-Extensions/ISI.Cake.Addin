@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			response.Status = buildArtifactsApi.SetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.SetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 			{
-				BuildArtifactsApiUrl = request.BuildArtifactsApiUrl,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactName = request.BuildArtifactName,
 				Environment = request.Environment,

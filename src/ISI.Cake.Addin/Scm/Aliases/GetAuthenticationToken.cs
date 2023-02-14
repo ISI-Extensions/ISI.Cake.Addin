@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.Scm
 
 			response.AuthenticationToken = scmApi.GetAuthenticationToken(new ISI.Extensions.Scm.DataTransferObjects.ScmApi.GetAuthenticationTokenRequest()
 			{
-				ScmManagementUrl = request.ScmManagementUrl,
+				ScmManagementUrl = request.ScmManagementUri.ToString(),
 				UserName = request.UserName,
 				Password = request.Password,
 			}).AuthenticationToken;
