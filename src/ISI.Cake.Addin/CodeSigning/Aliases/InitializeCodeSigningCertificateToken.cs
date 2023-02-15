@@ -29,7 +29,8 @@ namespace ISI.Cake.Addin.CodeSigning
 		{
 			var response = new SignVsixesResponse();
 
-			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
+			var logger = new CakeContextLogger(cakeContext);
+			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(logger)));
 
 			codeSigningApi.InitializeCodeSigningCertificateToken(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.InitializeCodeSigningCertificateTokenRequest()
 			{

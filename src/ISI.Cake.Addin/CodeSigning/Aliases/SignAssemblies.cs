@@ -56,7 +56,8 @@ namespace ISI.Cake.Addin.CodeSigning
 
 			if (signAssembliesRequest.RemoteCodeSigningServiceUri == null)
 			{
-				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(new CakeContextLogger(cakeContext));
+				var logger = new CakeContextLogger(cakeContext);
+				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(logger)));
 
 				codeSigningApi.SignAssemblies(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.SignAssembliesRequest()
 				{
