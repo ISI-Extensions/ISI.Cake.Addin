@@ -31,11 +31,11 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			request.WarmUpWebService(cakeContext.Log);
 
-			var buildArtifactApi = new ISI.Extensions.Scm.BuildArtifactsApi(new CakeContextLogger(cakeContext));
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			buildArtifactApi.DownloadBuildArtifact(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.DownloadBuildArtifactRequest()
+			buildArtifactsApi.DownloadBuildArtifact(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.DownloadBuildArtifactRequest()
 			{
-				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
+				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactName = request.BuildArtifactName,
 				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,

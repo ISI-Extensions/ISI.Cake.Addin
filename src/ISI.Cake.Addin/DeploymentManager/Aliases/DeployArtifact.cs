@@ -33,7 +33,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			request.WarmUpWebService(cakeContext.Log);
 
-			var buildArtifactsApi = new ISI.Extensions.Scm.BuildArtifactsApi(new CakeContextLogger(cakeContext));
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
 			var applicationIsInUse = false;
 			var wouldNotStart = false;
@@ -47,18 +47,18 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 				if (string.IsNullOrWhiteSpace(toVersion))
 				{
-					toVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+					toVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 					{
-						BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
+						BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 						BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 						BuildArtifactName = request.BuildArtifactName,
 						Environment = request.FromEnvironment,
 					})?.DateTimeStampVersion?.Version?.ToString() ?? string.Empty;
 				}
 
-				var currentVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Extensions.Scm.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+				var currentVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 				{
-					BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
+					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 					BuildArtifactName = request.BuildArtifactName,
 					Environment = request.ToEnvironment,
