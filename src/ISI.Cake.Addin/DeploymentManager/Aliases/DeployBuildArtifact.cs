@@ -106,6 +106,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 									WaitForFileLocksMaxTimeOut = deployComponentConsoleApplication.WaitForFileLocksMaxTimeOut,
 									PackageFolder = deployComponentConsoleApplication.PackageFolder,
 									DeployToSubfolder = deployComponentConsoleApplication.DeployToSubfolder,
+									DeployToSubfolderIconFileName = deployComponentConsoleApplication.DeployToSubfolderIconFileName,
 									ConsoleApplicationExe = deployComponentConsoleApplication.ConsoleApplicationExe,
 									ExcludeFiles = deployComponentConsoleApplication.ExcludeFiles,
 									ExecuteConsoleApplicationAfterInstall = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstall,
@@ -126,6 +127,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 									WaitForFileLocksMaxTimeOut = deployComponentWebSite.WaitForFileLocksMaxTimeOut,
 									PackageFolder = deployComponentWebSite.PackageFolder,
 									DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
+									DeployToSubfolderIconFileName = deployComponentWebSite.DeployToSubfolderIconFileName,
 									ExcludeFiles = deployComponentWebSite.ExcludeFiles,
 								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
 
@@ -143,6 +145,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 									WaitForFileLocksMaxTimeOut = deployComponentWindowsService.WaitForFileLocksMaxTimeOut,
 									PackageFolder = deployComponentWindowsService.PackageFolder,
 									DeployToSubfolder = deployComponentWindowsService.DeployToSubfolder,
+									DeployToSubfolderIconFileName = deployComponentWindowsService.DeployToSubfolderIconFileName,
 									WindowsServiceExe = deployComponentWindowsService.WindowsServiceExe,
 									ExcludeFiles = deployComponentWindowsService.ExcludeFiles,
 									UninstallIfInstalled = deployComponentWindowsService.UninstallIfInstalled,
