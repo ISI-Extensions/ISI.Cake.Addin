@@ -23,11 +23,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public class UpdateServicesManagerRequest : IWarmUpWebService
 	{
-		[Obsolete("use ServicesManagerUri instead")]
-		public string ServicesManagerUrl  { set => ServicesManagerUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
 		public Uri ServicesManagerUri { get; set; }
-
-		public string Password { set => ServicesManagerApiKey = value; }
 		public string ServicesManagerApiKey { get; set; }
 
 		public int VerificationWaitInSeconds { get; set; } = 90;

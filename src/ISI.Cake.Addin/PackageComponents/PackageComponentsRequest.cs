@@ -36,10 +36,6 @@ namespace ISI.Cake.Addin.PackageComponents
 		public string PackageFullName { get; set; }
 		public string PackageName { get; set; }
 
-		[Obsolete("use PackageBuildDateTimeStampVersion instead")]
-		public string PackageVersion { set => (PackageBuildDateTimeStampVersion ??= new ISI.Extensions.Scm.DateTimeStampVersion()).Version = (string.IsNullOrWhiteSpace(value) ? null : new Version(value)); }
-		[Obsolete("use PackageBuildDateTimeStampVersion instead")]
-		public string PackageBuildDateTimeStamp { set => (PackageBuildDateTimeStampVersion ??= new ISI.Extensions.Scm.DateTimeStampVersion()).DateTimeStamp =  new(value); }
 		public ISI.Extensions.Scm.DateTimeStampVersion PackageBuildDateTimeStampVersion { get; set; }
 
 		public ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }

@@ -23,12 +23,11 @@ namespace ISI.Cake.Addin.FileStore
 {
 	public class UploadFileRequest : IWarmUpWebService
 	{
-		[Obsolete("use FileStoreUri instead")]
-		public string FileStoreUrl  { set => FileStoreUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
 		public Uri FileStoreUri { get; set; }
 		
 		public string UserName { get; set; }
 		public string Password { get; set; }
+
 		public string Version { get; set; }
 		public Guid FileStoreUuid { get; set; }
 		public string FileName { get; set; }
