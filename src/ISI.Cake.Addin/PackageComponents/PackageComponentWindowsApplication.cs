@@ -23,11 +23,11 @@ namespace ISI.Cake.Addin.PackageComponents
 	{
 		public string ProjectFullName { get; set; }
 		
-		public string IconFullName { get; set; }
+		public string IconFileName { get; set; }
 
 		public bool DoNotXmlTransformConfigs { get; set; }
 
-		public List<string> ExcludeFiles { get; set; } = new List<string>(new[]
+		public List<string> ExcludeFiles { get; set; } = new(new[]
 		{
 			"*.xml",
 			"T4LocalContent",

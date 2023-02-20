@@ -42,7 +42,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public string CodeSigningCertificateTokenContainerName { get; set; }
 		public string CodeSigningCertificateTokenPassword { get; set; }
 
-		public Uri TimeStampUri { get; set; } = new Uri("http://timestamp.digicert.com");
+		public Uri TimeStampUri { get; set; } = new("http://timestamp.digicert.com");
 		public CodeSigningDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
 
 		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }

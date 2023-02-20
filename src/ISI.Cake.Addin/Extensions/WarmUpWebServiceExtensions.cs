@@ -22,7 +22,7 @@ namespace ISI.Cake.Addin.Extensions
 {
 	public static class WarmUpWebServiceExtensions
 	{
-		public static readonly HashSet<string> WarmedUpWebServiceHosts = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+		public static readonly HashSet<string> WarmedUpWebServiceHosts = new(StringComparer.InvariantCultureIgnoreCase);
 
 		public static void WarmUpWebService(this IWarmUpWebService request, global::Cake.Core.Diagnostics.ICakeLog log)
 		{

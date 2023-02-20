@@ -29,6 +29,6 @@ namespace ISI.Cake.Addin.PackageComponents
 
 		public string PackageNameExtension { get; set; } = "zip";
 
-		public TimeSpan OlderThen { get; set; } = new TimeSpan(7, 0, 0, 0);
+		public TimeSpan OlderThen { get; set; } = new(7, 0, 0, 0);
 	}
 }

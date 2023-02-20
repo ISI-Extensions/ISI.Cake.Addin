@@ -60,7 +60,7 @@ namespace ISI.Cake.Addin.PackageComponents
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentConsoleApplication()
 							{
 								ProjectFullName = packageComponentConsoleApplication.ProjectFullName,
-								IconFullName = packageComponentConsoleApplication.IconFullName,
+								IconFileName = packageComponentConsoleApplication.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentConsoleApplication.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentConsoleApplication.ExcludeFiles,
 								AfterBuildPackageComponent = packageComponentDirectory => packageComponentConsoleApplication.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
@@ -69,7 +69,7 @@ namespace ISI.Cake.Addin.PackageComponents
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWebSite()
 							{
 								ProjectFullName = packageComponentWebSite.ProjectFullName,
-								IconFullName = packageComponentWebSite.IconFullName,
+								IconFileName = packageComponentWebSite.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentWebSite.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentWebSite.ExcludeFiles,
 								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWebSite.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
@@ -78,7 +78,7 @@ namespace ISI.Cake.Addin.PackageComponents
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWindowsApplication()
 							{
 								ProjectFullName = packageComponentWindowsApplication.ProjectFullName,
-								IconFullName = packageComponentWindowsApplication.IconFullName,
+								IconFileName = packageComponentWindowsApplication.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentWindowsApplication.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentWindowsApplication.ExcludeFiles,
 								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWindowsApplication.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
@@ -87,7 +87,7 @@ namespace ISI.Cake.Addin.PackageComponents
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWindowsService()
 							{
 								ProjectFullName = packageComponentWindowsService.ProjectFullName,
-								IconFullName = packageComponentWindowsService.IconFullName,
+								IconFileName = packageComponentWindowsService.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentWindowsService.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentWindowsService.ExcludeFiles,
 								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWindowsService.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
