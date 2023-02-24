@@ -39,7 +39,7 @@ namespace ISI.Cake.Addin.CodeSigning
 					VsixPaths = signVsixesUsingSettingsRequest.VsixPaths,
 					OutputDirectory = signVsixesUsingSettingsRequest.OutputDirectory,
 					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceUrl),
-					RemoteCodeSigningServicePassword = signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServicePassword,
+					RemoteCodeSigningServiceApiKey = signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServicePassword,
 					CodeSigningCertificateTokenCertificateFileName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
@@ -83,12 +83,12 @@ namespace ISI.Cake.Addin.CodeSigning
 			}
 			else
 			{
-				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-				remoteCodeSigningApi.SignVsixes(new ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.SignVsixesRequest()
+				remoteCodeSigningApi.SignVsixes(new ISI.Services.SCM.RemoteCodeSigning.Rest.DataTransferObjects.RemoteCodeSigningApi.SignVsixesRequest()
 				{
-					RemoteCodeSigningServiceUrl = signVsixesRequest.RemoteCodeSigningServiceUri.ToString(),
-					RemoteCodeSigningServicePassword = signVsixesRequest.RemoteCodeSigningServicePassword,
+					RemoteCodeSigningServiceUri = signVsixesRequest.RemoteCodeSigningServiceUri,
+					RemoteCodeSigningServiceApiKey = signVsixesRequest.RemoteCodeSigningServiceApiKey,
 					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = signVsixesRequest.OverwriteAnyExistingSignature,

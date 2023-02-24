@@ -39,7 +39,7 @@ namespace ISI.Cake.Addin.CodeSigning
 					NupkgPaths = signNupkgsUsingSettingsRequest.NupkgPaths,
 					OutputDirectory = signNupkgsUsingSettingsRequest.OutputDirectory,
 					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceUrl),
-					RemoteCodeSigningServicePassword = signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServicePassword,
+					RemoteCodeSigningServiceApiKey = signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServicePassword,
 					CodeSigningCertificateTokenCertificateFileName = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
@@ -84,12 +84,12 @@ namespace ISI.Cake.Addin.CodeSigning
 			}
 			else
 			{
-				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-				remoteCodeSigningApi.SignNupkgs(new ISI.Services.SCM.RemoteCodeSigning.DataTransferObjects.RemoteCodeSigningApi.SignNupkgsRequest()
+				remoteCodeSigningApi.SignNupkgs(new ISI.Services.SCM.RemoteCodeSigning.Rest.DataTransferObjects.RemoteCodeSigningApi.SignNupkgsRequest()
 				{
-					RemoteCodeSigningServiceUrl = signNupkgsRequest.RemoteCodeSigningServiceUri.ToString(),
-					RemoteCodeSigningServicePassword = signNupkgsRequest.RemoteCodeSigningServicePassword,
+					RemoteCodeSigningServiceUri = signNupkgsRequest.RemoteCodeSigningServiceUri,
+					RemoteCodeSigningServiceApiKey = signNupkgsRequest.RemoteCodeSigningServiceApiKey,
 					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = signNupkgsRequest.OverwriteAnyExistingSignature,

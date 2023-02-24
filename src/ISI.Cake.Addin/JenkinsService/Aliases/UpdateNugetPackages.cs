@@ -34,13 +34,14 @@ namespace ISI.Cake.Addin.JenkinsService
 
 			var response = new UpdateNugetPackagesResponse();
 
-			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.Rest.JenkinsServiceApi(logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.Rest.JenkinsServiceApi(null, logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			jenkinsServiceApi.UpdateNugetPackages(new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
+			jenkinsServiceApi.UpdateNugetPackages(new ISI.Services.SCM.Jenkins.Rest.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
 			{
+				JenkinsServiceUri = request.JenkinsServiceUri,
+				JenkinsServiceApiKey = request.JenkinsServiceApiKey,
+
 				SettingsFullName = request.SettingsFullName,
-				JenkinsServiceUrl = request.JenkinsServiceUri.ToString(),
-				JenkinsServicePassword = request.JenkinsServicePassword,
 
 				JenkinsUrl = request.JenkinsUrl,
 				JenkinsUserName = request.JenkinsUserName,

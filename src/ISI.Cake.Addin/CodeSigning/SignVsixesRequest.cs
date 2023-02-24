@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public global::Cake.Core.IO.DirectoryPath OutputDirectory { get; set; }
 
 		public Uri RemoteCodeSigningServiceUri { get; set; }
-		public string RemoteCodeSigningServicePassword { get; set; }
+		public string RemoteCodeSigningServiceApiKey { get; set; }
 
 		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
 		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }

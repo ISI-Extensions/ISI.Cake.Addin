@@ -23,11 +23,8 @@ namespace ISI.Cake.Addin.JenkinsService
 {
 	public class UpdateNugetPackagesRequest
 	{
-		[Obsolete("use JenkinsServiceUri instead")]
-		public string JenkinsServiceUrl  { set => JenkinsServiceUri = ISI.Cake.Addin.Aliases.GetNullableUri(null, value); }
 		public Uri JenkinsServiceUri { get; set; }
-
-		public string JenkinsServicePassword { get; set; }
+		public string JenkinsServiceApiKey { get; set; }
 		
 		public string SettingsFullName { get; set; }
 		

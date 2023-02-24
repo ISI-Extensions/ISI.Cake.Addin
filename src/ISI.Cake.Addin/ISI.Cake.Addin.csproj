@@ -25,10 +25,10 @@
     <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8455.28931" />
     <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8455.28931" />
     <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8455.28931" />
-    <PackageReference Include="ISI.Services.SCM.BuildArtifacts.Rest" Version="4.0.8455.36541" />
-    <PackageReference Include="ISI.Services.SCM.Jenkins.Rest" Version="1.0.8450.38733" />
-    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning.Rest" Version="1.0.8445.26747" />
-    <PackageReference Include="ISI.Services.SCM.VsExtensions.Rest" Version="4.0.8455.35347" />
+    <PackageReference Include="ISI.Services.SCM.BuildArtifacts.Rest" Version="4.0.8455.41886" />
+    <PackageReference Include="ISI.Services.SCM.Jenkins.Rest" Version="1.0.8455.41762" />
+    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning.Rest" Version="1.0.8455.39844" />
+    <PackageReference Include="ISI.Services.SCM.VsExtensions.Rest" Version="4.0.8455.41781" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
     <PackageReference Include="NuGet.Frameworks" Version="6.5.0" />
