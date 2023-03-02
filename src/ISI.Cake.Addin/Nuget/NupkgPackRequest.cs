@@ -23,7 +23,9 @@ namespace ISI.Cake.Addin.Nuget
 {
 	public class NupkgPackRequest
 	{
+		public string CsProjFullName { get; set; }
 		public string NuspecFullName { get; set; }
+
 		public string OutputDirectory { get; set; }
 
 		public bool IncludeSymbols { get; set; }
