@@ -33,6 +33,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public ISI.Extensions.Scm.DateTimeStampVersion DateTimeStampVersion { get; set; }
 
 		public int MaxTries { get; set; } = 3;
+		public int MaxUploadSize { get; set; } = 30000000;
 
 		Uri IWarmUpWebService.WebServiceUri => BuildArtifactsApiUri;
 		public bool WarmUpWebService { get; } = true;

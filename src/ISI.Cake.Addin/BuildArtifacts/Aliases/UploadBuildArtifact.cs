@@ -41,6 +41,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				BuildArtifactName = request.BuildArtifactName,
 				DateTimeStampVersion = request.DateTimeStampVersion,
 				MaxTries = request.MaxTries,
+				MaxUploadSize = request.MaxUploadSize,
 			});
 
 			return response;
