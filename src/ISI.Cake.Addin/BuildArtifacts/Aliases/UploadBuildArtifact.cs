@@ -32,17 +32,27 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
-			
-			buildArtifactsApi.UploadBuildArtifact(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactFileRequest()
+
+			var uploadBuildArtifactRequest = new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactFileRequest()
 			{
 				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactFileName = request.SourceFileName,
 				BuildArtifactName = request.BuildArtifactName,
 				DateTimeStampVersion = request.DateTimeStampVersion,
-				MaxTries = request.MaxTries,
-				MaxUploadSize = request.MaxUploadSize,
-			});
+			};
+
+			if (request.MaxTries.HasValue)
+			{
+				uploadBuildArtifactRequest.MaxTries = request.MaxTries.Value;
+			}
+
+			if (request.MaxUploadSize.HasValue)
+			{
+				uploadBuildArtifactRequest.MaxUploadSize = request.MaxUploadSize.Value;
+			}
+
+			buildArtifactsApi.UploadBuildArtifact(uploadBuildArtifactRequest);
 
 			return response;
 		}
