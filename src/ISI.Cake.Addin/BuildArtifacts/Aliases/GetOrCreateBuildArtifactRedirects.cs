@@ -20,6 +20,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using LogLevel = Cake.Core.Diagnostics.LogLevel;
+using Verbosity = Cake.Core.Diagnostics.Verbosity;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
@@ -41,8 +43,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				BuildArtifactNames = new[] { request.BuildArtifactName },
 			}).BuildArtifactRedirects.ToNullCheckedArray(NullCheckCollectionResult.Empty);
 
-			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment));
-			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment));
+			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
+			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
 
 			var modifiedBuildArtifactRedirects = new List<ISI.Services.SCM.BuildArtifacts.IBuildArtifactRedirect>();
 
