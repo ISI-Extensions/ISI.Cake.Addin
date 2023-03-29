@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
-using ISI.Extensions.Telephony.Calls.VoiceCommands;
+using WindowsDeploymentApiDTOs = ISI.Services.WindowsDeploymentAgent.DataTransferObjects.WindowsDeploymentApi;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
@@ -43,7 +43,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			if (!string.IsNullOrWhiteSpace(request.BuildArtifactDateTimeStampVersionUrl))
 			{
-				toVersion = new ISI.Extensions.Scm.DateTimeStampVersion(request.ToDateTimeStamp)?.Version?.ToString() ?? string.Empty;
+				toVersion = new ISI.Extensions.Scm.DateTimeStampVersion(request.ToDateTimeStampVersion?.ToString())?.Version?.ToString() ?? string.Empty;
 
 				if (string.IsNullOrWhiteSpace(toVersion))
 				{
@@ -73,19 +73,18 @@ namespace ISI.Cake.Addin.DeploymentManager
 			}
 			else
 			{
-				var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
+				var deploymentManagerApi = new ISI.Services.WindowsDeploymentAgent.Rest.WindowsDeploymentApi(null, new CakeContextLogger(cakeContext));
 
-				var deployArtifactResponse = deploymentManagerApi.DeployArtifact(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployArtifactRequest()
+				var deployArtifactResponse = deploymentManagerApi.DeployArtifact(new()
 				{
-					ServicesManagerUrl = request.ServicesManagerUri.ToString(),
-					ServicesManagerApiKey = request.ServicesManagerApiKey,
-					BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
+					WindowsDeploymentApiUri = request.WindowsDeploymentApiUri,
+					WindowsDeploymentApiKey = request.WindowsDeploymentApiKey,
+					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 					BuildArtifactName = request.BuildArtifactName,
-					ArtifactDateTimeStampVersionUrl = request.BuildArtifactDateTimeStampVersionUrl,
-					ArtifactDownloadUrl = request.BuildArtifactDownloadUrl,
-					ToDateTimeStamp = request.ToDateTimeStamp,
-					FromEnvironment = request.FromEnvironment,
+					BuildArtifactDateTimeStampVersionUrl = request.BuildArtifactDateTimeStampVersionUrl,
+					BuildArtifactDownloadUrl = request.BuildArtifactDownloadUrl,
+					ToDateTimeStampVersion = request.ToDateTimeStampVersion,
 					ToEnvironment = request.ToEnvironment,
 					ConfigurationKey = request.ConfigurationKey,
 					Components = request.Components.ToNullCheckedArray(component =>
@@ -93,7 +92,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 						switch (component)
 						{
 							case DeployComponentConsoleApplication deployComponentConsoleApplication:
-								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentConsoleApplication()
+								return new WindowsDeploymentApiDTOs.DeployComponentConsoleApplication()
 								{
 									PauseComponentUrl = deployComponentConsoleApplication.PauseComponentUrl,
 									CheckComponentCanDeployStatusUrl = deployComponentConsoleApplication.CheckComponentCanDeployStatusUrl,
@@ -108,13 +107,13 @@ namespace ISI.Cake.Addin.DeploymentManager
 									DeployToSubfolder = deployComponentConsoleApplication.DeployToSubfolder,
 									DeployToSubfolderIconFileName = deployComponentConsoleApplication.DeployToSubfolderIconFileName,
 									ConsoleApplicationExe = deployComponentConsoleApplication.ConsoleApplicationExe,
-									ExcludeFiles = deployComponentConsoleApplication.ExcludeFiles,
+									ExcludeFileNames = deployComponentConsoleApplication.ExcludeFileNames.ToNullCheckedArray(),
 									ExecuteConsoleApplicationAfterInstall = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstall,
 									ExecuteConsoleApplicationAfterInstallArguments = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstallArguments,
-								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+								} as WindowsDeploymentApiDTOs.IDeployComponent;
 
 							case DeployComponentWebSite deployComponentWebSite:
-								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWebSite()
+								return new WindowsDeploymentApiDTOs.DeployComponentWebSite()
 								{
 									PauseComponentUrl = deployComponentWebSite.PauseComponentUrl,
 									CheckComponentCanDeployStatusUrl = deployComponentWebSite.CheckComponentCanDeployStatusUrl,
@@ -128,11 +127,11 @@ namespace ISI.Cake.Addin.DeploymentManager
 									PackageFolder = deployComponentWebSite.PackageFolder,
 									DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
 									DeployToSubfolderIconFileName = deployComponentWebSite.DeployToSubfolderIconFileName,
-									ExcludeFiles = deployComponentWebSite.ExcludeFiles,
-								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+									ExcludeFileNames = deployComponentWebSite.ExcludeFileNames.ToNullCheckedArray(),
+								} as WindowsDeploymentApiDTOs.IDeployComponent;
 
 							case DeployComponentWindowsService deployComponentWindowsService:
-								return new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployComponentWindowsService()
+								return new WindowsDeploymentApiDTOs.DeployComponentWindowsService()
 								{
 									PauseComponentUrl = deployComponentWindowsService.PauseComponentUrl,
 									CheckComponentCanDeployStatusUrl = deployComponentWindowsService.CheckComponentCanDeployStatusUrl,
@@ -147,9 +146,37 @@ namespace ISI.Cake.Addin.DeploymentManager
 									DeployToSubfolder = deployComponentWindowsService.DeployToSubfolder,
 									DeployToSubfolderIconFileName = deployComponentWindowsService.DeployToSubfolderIconFileName,
 									WindowsServiceExe = deployComponentWindowsService.WindowsServiceExe,
-									ExcludeFiles = deployComponentWindowsService.ExcludeFiles,
+									ExcludeFileNames = deployComponentWindowsService.ExcludeFileNames.ToNullCheckedArray(),
 									UninstallIfInstalled = deployComponentWindowsService.UninstallIfInstalled,
-								} as ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.IDeployComponent;
+									ReverseProxySiteConfiguration = deployComponentWindowsService.ReverseProxySiteConfiguration.NullCheckedConvert(reverseProxySiteConfiguration =>
+									{
+										switch (reverseProxySiteConfiguration)
+										{
+											case ReverseProxyNginxSiteConfiguration reverseProxyNginxSiteConfiguration:
+												return new WindowsDeploymentApiDTOs.ReverseProxyNginxSiteConfiguration()
+												{
+													ConfigurationName = reverseProxyNginxSiteConfiguration.ConfigurationName,
+													Servers = reverseProxyNginxSiteConfiguration.Servers.ToNullCheckedArray(server => new WindowsDeploymentApiDTOs.ReverseProxyNginxSiteConfigurationServer()
+													{
+														Port = server.Port,
+														SslConfigurationName = server.SslConfigurationName,
+														ServerName = server.ServerName,
+														Locations = server.Locations.ToNullCheckedArray(location => new WindowsDeploymentApiDTOs.ReverseProxyNginxSiteConfigurationServerLocation()
+														{
+															Path = location.Path,
+															ServerLocationTemplateName = location.ServerLocationTemplateName,
+															ServerLocationTemplateKeyValues = location.ServerLocationTemplateKeyValues,
+															Directives = location.Directives.ToNullCheckedArray(),
+														}),
+													})
+												};
+
+											default:
+												throw new ArgumentOutOfRangeException(nameof(reverseProxySiteConfiguration));
+										}
+									})
+,
+								} as WindowsDeploymentApiDTOs.IDeployComponent;
 
 							default:
 								throw new ArgumentOutOfRangeException(nameof(component));
@@ -160,10 +187,10 @@ namespace ISI.Cake.Addin.DeploymentManager
 				});
 
 				applicationIsInUse = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => deployComponentResponse.InUse);
-				wouldNotStart = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => (deployComponentResponse is ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.DeployWindowsServiceResponse deployWindowsServiceResponse) && deployWindowsServiceResponse.WouldNotStart);
+				wouldNotStart = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => (deployComponentResponse is WindowsDeploymentApiDTOs.DeployComponentWindowsServiceResponse deployComponentWindowsServiceResponse) && deployComponentWindowsServiceResponse.WouldNotStart);
 				versionIsAlreadyDeployed = deployArtifactResponse.DeployComponentResponses.NullCheckedAny(deployComponentResponse => deployComponentResponse.SameVersion);
 
-				response.Success = deployArtifactResponse.Success;
+				response.Success = deployArtifactResponse.DeployComponentResponses.NullCheckedAll(deployComponentResponse => deployComponentResponse.Success);
 			}
 
 			if (applicationIsInUse)

@@ -33,6 +33,6 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string PackageFolder { get; set; }
 		public string DeployToSubfolder { get; set; }
 		public string DeployToSubfolderIconFileName { get; set; }
-		public IEnumerable<string> ExcludeFiles { get; set; }
+		public IEnumerable<string> ExcludeFileNames { get; set; }
 	}
 }

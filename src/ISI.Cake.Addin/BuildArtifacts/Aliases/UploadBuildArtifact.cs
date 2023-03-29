@@ -47,11 +47,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				uploadBuildArtifactRequest.MaxTries = request.MaxTries.Value;
 			}
 
-			if (request.MaxUploadSize.HasValue)
-			{
-				uploadBuildArtifactRequest.MaxUploadSize = request.MaxUploadSize.Value;
-			}
-
 			buildArtifactsApi.UploadBuildArtifact(uploadBuildArtifactRequest);
 
 			return response;

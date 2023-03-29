@@ -31,12 +31,12 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			request.WarmUpWebService(cakeContext.Log);
 
-			var deploymentManagerApi = new ISI.Extensions.Scm.DeploymentManagerApi(new CakeContextLogger(cakeContext));
+			var deploymentManagerApi = new ISI.Services.WindowsDeploymentAgent.Rest.WindowsDeploymentApi(null, new CakeContextLogger(cakeContext));
 
-			var apiResponse = deploymentManagerApi.UpdateServicesManager(new ISI.Extensions.Scm.DataTransferObjects.DeploymentManagerApi.UpdateServicesManagerRequest()
+			var apiResponse = deploymentManagerApi.UpdateService(new ()
 			{
-				ServicesManagerUrl = request.ServicesManagerUri.ToString(),
-				ServicesManagerApiKey = request.ServicesManagerApiKey,
+				WindowsDeploymentApiUri = request.WindowsDeploymentApiUri,
+				WindowsDeploymentApiKey = request.WindowsDeploymentApiKey,
 
 				VerificationWaitInSeconds = request.VerificationWaitInSeconds,
 				VerificationMaxTries = request.VerificationMaxTries,

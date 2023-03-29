@@ -34,7 +34,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string DeployToSubfolder { get; set; }
 		public string DeployToSubfolderIconFileName { get; set; }
 		public string ConsoleApplicationExe { get; set; }
-		public IEnumerable<string> ExcludeFiles { get; set; }
+		public IEnumerable<string> ExcludeFileNames { get; set; }
 		public bool ExecuteConsoleApplicationAfterInstall { get; set; }
 		public string ExecuteConsoleApplicationAfterInstallArguments { get; set; }
 	}

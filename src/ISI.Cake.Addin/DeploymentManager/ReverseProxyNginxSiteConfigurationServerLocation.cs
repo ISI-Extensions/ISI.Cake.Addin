@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 /*
 Copyright (c) 2023, Integrated Solutions, Inc.
 All rights reserved.
@@ -15,27 +15,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public class DeployComponentWindowsService : IDeployComponent
+	public class ReverseProxyNginxSiteConfigurationServerLocation
 	{
-		public string PauseComponentUrl { get; set; }
-		public string CheckComponentCanDeployStatusUrl { get; set; }
-		public TimeSpan? CheckComponentCanDeployStatusInterval { get; set; }
-		public TimeSpan? CheckComponentCanDeployStatusTimeout { get; set; }
-		public int? CheckComponentCanDeployStatusHttpStatus { get; set; }
-		public string CheckComponentCanDeployStatusJsonPath { get; set; }
-		public string CheckComponentCanDeployStatusJsonPathValue { get; set; }
-		public string CheckComponentCanDeployStatusCommentJsonPath { get; set; }
-		public TimeSpan? WaitForFileLocksMaxTimeOut { get; set; }
-		public string PackageFolder { get; set; }
-		public string DeployToSubfolder { get; set; }
-		public string DeployToSubfolderIconFileName { get; set; }
-		public string WindowsServiceExe { get; set; }
-		public IEnumerable<string> ExcludeFileNames { get; set; }
-		public bool UninstallIfInstalled { get; set; }
-		public IReverseProxySiteConfiguration ReverseProxySiteConfiguration { get; set; }
+		public string Path { get; set; }
+
+		public string ServerLocationTemplateName { get; set; }
+		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> ServerLocationTemplateKeyValues { get; set; } = new ();
+
+		public string[] Directives { get; set; }
 	}
 }

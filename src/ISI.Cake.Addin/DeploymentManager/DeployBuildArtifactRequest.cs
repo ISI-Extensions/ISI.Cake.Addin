@@ -23,8 +23,13 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public class DeployBuildArtifactRequest : IWarmUpWebService
 	{
-		public Uri ServicesManagerUri { get; set; }
-		public string ServicesManagerApiKey { get; set; }
+		[Obsolete("Use WindowsDeploymentApiUri instead")]
+		public Uri ServicesManagerUri { get => WindowsDeploymentApiUri; set => WindowsDeploymentApiUri = value; }
+		[Obsolete("Use WindowsDeploymentApiKey instead")]
+		public string ServicesManagerApiKey { get => WindowsDeploymentApiKey; set => WindowsDeploymentApiKey = value; }
+
+		public Uri WindowsDeploymentApiUri { get; set; }
+		public string WindowsDeploymentApiKey { get; set; }
 
 		public Uri BuildArtifactsApiUri { get; set; }
 		public string BuildArtifactsApiKey { get; set; }
@@ -34,7 +39,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string BuildArtifactDateTimeStampVersionUrl { get; set; }
 		public string BuildArtifactDownloadUrl { get; set; }
 
-		public ISI.Extensions.Scm.DateTimeStampVersion ToDateTimeStamp { get; set; }
+		public ISI.Extensions.Scm.DateTimeStampVersion ToDateTimeStampVersion { get; set; }
 		public string FromEnvironment { get; set; }
 		public string ToEnvironment { get; set; }
 		public string ConfigurationKey { get; set; }
