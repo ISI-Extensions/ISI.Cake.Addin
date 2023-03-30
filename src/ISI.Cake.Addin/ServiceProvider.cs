@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Text;
 using ISI.Extensions.ConfigurationHelper.Extensions;
 using ISI.Extensions.DependencyInjection.Extensions;
+using ISI.Extensions.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -68,6 +69,10 @@ namespace ISI.Cake.Addin
 					;
 
 				var serviceProvider = services.BuildServiceProvider<ISI.Extensions.DependencyInjection.Iunq.ServiceProviderBuilder>(configuration);
+
+				var serializationConfiguration = serviceProvider.GetService<ISI.Extensions.Serialization.Configuration>();
+				serializationConfiguration.DefaultDataContractSerializerType = typeof(ISI.Extensions.JsonSerialization.Newtonsoft.NewtonsoftJsonSerializer).AssemblyQualifiedNameWithoutVersion();
+				serializationConfiguration.DefaultSerializerType = typeof(ISI.Extensions.JsonSerialization.Newtonsoft.NewtonsoftJsonSerializer).AssemblyQualifiedNameWithoutVersion();
 
 				serviceProvider.SetServiceLocator();
 

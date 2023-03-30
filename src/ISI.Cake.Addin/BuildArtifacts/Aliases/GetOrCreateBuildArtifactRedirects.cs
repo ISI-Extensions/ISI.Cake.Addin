@@ -20,8 +20,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
-using LogLevel = Cake.Core.Diagnostics.LogLevel;
-using Verbosity = Cake.Core.Diagnostics.Verbosity;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {

@@ -23,11 +23,6 @@ namespace ISI.Cake.Addin.DeploymentManager
 {
 	public class UpdateServicesManagerRequest : IWarmUpWebService
 	{
-		[Obsolete("Use WindowsDeploymentApiUri instead")]
-		public Uri ServicesManagerUri { get => WindowsDeploymentApiUri; set => WindowsDeploymentApiUri = value; }
-		[Obsolete("Use WindowsDeploymentApiKey instead")]
-		public string ServicesManagerApiKey { get => WindowsDeploymentApiKey; set => WindowsDeploymentApiKey = value; }
-
 		public Uri WindowsDeploymentApiUri { get; set; }
 		public string WindowsDeploymentApiKey { get; set; }
 
@@ -41,7 +36,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = false;
 		public bool ThrowExceptionWhenWouldNotStart { get; set; } = true;
 
-		Uri IWarmUpWebService.WebServiceUri => ServicesManagerUri;
+		Uri IWarmUpWebService.WebServiceUri => WindowsDeploymentApiUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
