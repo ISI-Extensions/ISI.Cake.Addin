@@ -29,8 +29,8 @@
     <PackageReference Include="ISI.Services.SCM.Jenkins.Rest" Version="1.0.8459.6198" />
     <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning.Rest" Version="1.0.8477.26752" />
     <PackageReference Include="ISI.Services.SCM.VsExtensions.Rest" Version="4.0.8488.31156" />
-    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.8489.32030" />
-    <PackageReference Include="ISI.Services.WindowsDeploymentAgent.Rest" Version="4.0.8489.32030" />
+    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.8489.32312" />
+    <PackageReference Include="ISI.Services.WindowsDeploymentAgent.Rest" Version="4.0.8489.32312" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
     <PackageReference Include="NuGet.Frameworks" Version="6.5.0" />
