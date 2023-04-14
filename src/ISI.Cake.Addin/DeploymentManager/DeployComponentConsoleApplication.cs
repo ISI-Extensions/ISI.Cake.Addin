@@ -30,6 +30,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public string CheckComponentCanDeployStatusJsonPathValue { get; set; }
 		public string CheckComponentCanDeployStatusCommentJsonPath { get; set; }
 		public TimeSpan? WaitForFileLocksMaxTimeOut { get; set; }
+		public string PreDeploymentUrl { get; set; }
 		public string PackageFolder { get; set; }
 		public string DeployToSubfolder { get; set; }
 		public string DeployToSubfolderIconFileName { get; set; }
@@ -37,5 +38,6 @@ namespace ISI.Cake.Addin.DeploymentManager
 		public IEnumerable<string> ExcludeFileNames { get; set; }
 		public bool ExecuteConsoleApplicationAfterInstall { get; set; }
 		public string ExecuteConsoleApplicationAfterInstallArguments { get; set; }
+		public string PostDeploymentUrl { get; set; }
 	}
 }

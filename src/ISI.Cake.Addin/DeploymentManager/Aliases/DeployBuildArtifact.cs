@@ -103,6 +103,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 									CheckComponentCanDeployStatusJsonPathValue = deployComponentConsoleApplication.CheckComponentCanDeployStatusJsonPathValue,
 									CheckComponentCanDeployStatusCommentJsonPath = deployComponentConsoleApplication.CheckComponentCanDeployStatusCommentJsonPath,
 									WaitForFileLocksMaxTimeOut = deployComponentConsoleApplication.WaitForFileLocksMaxTimeOut,
+									PreDeploymentUrl = deployComponentConsoleApplication.PreDeploymentUrl,
 									PackageFolder = deployComponentConsoleApplication.PackageFolder,
 									DeployToSubfolder = deployComponentConsoleApplication.DeployToSubfolder,
 									DeployToSubfolderIconFileName = deployComponentConsoleApplication.DeployToSubfolderIconFileName,
@@ -110,6 +111,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 									ExcludeFileNames = deployComponentConsoleApplication.ExcludeFileNames.ToNullCheckedArray(),
 									ExecuteConsoleApplicationAfterInstall = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstall,
 									ExecuteConsoleApplicationAfterInstallArguments = deployComponentConsoleApplication.ExecuteConsoleApplicationAfterInstallArguments,
+									PostDeploymentUrl = deployComponentConsoleApplication.PostDeploymentUrl,
 								} as WindowsDeploymentApiDTOs.IDeployComponent;
 
 							case DeployComponentWebSite deployComponentWebSite:
@@ -124,10 +126,12 @@ namespace ISI.Cake.Addin.DeploymentManager
 									CheckComponentCanDeployStatusJsonPathValue = deployComponentWebSite.CheckComponentCanDeployStatusJsonPathValue,
 									CheckComponentCanDeployStatusCommentJsonPath = deployComponentWebSite.CheckComponentCanDeployStatusCommentJsonPath,
 									WaitForFileLocksMaxTimeOut = deployComponentWebSite.WaitForFileLocksMaxTimeOut,
+									PreDeploymentUrl = deployComponentWebSite.PreDeploymentUrl,
 									PackageFolder = deployComponentWebSite.PackageFolder,
 									DeployToSubfolder = deployComponentWebSite.DeployToSubfolder,
 									DeployToSubfolderIconFileName = deployComponentWebSite.DeployToSubfolderIconFileName,
 									ExcludeFileNames = deployComponentWebSite.ExcludeFileNames.ToNullCheckedArray(),
+									PostDeploymentUrl = deployComponentWebSite.PostDeploymentUrl,
 								} as WindowsDeploymentApiDTOs.IDeployComponent;
 
 							case DeployComponentWindowsService deployComponentWindowsService:
@@ -142,6 +146,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 									CheckComponentCanDeployStatusJsonPathValue = deployComponentWindowsService.CheckComponentCanDeployStatusJsonPathValue,
 									CheckComponentCanDeployStatusCommentJsonPath = deployComponentWindowsService.CheckComponentCanDeployStatusCommentJsonPath,
 									WaitForFileLocksMaxTimeOut = deployComponentWindowsService.WaitForFileLocksMaxTimeOut,
+									PreDeploymentUrl = deployComponentWindowsService.PreDeploymentUrl,
 									PackageFolder = deployComponentWindowsService.PackageFolder,
 									DeployToSubfolder = deployComponentWindowsService.DeployToSubfolder,
 									DeployToSubfolderIconFileName = deployComponentWindowsService.DeployToSubfolderIconFileName,
@@ -174,8 +179,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 											default:
 												throw new ArgumentOutOfRangeException(nameof(reverseProxySiteConfiguration));
 										}
-									})
-,
+									}),
+									PostDeploymentUrl = deployComponentWindowsService.PostDeploymentUrl,
 								} as WindowsDeploymentApiDTOs.IDeployComponent;
 
 							default:
