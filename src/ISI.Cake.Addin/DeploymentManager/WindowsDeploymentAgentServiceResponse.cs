@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public class UpdateServicesManagerResponse
+	public class WindowsDeploymentAgentServiceResponse
 	{
 		public string CurrentVersion { get; set; }
 		public string Log { get; set; }

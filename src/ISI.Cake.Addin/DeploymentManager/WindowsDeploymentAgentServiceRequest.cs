@@ -12,57 +12,32 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
-
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public static partial class Aliases
+	public class WindowsDeploymentAgentServiceRequest : IWarmUpWebService
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static UpdateServicesManagerResponse UpdateServicesManager(this global::Cake.Core.ICakeContext cakeContext, UpdateServicesManagerRequest request)
-		{
-			var response = new UpdateServicesManagerResponse();
+		public Uri WindowsDeploymentApiUri { get; set; }
+		public string WindowsDeploymentApiKey { get; set; }
 
-			request.WarmUpWebService(cakeContext.Log);
+		public string ArtifactDateTimeStampVersionUrl { get; set; }
+		public string ArtifactDownloadUrl { get; set; }
 
-			var deploymentManagerApi = new ISI.Services.WindowsDeploymentAgent.Rest.WindowsDeploymentApi(null, new CakeContextLogger(cakeContext));
+		public int VerificationWaitInSeconds { get; set; } = 90;
+		public int VerificationMaxTries { get; set; } = 10;
+		public int VerificationExceptionSleepForInSeconds { get; set; } = 20;
 
-			var apiResponse = deploymentManagerApi.UpdateService(new ()
-			{
-				WindowsDeploymentApiUri = request.WindowsDeploymentApiUri,
-				WindowsDeploymentApiKey = request.WindowsDeploymentApiKey,
+		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = false;
+		public bool ThrowExceptionWhenWouldNotStart { get; set; } = true;
 
-				VerificationWaitInSeconds = request.VerificationWaitInSeconds,
-				VerificationMaxTries = request.VerificationMaxTries,
-				VerificationExceptionSleepForInSeconds = request.VerificationExceptionSleepForInSeconds,
-
-				ArtifactDateTimeStampVersionUrl = request.ArtifactDateTimeStampVersionUrl,
-				ArtifactDownloadUrl = request.ArtifactDownloadUrl,
-			});
-
-			response.CurrentVersion = apiResponse.CurrentVersion;
-			response.Log = apiResponse.Log;
-			response.NewVersion = apiResponse.NewVersion;
-			response.SameVersion = apiResponse.SameVersion;
-			response.WouldNotStart = apiResponse.WouldNotStart;
-
-			if (response.SameVersion.GetValueOrDefault() && request.ThrowExceptionWhenVersionIsAlreadyDeployed)
-			{
-				throw new Exception("Deployment Failed, Version is already Deployed");
-			}
-
-			if (response.WouldNotStart && request.ThrowExceptionWhenWouldNotStart)
-			{
-				throw new Exception("Deployment Failed, Would Not Start");
-			}
-
-			return response;
-		}
+		Uri IWarmUpWebService.WebServiceUri => WindowsDeploymentApiUri;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }
