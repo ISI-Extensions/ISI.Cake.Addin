@@ -21,12 +21,23 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.DeploymentManager
 {
-	public class WindowsDeploymentAgentServiceResponse
+	public class UpdateWindowsDeploymentAgentServiceRequest : IWarmUpWebService
 	{
-		public string CurrentVersion { get; set; }
-		public string Log { get; set; }
-		public string NewVersion { get; set; }
-		public bool? SameVersion { get; set; }
-		public bool WouldNotStart { get; set; }
+		public Uri WindowsDeploymentApiUri { get; set; }
+		public string WindowsDeploymentApiKey { get; set; }
+
+		public string ArtifactDateTimeStampVersionUrl { get; set; }
+		public string ArtifactDownloadUrl { get; set; }
+
+		public int VerificationWaitInSeconds { get; set; } = 90;
+		public int VerificationMaxTries { get; set; } = 10;
+		public int VerificationExceptionSleepForInSeconds { get; set; } = 20;
+
+		public bool ThrowExceptionWhenVersionIsAlreadyDeployed { get; set; } = false;
+		public bool ThrowExceptionWhenWouldNotStart { get; set; } = true;
+
+		Uri IWarmUpWebService.WebServiceUri => WindowsDeploymentApiUri;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }
