@@ -34,10 +34,10 @@ namespace ISI.Cake.Addin.Svn
 			svnApi.TagAndNote(new ISI.Extensions.Svn.DataTransferObjects.SvnApi.TagAndNoteRequest()
 			{
 				WorkingCopyDirectory = request.WorkingCopyDirectory,
-				Version = request.Version,
+				TagName = request.TagName,
 				DateTimeStamp = request.DateTimeStamp,
 				DateTimeMask = request.DateTimeMask,
-				TryGetExternalVersion = request.TryGetExternalVersion,
+				TryGetExternalTagName = request.TryGetExternalTagName,
 			});
 
 			return response;
