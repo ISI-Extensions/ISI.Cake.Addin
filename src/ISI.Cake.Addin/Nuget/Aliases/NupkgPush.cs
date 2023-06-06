@@ -37,9 +37,6 @@ namespace ISI.Cake.Addin.Nuget
 				NugetApiKey = request.NugetApiKey,
 				RepositoryName = request.RepositoryName,
 				RepositoryUri = request.RepositoryUri,
-				PackageChunksRepositoryUri = request.PackageChunksRepositoryUri,
-				PackageChunksMaxFileSegmentSize = request.PackageChunksMaxFileSegmentSize,
-				PackageChunksMaxTries = request.PackageChunksMaxTries,
 				WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
 			});
 

@@ -23,15 +23,12 @@ namespace ISI.Cake.Addin.Nuget
 	{
 		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
 
+		[Obsolete("Use NugetApiKey")]
 		public string ApiKey { set => NugetApiKey = value; }
 		public string NugetApiKey { get; set; }
 
 		public string RepositoryName { get; set; }
 		
 		public Uri RepositoryUri { get; set; }
-
-		public Uri PackageChunksRepositoryUri { get; set; }
-		public int PackageChunksMaxFileSegmentSize { get; set; } = 2000000;
-		public int PackageChunksMaxTries { get; set; } = 3;
 	}
 }
