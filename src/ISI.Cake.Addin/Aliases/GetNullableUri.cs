@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin
 {
@@ -26,12 +27,7 @@ namespace ISI.Cake.Addin
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static Uri GetNullableUri(this global::Cake.Core.ICakeContext cakeContext, string url)
 		{
-			if (!string.IsNullOrWhiteSpace(url) && Uri.TryCreate(url, UriKind.Absolute, out var uri))
-			{
-				return uri;
-			}
-
-			return null;
+			return url.GetNullableUri();
 		}
 	}
 }
