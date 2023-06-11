@@ -13,64 +13,24 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 #endregion
  
+using Cake.Common.IO;
+using Cake.Common.Solution.Project.Properties;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Cake.Core.Diagnostics;
+using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.Extensions
+namespace ISI.Cake.Addin
 {
-	public static class WarmUpWebServiceExtensions
+	public static partial class Aliases
 	{
-		public static readonly HashSet<string> WarmedUpWebServiceHosts = new(StringComparer.InvariantCultureIgnoreCase);
-
-		public static void WarmUpWebService(this IWarmUpWebService request, global::Cake.Core.Diagnostics.ICakeLog log)
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static void AddIgnoreServerCertificateValidationForSubjectsContaining(this global::Cake.Core.ICakeContext cakeContext, string subject)
 		{
-			ServiceProvider.Initialize();
-
-			if (request.WarmUpWebService)
-			{
-				var webServiceUrls = new[]
-				{
-					(new UriBuilder(request.WebServiceUri) {Query = string.Empty}).Uri.ToString(),
-					(new UriBuilder(request.WebServiceUri) {Path = string.Empty, Query = string.Empty}).Uri.ToString(),
-				};
-
-				foreach (var webServiceUrl in webServiceUrls)
-				{
-					var webServerHost = (new UriBuilder(webServiceUrl)).Host;
-
-					if (!WarmedUpWebServiceHosts.Contains(webServerHost))
-					{
-						log.Write(global::Cake.Core.Diagnostics.Verbosity.Normal, global::Cake.Core.Diagnostics.LogLevel.Information, "Warming up: {0}", webServiceUrl);
-
-						var tryAttemptsLeft = request.WarmUpWebServiceMaxTries;
-						while (tryAttemptsLeft > 0)
-						{
-							try
-							{
-								var restResponse = ISI.Extensions.WebClient.Rest.ExecuteGet<ISI.Extensions.WebClient.Rest.TextResponse>(webServiceUrl, new(), false);
-
-								tryAttemptsLeft = 0;
-							}
-							catch (Exception exception)
-							{
-								log.Error(exception);
-
-								tryAttemptsLeft--;
-								if (tryAttemptsLeft < 0)
-								{
-									throw;
-								}
-
-								System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
-							}
-						}
-
-						WarmedUpWebServiceHosts.Add(webServerHost);
-					}
-				}
-			}
+			ISI.Extensions.WebClient.Rest.AddIgnoreServerCertificateValidationForSubjectsContaining(subject);
 		}
 	}
 }
