@@ -29,7 +29,19 @@ namespace ISI.Cake.Addin
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, string rootAssemblyVersionKey, string buildRevision, string solution = null)
+		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, string rootAssemblyVersionKey, string buildRevision)
+		{
+			return GetAssemblyVersionFiles(cakeContext, rootAssemblyVersionKey, buildRevision, (string)null);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, string rootAssemblyVersionKey, string buildRevision, global::Cake.Core.IO.FilePath solution)
+		{
+			return GetAssemblyVersionFiles(cakeContext, rootAssemblyVersionKey, buildRevision, solution?.MakeAbsolute(cakeContext.Environment).FullPath);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary GetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, string rootAssemblyVersionKey, string buildRevision, string solution)
 		{
 			ServiceProvider.Initialize();
 
