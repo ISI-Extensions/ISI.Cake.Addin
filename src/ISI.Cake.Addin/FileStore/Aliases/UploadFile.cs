@@ -35,7 +35,6 @@ namespace ISI.Cake.Addin.FileStore
 
 			fileStoreApi.UploadFile(new ISI.Extensions.Scm.DataTransferObjects.FileStoreApi.UploadFileRequest()
 			{
-				MaxFileSegmentSize = request.MaxFileSegmentSize,
 				FileStoreUrl = request.FileStoreUri.ToString(),
 				UserName = request.UserName,
 				Password = request.Password,

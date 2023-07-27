@@ -32,8 +32,6 @@ namespace ISI.Cake.Addin.FileStore
 		public Guid FileStoreUuid { get; set; }
 		public string FileName { get; set; }
 
-		public int MaxFileSegmentSize { get; set; } = 2000000;
-
 		Uri IWarmUpWebService.WebServiceUri => FileStoreUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;

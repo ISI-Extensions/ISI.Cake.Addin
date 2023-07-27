@@ -42,6 +42,11 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			response.AuthenticationToken = getAuthenticationTokenResponse.AuthenticationToken;
 
+			if (string.IsNullOrWhiteSpace(response.AuthenticationToken))
+			{
+				throw new Exception("Could not get BuildArtifactsAuthenticationToken");
+			}
+
 			return response;
 		}
 	}
