@@ -15,15 +15,35 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public class GetBuildArtifactsAuthenticationTokenResponse
+	public interface IGetBuildArtifactsApiKeyRequest
 	{
-		public string AuthenticationToken { get; set; }
+
+	}
+
+	[Obsolete("Use GetBuildArtifactsApiKeyRequest")]
+	public class GetBuildArtifactsAuthenticationTokenRequest : GetBuildArtifactsApiKeyRequest
+	{
+	}
+
+	public class GetBuildArtifactsApiKeyRequest : IGetBuildArtifactsApiKeyRequest
+	{
+		public Uri BuildArtifactsApiUri { get; set; }
+
+		public string UserName { get; set; }
+		public string Password { get; set; }
+	}
+
+	public class GetBuildArtifactsApiKeyUsingSettingsActiveDirectoryRequest : IGetBuildArtifactsApiKeyRequest
+	{
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
+	}
+
+	public class GetBuildArtifactsApiKeyUsingSettingsRequest : IGetBuildArtifactsApiKeyRequest
+	{
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

@@ -15,37 +15,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.Nuget
+namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public interface INupkgPushRequest
+	public class GetBuildArtifactsApiKeyResponse
 	{
-		global::Cake.Core.IO.FilePathCollection NupkgPaths { get; }
-	}
+		[Obsolete("Use BuildArtifactsApiKey")]
+		public string AuthenticationToken => BuildArtifactsApiKey;
 
-	public class NupkgPushRequest : INupkgPushRequest
-	{
-		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
-
-		public string NugetApiKey { get; set; }
-
-		public string RepositoryName { get; set; }
-		
-		public Uri RepositoryUri { get; set; }
-	}
-
-	public class NupkgPushUsingSettingsActiveDirectoryRequest : INupkgPushRequest
-	{
-		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
-
-		public ISI.Extensions.Scm.Settings Settings { get; set; }
-	}
-
-	public class NupkgPushUsingSettingsRequest : INupkgPushRequest
-	{
-		public global::Cake.Core.IO.FilePathCollection NupkgPaths { get; set; }
-
-		public ISI.Extensions.Scm.Settings Settings { get; set; }
+		public string BuildArtifactsApiKey { get; set; }
 	}
 }
