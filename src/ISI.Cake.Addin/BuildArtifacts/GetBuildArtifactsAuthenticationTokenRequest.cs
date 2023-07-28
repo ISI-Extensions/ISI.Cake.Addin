@@ -19,11 +19,21 @@ using System.Text;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public class GetBuildArtifactsAuthenticationTokenRequest
+	public interface IGetBuildArtifactsAuthenticationTokenRequest
+	{
+
+	}
+
+	public class GetBuildArtifactsAuthenticationTokenRequest : IGetBuildArtifactsAuthenticationTokenRequest
 	{
 		public Uri BuildArtifactsApiUri { get; set; }
 
 		public string UserName { get; set; }
 		public string Password { get; set; }
+	}
+
+	public class GetBuildArtifactsAuthenticationTokenUsingSettingsRequest : IGetBuildArtifactsAuthenticationTokenRequest
+	{
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

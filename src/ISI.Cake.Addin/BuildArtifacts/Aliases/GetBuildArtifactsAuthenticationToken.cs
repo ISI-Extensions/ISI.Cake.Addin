@@ -26,21 +26,41 @@ namespace ISI.Cake.Addin.BuildArtifacts
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetBuildArtifactsAuthenticationTokenResponse GetBuildArtifactsAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, GetBuildArtifactsAuthenticationTokenRequest request)
+		public static GetBuildArtifactsAuthenticationTokenResponse GetBuildArtifactsAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, IGetBuildArtifactsAuthenticationTokenRequest request)
 		{
 			var response = new GetBuildArtifactsAuthenticationTokenResponse();
 
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var getBuildArtifactsAuthenticationTokenRequest = request as GetBuildArtifactsAuthenticationTokenRequest;
 
-			var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetAuthenticationTokenRequest()
+			if (request is GetBuildArtifactsAuthenticationTokenUsingSettingsRequest getBuildArtifactsAuthenticationTokenUsingSettingsRequest)
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+				if (!string.IsNullOrWhiteSpace(getBuildArtifactsAuthenticationTokenUsingSettingsRequest.Settings.BuildArtifacts.ApiKey))
+				{
+					response.AuthenticationToken = getBuildArtifactsAuthenticationTokenUsingSettingsRequest.Settings.BuildArtifacts.ApiKey;
+				}
 
-				UserName = request.UserName,
-				Password = request.Password,
-			});
+				getBuildArtifactsAuthenticationTokenRequest = new()
+				{
+					BuildArtifactsApiUri = getBuildArtifactsAuthenticationTokenUsingSettingsRequest.Settings.BuildArtifacts.ApiUrl.GetNullableUri(),
+					UserName = getBuildArtifactsAuthenticationTokenUsingSettingsRequest.Settings.BuildArtifacts.UserName,
+					Password = getBuildArtifactsAuthenticationTokenUsingSettingsRequest.Settings.BuildArtifacts.Password,
+				};
+			}
 
-			response.AuthenticationToken = getAuthenticationTokenResponse.AuthenticationToken;
+			if (string.IsNullOrWhiteSpace(response.AuthenticationToken))
+			{
+				var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+
+				var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetAuthenticationTokenRequest()
+				{
+					BuildArtifactsApiUri = getBuildArtifactsAuthenticationTokenRequest.BuildArtifactsApiUri,
+
+					UserName = getBuildArtifactsAuthenticationTokenRequest.UserName,
+					Password = getBuildArtifactsAuthenticationTokenRequest.Password,
+				});
+
+				response.AuthenticationToken = getAuthenticationTokenResponse.AuthenticationToken;
+			}
 
 			if (string.IsNullOrWhiteSpace(response.AuthenticationToken))
 			{
