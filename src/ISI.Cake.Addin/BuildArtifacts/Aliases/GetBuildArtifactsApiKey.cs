@@ -25,13 +25,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
-		[Obsolete("Use GetBuildArtifactsApiKey")]
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetBuildArtifactsApiKeyResponse GetBuildArtifactsAuthenticationToken(this global::Cake.Core.ICakeContext cakeContext, IGetBuildArtifactsApiKeyRequest request)
-		{
-			return GetBuildArtifactsApiKey(cakeContext, request);
-		}
-
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static GetBuildArtifactsApiKeyResponse GetBuildArtifactsApiKey(this global::Cake.Core.ICakeContext cakeContext, IGetBuildArtifactsApiKeyRequest request)
 		{

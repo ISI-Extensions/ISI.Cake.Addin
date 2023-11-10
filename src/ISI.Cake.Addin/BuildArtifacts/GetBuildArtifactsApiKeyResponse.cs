@@ -24,9 +24,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public class GetBuildArtifactsApiKeyResponse
 	{
-		[Obsolete("Use BuildArtifactsApiKey")]
-		public string AuthenticationToken => BuildArtifactsApiKey;
-
 		public string BuildArtifactsApiKey { get; set; }
 	}
 }

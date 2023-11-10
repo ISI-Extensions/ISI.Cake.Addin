@@ -24,11 +24,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 	}
 
-	[Obsolete("Use GetBuildArtifactsApiKeyRequest")]
-	public class GetBuildArtifactsAuthenticationTokenRequest : GetBuildArtifactsApiKeyRequest
-	{
-	}
-
 	public class GetBuildArtifactsApiKeyRequest : IGetBuildArtifactsApiKeyRequest
 	{
 		public Uri BuildArtifactsApiUri { get; set; }

@@ -18,15 +18,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.Svn
+namespace ISI.Cake.Addin.Docker
 {
-	public class TagAndNoteRequest
+	public interface IDockerTagRequest
 	{
-		public string WorkingCopyDirectory { get; set; }
-		public string TagName { get; set; }
-		public DateTime DateTimeStamp { get; set; }
-		public string DateTimeMask { get; set; } = "yyyy/MM/";
-		public ISI.Extensions.Svn.DataTransferObjects.SvnApi.TryGetExternalTagName TryGetExternalTagName { get; set; }
+		string ImageReference { get; set; }
+		string Tag { get; set; }
+	}
+
+	public class DockerTagRequest : IDockerTagRequest
+	{
+		public string ImageReference { get; set; }
+		public string Tag { get; set; }
+
+		public string DockerRegistryDomainName { get; set; }
+	}
+
+	public class DockerTagUsingSettingsRequest : IDockerTagRequest
+	{
+		public string ImageReference { get; set; }
+		public string Tag { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
+
 	}
 }
