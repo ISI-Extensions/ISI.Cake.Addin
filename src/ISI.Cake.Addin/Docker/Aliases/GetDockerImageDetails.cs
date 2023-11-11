@@ -18,11 +18,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerPushResponse
+	public static partial class Aliases
 	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, GetDockerImageDetailsRequest request)
+		{
+			return GetDockerImageDetails(cakeContext, request.Project);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, string project)
+		{
+			var response = new GetDockerImageDetailsResponse();
+
+			var logger = new CakeContextLogger(cakeContext);
+
+			var projectApi = new ISI.Extensions.VisualStudio.ProjectApi(logger);
+
+			var getDockerImageDetailsResponse = projectApi.GetDockerImageDetails(new()
+			{
+				Project = project,
+			});
+
+			response.TargetOperatingSystem = getDockerImageDetailsResponse.TargetOperatingSystem;
+			response.ContainerImageName = getDockerImageDetailsResponse.ContainerImageName;
+			response.ContainerImageTag = getDockerImageDetailsResponse.ContainerImageTag;
+
+			return response;
+		}
 	}
 }

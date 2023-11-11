@@ -22,7 +22,8 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerPushResponse
+	public class GetDockerImageDetailsRequest
 	{
+		public string Project { get; set; }
 	}
 }

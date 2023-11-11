@@ -26,15 +26,17 @@ namespace ISI.Cake.Addin.Docker
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerPushResponse DockerTag(this global::Cake.Core.ICakeContext cakeContext, IDockerTagRequest request)
+		public static DockerTagResponse DockerTag(this global::Cake.Core.ICakeContext cakeContext, IDockerTagRequest request)
 		{
-			var response = new DockerPushResponse();
+			var response = new DockerTagResponse();
 
-			var dockerRegistryDomainName = (request as DockerTagRequest)?.DockerRegistryDomainName ?? (request as DockerTagUsingSettingsRequest)?.Settings.DockerRegistry.DomainName;
+			var dockerRegistryDomainName = (request as IDockerTagUsingDockerRegistryDomainNameRequest)?.DockerRegistryDomainName ?? (request as IDockerTagUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
+			var imageReference = (request as IDockerTagUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageName ?? (request as IDockerTagUsingImageReferenceTagRequest)?.ImageReference ?? string.Empty;
+			var tag = (request as IDockerTagUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageTag ?? (request as IDockerTagUsingImageReferenceTagRequest)?.Tag ?? string.Empty;
 
-			var registryReference = $"{dockerRegistryDomainName}/{request.ImageReference}:{request.Tag}";
+			var registryReference = $"{dockerRegistryDomainName}/{imageReference}:{tag}";
 
-			global::Cake.Docker.DockerAliases.DockerTag(cakeContext, request.ImageReference, registryReference);
+			global::Cake.Docker.DockerAliases.DockerTag(cakeContext, imageReference, registryReference);
 
 			return response;
 		}
