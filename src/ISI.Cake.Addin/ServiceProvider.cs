@@ -33,13 +33,13 @@ namespace ISI.Cake.Addin
 			if (!_isInitialized)
 			{
 				var configurationBuilder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
-				var configuration = configurationBuilder.Build();
+				var configurationRoot = configurationBuilder.Build().ApplyConfigurationValueReaders();
 
 				var services = new Microsoft.Extensions.DependencyInjection.ServiceCollection()
 					.AddOptions()
-					.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(configuration);
+					.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(configurationRoot);
 
-				services.AddAllConfigurations(configuration)
+				services.AddAllConfigurations(configurationRoot)
 
 					//.AddSingleton<Microsoft.Extensions.Logging.ILoggerFactory, Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory>()
 					.AddSingleton<Microsoft.Extensions.Logging.ILoggerFactory, Microsoft.Extensions.Logging.LoggerFactory>()
@@ -64,11 +64,11 @@ namespace ISI.Cake.Addin
 					.AddSingleton<ISI.Extensions.Nuget.NugetApi>()
 					.AddSingleton<ISI.Extensions.VisualStudio.SolutionApi>()
 
-					.AddConfigurationRegistrations(configuration)
-					.ProcessServiceRegistrars()
+					.AddConfigurationRegistrations(configurationRoot)
+					.ProcessServiceRegistrars(configurationRoot)
 					;
 
-				var serviceProvider = services.BuildServiceProvider<ISI.Extensions.DependencyInjection.Iunq.ServiceProviderBuilder>(configuration);
+				var serviceProvider = services.BuildServiceProvider<ISI.Extensions.DependencyInjection.Iunq.ServiceProviderBuilder>(configurationRoot);
 
 				var serializationConfiguration = serviceProvider.GetService<ISI.Extensions.Serialization.Configuration>();
 				serializationConfiguration.DefaultDataContractSerializerType = typeof(ISI.Extensions.JsonSerialization.Newtonsoft.NewtonsoftJsonSerializer).AssemblyQualifiedNameWithoutVersion();
