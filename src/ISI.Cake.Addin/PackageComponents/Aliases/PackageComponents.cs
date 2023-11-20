@@ -31,6 +31,8 @@ namespace ISI.Cake.Addin.PackageComponents
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static PackageComponentsResponse PackageComponents(this global::Cake.Core.ICakeContext cakeContext, PackageComponentsRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new PackageComponentsResponse();
 
 			if (string.IsNullOrWhiteSpace(request.PackageName))
@@ -40,7 +42,9 @@ namespace ISI.Cake.Addin.PackageComponents
 
 			var logger = new CakeContextLogger(cakeContext);
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(logger);
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer);
 			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, nugetApi, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(logger, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
 
 			packagerApi.PackageComponents(new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentsRequest()

@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
@@ -28,6 +29,8 @@ namespace ISI.Cake.Addin.CodeSigning
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static GetSignAssemblyCommandResponse GetSignAssemblyCommand(this global::Cake.Core.ICakeContext cakeContext, IGetSignAssemblyCommandRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new GetSignAssemblyCommandResponse();
 
 			var signAssembliesRequest = request as GetSignAssemblyCommandRequest;
@@ -55,7 +58,10 @@ namespace ISI.Cake.Addin.CodeSigning
 			if (signAssembliesRequest.RemoteCodeSigningServiceUri == null)
 			{
 				var logger = new CakeContextLogger(cakeContext);
-				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(logger)));
+
+				var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer)));
 
 				var getSignAssemblyCommandResponse = codeSigningApi.GetSignAssemblyCommand(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.GetSignAssemblyCommandRequest()
 				{

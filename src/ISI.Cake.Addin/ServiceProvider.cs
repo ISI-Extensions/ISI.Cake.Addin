@@ -41,11 +41,9 @@ namespace ISI.Cake.Addin
 
 				services.AddAllConfigurations(configurationRoot)
 
-					//.AddSingleton<Microsoft.Extensions.Logging.ILoggerFactory, Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory>()
 					.AddSingleton<Microsoft.Extensions.Logging.ILoggerFactory, Microsoft.Extensions.Logging.LoggerFactory>()
 					.AddLogging(builder => builder
 							.AddConsole()
-						//.AddFilter(level => level >= Microsoft.Extensions.Logging.LogLevel.Information)
 					)
 					.AddSingleton<Microsoft.Extensions.Logging.ILogger>(_ => new ISI.Extensions.ConsoleLogger())
 

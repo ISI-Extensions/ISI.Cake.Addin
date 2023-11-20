@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
@@ -27,10 +28,15 @@ namespace ISI.Cake.Addin.CodeSigning
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static SignVsixesResponse InitializeCodeSigningCertificateToken(this global::Cake.Core.ICakeContext cakeContext, InitializeCodeSigningCertificateTokenRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new SignVsixesResponse();
 
 			var logger = new CakeContextLogger(cakeContext);
-			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(logger)));
+
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer)));
 
 			codeSigningApi.InitializeCodeSigningCertificateToken(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.InitializeCodeSigningCertificateTokenRequest()
 			{

@@ -64,9 +64,9 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			if (string.IsNullOrWhiteSpace(response.BuildArtifactsApiKey))
 			{
-				var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+				var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi( new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-				var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetAuthenticationTokenRequest()
+				var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new ()
 				{
 					BuildArtifactsApiUri = getBuildArtifactsApiKeyRequest.BuildArtifactsApiUri,
 

@@ -21,7 +21,31 @@ using System.Threading.Tasks;
 
 namespace ISI.Cake.Addin.JenkinsService
 {
-	public class UpdateNugetPackagesResponse
+	public class UpgradeNugetPackagesRequest
 	{
+		public Uri JenkinsServiceApiUri { get; set; }
+		public string JenkinsServiceApiKey { get; set; }
+		
+		public string SettingsFullName { get; set; }
+		
+		public string JenkinsUrl { get; set; }
+		public string JenkinsUserName { get; set; }
+		public string JenkinsApiToken { get; set; }
+
+		public bool PauseJenkins { get; set; }
+		public string PauseJenkinsReason { get; set; } = "Upgrading Nuget Packages";
+
+		public bool FinishAllJobsBeforeProcessing { get; set; }
+		public string FinishAllJobsBeforeProcessingFilterByJobIdPrefix { get; set; }
+		public string FinishAllJobsBeforeProcessingFilterByJobIdSuffix { get; set; }
+		public string[] FinishAllJobsBeforeProcessingExceptForJobIds { get; set; }
+
+		public string[] JobIds { get; set; }
+		public string FilterByJobIdPrefix { get; set; }
+		public string FilterByJobIdSuffix { get; set; }
+
+		public string[] IgnorePackageIds { get; set; }
+		public NugetPackageKey[] NugetPackageKeys { get; set; }
+		public NugetPackageKey[] UpsertAssemblyRedirectsNugetPackageKeys { get; set; }
 	}
 }

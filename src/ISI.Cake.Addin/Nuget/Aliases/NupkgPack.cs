@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Nuget
 {
@@ -26,9 +27,13 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static NupkgPackResponse NupkgPack(this global::Cake.Core.ICakeContext cakeContext, NupkgPackRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new NupkgPackResponse();
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), new CakeContextLogger(cakeContext), jsonSerializer);
 
 			nugetApi.NupkgPack(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPackRequest()
 			{

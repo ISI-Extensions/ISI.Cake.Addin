@@ -26,19 +26,19 @@ namespace ISI.Cake.Addin.JenkinsService
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static UpdateNugetPackagesResponse UpdateNugetPackages(this global::Cake.Core.ICakeContext cakeContext, UpdateNugetPackagesRequest request)
+		public static UpgradeNugetPackagesResponse UpgradeNugetPackages(this global::Cake.Core.ICakeContext cakeContext, UpgradeNugetPackagesRequest request)
 		{
 			ServiceProvider.Initialize();
 
 			var logger = new CakeContextLogger(cakeContext);
 
-			var response = new UpdateNugetPackagesResponse();
+			var response = new UpgradeNugetPackagesResponse();
 
-			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.Rest.JenkinsServiceApi(null, logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.JenkinsServiceApi(logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			jenkinsServiceApi.UpdateNugetPackages(new ISI.Services.SCM.Jenkins.Rest.DataTransferObjects.JenkinsServiceApi.UpdateNugetPackagesRequest()
+			jenkinsServiceApi.UpgradeNugetPackages(new ()
 			{
-				JenkinsServiceUri = request.JenkinsServiceUri,
+				JenkinsServiceApiUri = request.JenkinsServiceApiUri,
 				JenkinsServiceApiKey = request.JenkinsServiceApiKey,
 
 				SettingsFullName = request.SettingsFullName,

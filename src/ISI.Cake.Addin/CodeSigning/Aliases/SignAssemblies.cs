@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
@@ -28,6 +29,8 @@ namespace ISI.Cake.Addin.CodeSigning
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static SignAssembliesResponse SignAssemblies(this global::Cake.Core.ICakeContext cakeContext, ISignAssembliesRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new SignAssembliesResponse();
 
 			var signAssembliesRequest = request as SignAssembliesRequest;
@@ -57,7 +60,10 @@ namespace ISI.Cake.Addin.CodeSigning
 			if (signAssembliesRequest.RemoteCodeSigningServiceUri == null)
 			{
 				var logger = new CakeContextLogger(cakeContext);
-				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(logger)));
+
+				var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer)));
 
 				codeSigningApi.SignAssemblies(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.SignAssembliesRequest()
 				{
@@ -81,9 +87,9 @@ namespace ISI.Cake.Addin.CodeSigning
 			}
 			else
 			{
-				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.RemoteCodeSigningApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-				remoteCodeSigningApi.SignAssemblies(new ISI.Services.SCM.RemoteCodeSigning.Rest.DataTransferObjects.RemoteCodeSigningApi.SignAssembliesRequest()
+				remoteCodeSigningApi.SignAssemblies(new ()
 				{
 					RemoteCodeSigningServiceUri = signAssembliesRequest.RemoteCodeSigningServiceUri,
 					RemoteCodeSigningServiceApiKey = signAssembliesRequest.RemoteCodeSigningServiceApiKey,

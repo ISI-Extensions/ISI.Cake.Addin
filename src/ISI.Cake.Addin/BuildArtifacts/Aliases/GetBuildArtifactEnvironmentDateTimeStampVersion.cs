@@ -31,9 +31,9 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			
 			request.WarmUpWebService(cakeContext.Log);
 
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi( new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			response.DateTimeStampVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+			response.DateTimeStampVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ()
 			{
 				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,

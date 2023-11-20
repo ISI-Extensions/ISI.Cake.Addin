@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			request.WarmUpWebService(cakeContext.Log);
 
-			var windowsDeploymentApi = new ISI.Services.WindowsDeploymentAgent.Rest.WindowsDeploymentApi(null, new CakeContextLogger(cakeContext));
+			var windowsDeploymentApi = new ISI.Services.WindowsDeploymentAgent.WindowsDeploymentApi(new CakeContextLogger(cakeContext));
 
 			var apiResponse = windowsDeploymentApi.UpdateWindowsDeploymentAgentService(new ()
 			{

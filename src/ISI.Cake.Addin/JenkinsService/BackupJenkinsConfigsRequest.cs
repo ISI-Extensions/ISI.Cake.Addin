@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.JenkinsService
 {
 	public class BackupJenkinsConfigsRequest
 	{
-		public Uri JenkinsServiceUri { get; set; }
+		public Uri JenkinsServiceApiUri { get; set; }
 		public string JenkinsServiceApiKey { get; set; }
 		
 		public string SettingsFullName { get; set; }

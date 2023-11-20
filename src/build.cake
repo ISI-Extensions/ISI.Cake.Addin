@@ -1,4 +1,5 @@
 //dotnet tool install Cake.Tool -g
+//dotnet tool update Cake.Tool -g
 #addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=ISI.Cake.AddIn&loaddependencies=true
 

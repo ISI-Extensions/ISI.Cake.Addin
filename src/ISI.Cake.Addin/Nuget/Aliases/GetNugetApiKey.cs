@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Extensions.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Nuget
 {
@@ -28,6 +29,8 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static GetNugetApiKeyResponse GetNugetApiKey(this global::Cake.Core.ICakeContext cakeContext, IGetNugetApiKeyRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new GetNugetApiKeyResponse();
 
 			var getNugetApiKeyRequest = request as GetNugetApiKeyRequest;
@@ -66,11 +69,13 @@ namespace ISI.Cake.Addin.Nuget
 
 			if (string.IsNullOrWhiteSpace(response.NugetApiKey))
 			{
-				var nugetServiceApi = new ISI.Services.SCM.Nuget.Rest.NugetServiceApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+				var nugetServiceApi = new ISI.Services.SCM.Nuget.NugetServiceApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
 				if ((getNugetApiKeyRequest.NugetServiceApiUri == null) && !string.IsNullOrWhiteSpace(getNugetApiKeyRequest.RepositoryName))
 				{
-					var nugetApi = new ISI.Extensions.Nuget.NugetApi(new CakeContextLogger(cakeContext));
+					var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+					var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), new CakeContextLogger(cakeContext), jsonSerializer);
 
 					var nugetServersLookUp = nugetApi.GetNugetServers(new()
 					{
@@ -88,7 +93,7 @@ namespace ISI.Cake.Addin.Nuget
 					throw new Exception("Could not get NugetApiKey, cannot determine NugetServiceApiUri");
 				}
 
-				var getAuthenticationTokenResponse = nugetServiceApi.GetAuthenticationToken(new ISI.Services.SCM.Nuget.Rest.DataTransferObjects.NugetServiceApi.GetAuthenticationTokenRequest()
+				var getAuthenticationTokenResponse = nugetServiceApi.GetAuthenticationToken(new ()
 				{
 					NugetServiceApiUri = getNugetApiKeyRequest.NugetServiceApiUri,
 

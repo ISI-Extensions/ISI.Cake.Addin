@@ -32,9 +32,9 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			
 			request.WarmUpWebService(cakeContext.Log);
 
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.Rest.BuildArtifactsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			var buildArtifactRedirects = buildArtifactsApi.FindBuildArtifactRedirects(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.FindBuildArtifactRedirectsRequest()
+			var buildArtifactRedirects = buildArtifactsApi.FindBuildArtifactRedirects(new ()
 			{
 				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
@@ -76,7 +76,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			if (modifiedBuildArtifactRedirects.Any())
 			{
-				buildArtifactsApi.SetBuildArtifactRedirects(new ISI.Services.SCM.BuildArtifacts.Rest.DataTransferObjects.BuildArtifactsApi.SetBuildArtifactRedirectsRequest()
+				buildArtifactsApi.SetBuildArtifactRedirects(new ()
 				{
 					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,

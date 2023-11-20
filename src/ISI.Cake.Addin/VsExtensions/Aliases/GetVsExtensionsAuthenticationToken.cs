@@ -29,9 +29,9 @@ namespace ISI.Cake.Addin.VsExtensions
 		{
 			var response = new GetVsExtensionsAuthenticationTokenResponse();
 
-			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.Rest.VsExtensionsApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.VsExtensionsApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			var getAuthenticationTokenResponse = vsExtensionsApi.GetAuthenticationToken(new ISI.Services.SCM.VsExtensions.Rest.DataTransferObjects.VsExtensionsApi.GetAuthenticationTokenRequest()
+			var getAuthenticationTokenResponse = vsExtensionsApi.GetAuthenticationToken(new ()
 			{
 				VsExtensionsApiUri = request.VsExtensionsApiUri,
 

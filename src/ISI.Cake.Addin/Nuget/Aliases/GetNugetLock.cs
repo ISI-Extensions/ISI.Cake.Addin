@@ -29,7 +29,7 @@ namespace ISI.Cake.Addin.Nuget
 		{
 			var logger = new CakeContextLogger(cakeContext);
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(logger);
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, new ISI.Extensions.JsonSerialization.Newtonsoft.NewtonsoftJsonSerializer());
 
 			return nugetApi.GetNugetLock(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetNugetLockRequest()
 			{

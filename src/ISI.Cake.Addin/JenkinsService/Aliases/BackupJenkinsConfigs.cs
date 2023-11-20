@@ -34,12 +34,12 @@ namespace ISI.Cake.Addin.JenkinsService
 
 			var response = new BackupJenkinsConfigsResponse();
 
-			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.Rest.JenkinsServiceApi(null, logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var jenkinsServiceApi = new ISI.Services.SCM.Jenkins.JenkinsServiceApi( logger, new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			jenkinsServiceApi.BackupJenkinsConfigs(new ISI.Services.SCM.Jenkins.Rest.DataTransferObjects.JenkinsServiceApi.BackupJenkinsConfigsRequest()
+			jenkinsServiceApi.BackupJenkinsConfigs(new ISI.Services.SCM.Jenkins.DataTransferObjects.JenkinsServiceApi.BackupJenkinsConfigsRequest()
 			{
 				SettingsFullName = request.SettingsFullName,
-				JenkinsServiceUri = request.JenkinsServiceUri,
+				JenkinsServiceApiUri = request.JenkinsServiceApiUri,
 				JenkinsServiceApiKey = request.JenkinsServiceApiKey,
 				JenkinsUrl = request.JenkinsUrl,
 				JenkinsUserName = request.JenkinsUserName,

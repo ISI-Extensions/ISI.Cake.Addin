@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
@@ -14,28 +14,27 @@
     <None Include="..\ISI.Cake.Addin.licenseheader" Link="ISI.Cake.Addin.licenseheader" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.Common" Version="3.2.0" />
-    <PackageReference Include="Cake.Core" Version="3.2.0" />
+    <PackageReference Include="Cake.Common" Version="4.0.0" />
+    <PackageReference Include="Cake.Core" Version="4.0.0" />
     <PackageReference Include="Cake.Docker" Version="1.2.3" />
-    <PackageReference Include="ISI.Extensions" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8719.3736" />
-    <PackageReference Include="ISI.Services.SCM.BuildArtifacts.Rest" Version="4.0.8609.37863" />
-    <PackageReference Include="ISI.Services.SCM.Jenkins.Rest" Version="1.0.8700.40357" />
-    <PackageReference Include="ISI.Services.SCM.Nuget.Rest" Version="4.0.8681.4285" />
-    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning.Rest" Version="1.0.8558.30348" />
-    <PackageReference Include="ISI.Services.SCM.VsExtensions.Rest" Version="4.0.8681.4517" />
-    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.8681.4763" />
-    <PackageReference Include="ISI.Services.WindowsDeploymentAgent.Rest" Version="4.0.8681.4763" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8724.4393" />
+    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.8724.4798" />
+    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.8724.5399" />
+    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.8724.4193" />
+    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.8723.40693" />
+    <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.8723.41280" />
+    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.8724.3995" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
-    <PackageReference Include="NuGet.Frameworks" Version="6.7.0" />
-    <PackageReference Include="NuGet.Versioning" Version="6.7.0" />
+    <PackageReference Include="NuGet.Frameworks" Version="6.8.0" />
+    <PackageReference Include="NuGet.Versioning" Version="6.8.0" />
   </ItemGroup>
 </Project>

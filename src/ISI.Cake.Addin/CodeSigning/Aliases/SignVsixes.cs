@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.CodeSigning
 {
@@ -28,6 +29,8 @@ namespace ISI.Cake.Addin.CodeSigning
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static SignVsixesResponse SignVsixes(this global::Cake.Core.ICakeContext cakeContext, ISignVsixesRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new SignVsixesResponse();
 
 			var signVsixesRequest = request as SignVsixesRequest;
@@ -57,7 +60,10 @@ namespace ISI.Cake.Addin.CodeSigning
 			if (signVsixesRequest.RemoteCodeSigningServiceUri == null)
 			{
 				var logger = new CakeContextLogger(cakeContext);
-				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(logger)));
+
+				var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+				var codeSigningApi = new ISI.Extensions.VisualStudio.CodeSigningApi(logger, new ISI.Extensions.VisualStudio.VsixSigntoolApi(logger, new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer)));
 
 				codeSigningApi.SignVsixes(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.SignVsixesRequest()
 				{
@@ -83,9 +89,9 @@ namespace ISI.Cake.Addin.CodeSigning
 			}
 			else
 			{
-				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.Rest.RemoteCodeSigningApi(null, new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+				var remoteCodeSigningApi = new ISI.Services.SCM.RemoteCodeSigning.RemoteCodeSigningApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-				remoteCodeSigningApi.SignVsixes(new ISI.Services.SCM.RemoteCodeSigning.Rest.DataTransferObjects.RemoteCodeSigningApi.SignVsixesRequest()
+				remoteCodeSigningApi.SignVsixes(new ()
 				{
 					RemoteCodeSigningServiceUri = signVsixesRequest.RemoteCodeSigningServiceUri,
 					RemoteCodeSigningServiceApiKey = signVsixesRequest.RemoteCodeSigningServiceApiKey,
