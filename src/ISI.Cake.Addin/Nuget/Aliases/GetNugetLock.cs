@@ -33,7 +33,7 @@ namespace ISI.Cake.Addin.Nuget
 
 			return nugetApi.GetNugetLock(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetNugetLockRequest()
 			{
-				AddToLog = description => logger.LogInformation(description),
+				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			}).Lock;
 		}
 	}

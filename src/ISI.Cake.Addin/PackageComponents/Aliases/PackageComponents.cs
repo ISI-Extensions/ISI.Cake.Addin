@@ -105,7 +105,7 @@ namespace ISI.Cake.Addin.PackageComponents
 				PackageBuildDateTimeStampVersion = request.PackageBuildDateTimeStampVersion,
 				AssemblyVersionFiles = request.AssemblyVersionFiles,
 				CleanupTempDirectories = request.CleanupTempDirectories,
-				AddToLog = description => logger.LogInformation(description),
+				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			});
 
 			return response;

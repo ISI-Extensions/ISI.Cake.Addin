@@ -39,7 +39,7 @@ namespace ISI.Cake.Addin.XmlTransform
 				TransformConfigFullName = request.TransformConfigFullName,
 				TargetConfigFullName = request.TargetConfigFullName,
 				Logger = logger,
-				AddToLog = description => logger.LogInformation(description),
+				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			}).Success;
 
 			return response;

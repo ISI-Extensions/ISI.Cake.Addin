@@ -47,7 +47,7 @@ namespace ISI.Cake.Addin.VisualStudio
 			return solutionApi.GetSolutionLock(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetSolutionLockRequest()
 			{
 				SolutionFullName = solutionFullName,
-				AddToLog = description => logger.LogInformation(description),
+				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			}).Lock;
 		}
 	}

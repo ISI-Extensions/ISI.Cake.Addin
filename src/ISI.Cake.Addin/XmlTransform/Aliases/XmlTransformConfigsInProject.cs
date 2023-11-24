@@ -41,7 +41,7 @@ namespace ISI.Cake.Addin.XmlTransform
 				MoveConfigurationKey = request.MoveConfigurationKey,
 				TransformedFileSuffix = request.TransformedFileSuffix,
 				Logger = logger,
-				AddToLog = description => logger.LogInformation(description),
+				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			});
 
 			return response;
