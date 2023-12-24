@@ -17,18 +17,18 @@
     <PackageReference Include="Cake.Common" Version="4.0.0" />
     <PackageReference Include="Cake.Core" Version="4.0.0" />
     <PackageReference Include="Cake.Docker" Version="1.2.3" />
-    <PackageReference Include="ISI.Extensions" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8758.9308" />
-    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8758.9308" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8758.36755" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8758.36755" />
     <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.8744.31166" />
     <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.8758.6991" />
-    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.8758.4224" />
+    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.8758.36695" />
     <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.8744.31496" />
     <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.8724.39369" />
     <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.8744.31653" />
