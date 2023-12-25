@@ -27,7 +27,7 @@
     <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8759.2880" />
     <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8759.2880" />
     <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.8744.31166" />
-    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.8758.6991" />
+    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.8759.6769" />
     <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.8759.2398" />
     <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.8744.31496" />
     <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.8724.39369" />
