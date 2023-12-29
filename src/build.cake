@@ -142,7 +142,7 @@ Task("Nuget")
 		}
 	});
 
-Task("Publish")
+Task("Nuget-Publish")
 	.IsDependentOn("Nuget")
 	.Does(() =>
 	{
@@ -158,7 +158,7 @@ Task("Publish")
 	});
 
 Task("Default")
-	.IsDependentOn("Publish")
+	.IsDependentOn("Nuget-Publish")
 	.Does(() => 
 	{
 		Information("No target provided. Starting default task");
