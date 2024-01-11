@@ -17,15 +17,15 @@
     <PackageReference Include="Cake.Common" Version="4.0.0" />
     <PackageReference Include="Cake.Core" Version="4.0.0" />
     <PackageReference Include="Cake.Docker" Version="1.2.3" />
-    <PackageReference Include="ISI.Extensions" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8776.3000" />
-    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8776.3000" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.8776.8575" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.8776.8575" />
     <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.8775.9222" />
     <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.8775.9304" />
     <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.8775.9335" />
