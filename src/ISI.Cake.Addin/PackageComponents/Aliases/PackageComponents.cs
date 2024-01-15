@@ -71,7 +71,7 @@ namespace ISI.Cake.Addin.PackageComponents
 							PackageName = packageName,
 							PackageVersion = request.SbomConfiguration.PackageVersion,
 							PackageAuthor = request.SbomConfiguration.PackageAuthor,
-							PackageNamespace = request.SbomConfiguration.PackageNamespace,
+							PackageNamespace = request.SbomConfiguration.PackageNamespaceUri,
 						});
 					};
 				}

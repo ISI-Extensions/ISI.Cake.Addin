@@ -49,6 +49,6 @@ namespace ISI.Cake.Addin.PackageComponents
 	{
 		public string PackageVersion { get; set; }
 		public string PackageAuthor { get; set; }
-		public Uri PackageNamespace { get; set; }
+		public Uri PackageNamespaceUri { get; set; }
 	}
 }
