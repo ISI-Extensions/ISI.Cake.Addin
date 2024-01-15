@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2024, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -36,10 +36,19 @@ namespace ISI.Cake.Addin.PackageComponents
 		public string PackageFullName { get; set; }
 		public string PackageName { get; set; }
 
+		public PackageComponentsRequestSbomConfiguration SbomConfiguration { get; set; }
+
 		public ISI.Extensions.Scm.DateTimeStampVersion PackageBuildDateTimeStampVersion { get; set; }
 
 		public ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }
 
 		public bool CleanupTempDirectories { get; set; } = true;
+	}
+
+	public class PackageComponentsRequestSbomConfiguration
+	{
+		public string PackageVersion { get; set; }
+		public string PackageAuthor { get; set; }
+		public Uri PackageNamespace { get; set; }
 	}
 }

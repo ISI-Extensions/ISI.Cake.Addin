@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2024, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -12,7 +12,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using Cake.Common.IO;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
@@ -41,12 +41,48 @@ namespace ISI.Cake.Addin.PackageComponents
 			}
 
 			var logger = new CakeContextLogger(cakeContext);
+			var dateTimeStamper = new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper();
 
 			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
 			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer);
-			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, nugetApi, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(logger, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
+			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, nugetApi, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(new ISI.Extensions.VisualStudio.Configuration(), logger, dateTimeStamper, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
+			var sBomApi = new ISI.Extensions.Sbom.SbomApi(new ISI.Extensions.Sbom.Configuration(), logger, dateTimeStamper);
 
+			ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.AfterBuildPackageComponentDelegate getAfterBuildPackageComponentDelegate(AfterBuildPackageComponentDelegate afterBuildPackageComponent)
+			{
+				if (request.SbomConfiguration != null)
+				{
+					return context =>
+					{
+						afterBuildPackageComponent?.Invoke(new AfterBuildPackageComponentContext()
+						{
+							ProjectFullName = context.ProjectFullName,
+							PackageComponentDirectory = context.PackageComponentDirectory,
+						});
+
+						var packageName = System.IO.Path.GetFileNameWithoutExtension(context.ProjectFullName);
+						var packageSourceDirectory = System.IO.Path.GetDirectoryName(context.ProjectFullName);
+
+						sBomApi.GenerateSBom(new()
+						{
+							PackageComponentDirectory = context.PackageComponentDirectory,
+							PackageSourceDirectory = packageSourceDirectory,
+							PackageName = packageName,
+							PackageVersion = request.SbomConfiguration.PackageVersion,
+							PackageAuthor = request.SbomConfiguration.PackageAuthor,
+							PackageNamespace = request.SbomConfiguration.PackageNamespace,
+						});
+					};
+				}
+
+				return context => afterBuildPackageComponent?.Invoke(new AfterBuildPackageComponentContext()
+				{
+					ProjectFullName = context.ProjectFullName,
+					PackageComponentDirectory = context.PackageComponentDirectory,
+				});
+			}
+			
 			packagerApi.PackageComponents(new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentsRequest()
 			{
 				Configuration = request.Configuration,
@@ -67,8 +103,9 @@ namespace ISI.Cake.Addin.PackageComponents
 								IconFileName = packageComponentConsoleApplication.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentConsoleApplication.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentConsoleApplication.ExcludeFiles,
-								AfterBuildPackageComponent = packageComponentDirectory => packageComponentConsoleApplication.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+								AfterBuildPackageComponent = getAfterBuildPackageComponentDelegate(packageComponentConsoleApplication.AfterBuildPackageComponent),
 							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
+
 						case PackageComponentWebSite packageComponentWebSite:
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWebSite()
 							{
@@ -76,8 +113,9 @@ namespace ISI.Cake.Addin.PackageComponents
 								IconFileName = packageComponentWebSite.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentWebSite.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentWebSite.ExcludeFiles,
-								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWebSite.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+								AfterBuildPackageComponent = getAfterBuildPackageComponentDelegate(packageComponentWebSite.AfterBuildPackageComponent),
 							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
+
 						case PackageComponentWindowsApplication packageComponentWindowsApplication:
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWindowsApplication()
 							{
@@ -85,8 +123,9 @@ namespace ISI.Cake.Addin.PackageComponents
 								IconFileName = packageComponentWindowsApplication.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentWindowsApplication.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentWindowsApplication.ExcludeFiles,
-								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWindowsApplication.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+								AfterBuildPackageComponent = getAfterBuildPackageComponentDelegate(packageComponentWindowsApplication.AfterBuildPackageComponent),
 							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
+
 						case PackageComponentWindowsService packageComponentWindowsService:
 							return new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentWindowsService()
 							{
@@ -94,8 +133,9 @@ namespace ISI.Cake.Addin.PackageComponents
 								IconFileName = packageComponentWindowsService.IconFileName,
 								DoNotXmlTransformConfigs = packageComponentWindowsService.DoNotXmlTransformConfigs,
 								ExcludeFiles = packageComponentWindowsService.ExcludeFiles,
-								AfterBuildPackageComponent = packageComponentDirectory => packageComponentWindowsService.AfterBuildPackageComponent?.Invoke(packageComponentDirectory),
+								AfterBuildPackageComponent = getAfterBuildPackageComponentDelegate(packageComponentWindowsService.AfterBuildPackageComponent),
 							} as ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.IPackageComponent;
+
 						default:
 							throw new ArgumentOutOfRangeException(nameof(packageComponent));
 					}

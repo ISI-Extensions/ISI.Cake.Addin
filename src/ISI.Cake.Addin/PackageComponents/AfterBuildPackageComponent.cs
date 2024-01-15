@@ -15,15 +15,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ISI.Cake.Addin.JenkinsService
+namespace ISI.Cake.Addin.PackageComponents
 {
-	public class NugetPackageKey
+	public delegate void AfterBuildPackageComponentDelegate(AfterBuildPackageComponentContext context);
+
+	public class AfterBuildPackageComponentContext
 	{
-		public string PackageId { get; set; }
-		public string PackageVersion { get; set; }
+		public string ProjectFullName { get; set; }
+		public string PackageComponentDirectory { get; set; }
 	}
 }

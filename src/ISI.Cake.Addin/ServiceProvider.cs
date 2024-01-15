@@ -1,6 +1,6 @@
 #region Copyright & License
 /*
-Copyright (c) 2023, Integrated Solutions, Inc.
+Copyright (c) 2024, Integrated Solutions, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -21,6 +21,7 @@ using ISI.Extensions.DependencyInjection.Extensions;
 using ISI.Extensions.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Sbom.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin
 {
@@ -61,6 +62,8 @@ namespace ISI.Cake.Addin
 					.AddSingleton<ISI.Extensions.Scm.BuildScriptApi>()
 					.AddSingleton<ISI.Extensions.Nuget.NugetApi>()
 					.AddSingleton<ISI.Extensions.VisualStudio.SolutionApi>()
+
+					.AddSbomTool()
 
 					.AddConfigurationRegistrations(configurationRoot)
 					.ProcessServiceRegistrars(configurationRoot)
