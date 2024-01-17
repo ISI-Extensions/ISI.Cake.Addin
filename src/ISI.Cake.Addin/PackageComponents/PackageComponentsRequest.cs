@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.PackageComponents
 		public string PackageFullName { get; set; }
 		public string PackageName { get; set; }
 
-		public PackageComponentsRequestSbomConfiguration SbomConfiguration { get; set; }
+		public IPackageComponentsRequestSbomConfiguration SbomConfiguration { get; set; }
 
 		public ISI.Extensions.Scm.DateTimeStampVersion PackageBuildDateTimeStampVersion { get; set; }
 
@@ -45,10 +45,22 @@ namespace ISI.Cake.Addin.PackageComponents
 		public bool CleanupTempDirectories { get; set; } = true;
 	}
 
-	public class PackageComponentsRequestSbomConfiguration
+	public interface IPackageComponentsRequestSbomConfiguration
+	{
+		string PackageVersion { get; }
+	}
+
+	public class PackageComponentsRequestSbomConfiguration : IPackageComponentsRequestSbomConfiguration
 	{
 		public string PackageVersion { get; set; }
 		public string PackageAuthor { get; set; }
 		public Uri PackageNamespaceUri { get; set; }
+	}
+
+	public class PackageComponentsRequestSbomConfigurationUsingSettings : IPackageComponentsRequestSbomConfiguration
+	{
+		public string PackageVersion { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

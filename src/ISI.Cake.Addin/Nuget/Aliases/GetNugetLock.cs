@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Nuget
 {
@@ -27,11 +28,13 @@ namespace ISI.Cake.Addin.Nuget
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static ISI.Extensions.Locks.ILock GetNugetLock(this global::Cake.Core.ICakeContext cakeContext)
 		{
+			ServiceProvider.Initialize();
+
 			var logger = new CakeContextLogger(cakeContext);
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, new ISI.Extensions.JsonSerialization.Newtonsoft.NewtonsoftJsonSerializer());
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), logger, new ISI.Extensions.JsonSerialization.Newtonsoft.NewtonsoftJsonSerializer());
 
-			return nugetApi.GetNugetLock(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GetNugetLockRequest()
+			return nugetApi.GetNugetLock(new ()
 			{
 				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			}).Lock;

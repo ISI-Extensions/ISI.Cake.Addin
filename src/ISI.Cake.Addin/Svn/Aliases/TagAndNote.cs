@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.Svn
 
 			var svnApi = new ISI.Extensions.Svn.SvnApi(new CakeContextLogger(cakeContext));
 
-			svnApi.TagAndNote(new ISI.Extensions.Svn.DataTransferObjects.SvnApi.TagAndNoteRequest()
+			svnApi.TagAndNote(new ()
 			{
 				WorkingCopyDirectory = request.WorkingCopyDirectory,
 				TagName = request.TagName,

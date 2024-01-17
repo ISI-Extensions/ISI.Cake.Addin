@@ -33,16 +33,37 @@ namespace ISI.Cake.Addin.Nuget
 
 			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), new CakeContextLogger(cakeContext), jsonSerializer);
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
 
-			response.Nuspec = nugetApi.GenerateNuspecFromProject(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.GenerateNuspecFromProjectRequest()
+			response.Nuspec = nugetApi.GenerateNuspecFromProject(new ()
 			{
 				ProjectFullName = request.ProjectFullName,
 				Configuration = request.Configuration,
+				IncludeSBom = request.IncludeSBom,
 				IncludePdb = request.IncludePdb,
 				TryGetPackageVersion = request.TryGetPackageVersion,
 				BuildTargetFrameworks = request.BuildTargetFrameworks,
 			}).Nuspec;
+
+			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecIconUrl))
+			{
+				response.Nuspec.IconUri = new Uri(request.Settings.Nuget.NuSpecIconUrl);
+			}
+
+			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecCopyright))
+			{
+				response.Nuspec.Copyright = request.Settings.Nuget.NuSpecCopyright.Replace("{Year}", DateTime.UtcNow.Year.ToString());
+			}
+
+			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecAuthor))
+			{
+				response.Nuspec.Authors = new[] { request.Settings.Nuget.NuSpecAuthor };
+			}
+
+			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecOwner))
+			{
+				response.Nuspec.Owners = new[] { request.Settings.Nuget.NuSpecOwner };
+			}
 
 			return response;
 		}

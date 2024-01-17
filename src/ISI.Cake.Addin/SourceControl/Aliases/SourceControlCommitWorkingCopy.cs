@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.SourceControl
 
 			var sourceControlClientApi = new ISI.Extensions.Scm.SourceControlClientApi(new CakeContextLogger(cakeContext));
 
-			response.Success = sourceControlClientApi.CommitWorkingCopy(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.CommitWorkingCopyRequest()
+			response.Success = sourceControlClientApi.CommitWorkingCopy(new ()
 			{
 				FullName = request.FullName,
 				LogMessage = request.LogMessage,

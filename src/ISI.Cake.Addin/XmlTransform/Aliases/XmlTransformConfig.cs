@@ -33,7 +33,7 @@ namespace ISI.Cake.Addin.XmlTransform
 
 			var xmlTransformApi = new ISI.Extensions.VisualStudio.XmlTransformApi(logger);
 
-			response.Success = xmlTransformApi.XmlTransformConfig(new ISI.Extensions.VisualStudio.DataTransferObjects.XmlTransformApi.XmlTransformConfigRequest()
+			response.Success = xmlTransformApi.XmlTransformConfig(new ()
 			{
 				SourceConfigFullName = request.SourceConfigFullName,
 				TransformConfigFullName = request.TransformConfigFullName,

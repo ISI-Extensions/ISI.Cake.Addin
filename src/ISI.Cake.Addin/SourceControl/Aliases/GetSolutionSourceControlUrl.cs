@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.SourceControl
 				solutionFullName = cakeContext.Environment.WorkingDirectory.FullPath;
 			}
 
-			var getRootDirectoryResponse = sourceControlClientApi.GetRootDirectory(new ISI.Extensions.Scm.DataTransferObjects.SourceControlClientApi.GetRootDirectoryRequest()
+			var getRootDirectoryResponse = sourceControlClientApi.GetRootDirectory(new ()
 			{
 				FullName = solutionFullName,
 			});

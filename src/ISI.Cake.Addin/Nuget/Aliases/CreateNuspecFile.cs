@@ -33,9 +33,9 @@ namespace ISI.Cake.Addin.Nuget
 
 			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), new CakeContextLogger(cakeContext), jsonSerializer);
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
 
-			System.IO.File.WriteAllText(request.NuspecFullName, nugetApi.BuildNuspec(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.BuildNuspecRequest()
+			System.IO.File.WriteAllText(request.NuspecFullName, nugetApi.BuildNuspec(new ()
 			{
 				Nuspec = request.Nuspec,
 			}).Nuspec);

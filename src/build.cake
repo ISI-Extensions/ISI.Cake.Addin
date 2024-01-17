@@ -102,6 +102,7 @@ Task("Nuget")
 			var nuspec = GenerateNuspecFromProject(new ISI.Cake.Addin.Nuget.GenerateNuspecFromProjectRequest()
 			{
 				ProjectFullName = project.Path.FullPath,
+				IncludeSBom = false,
 			}).Nuspec;
 			nuspec.Version = assemblyVersion;
 			nuspec.IconUri = GetNullableUri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");

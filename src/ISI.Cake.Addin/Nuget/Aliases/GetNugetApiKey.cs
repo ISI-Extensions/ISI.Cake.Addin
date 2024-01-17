@@ -75,7 +75,7 @@ namespace ISI.Cake.Addin.Nuget
 				{
 					var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-					var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), new CakeContextLogger(cakeContext), jsonSerializer);
+					var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
 
 					var nugetServersLookUp = nugetApi.GetNugetServers(new()
 					{

@@ -13,16 +13,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 #endregion
 
-using Cake.Common.IO;
-using ISI.Cake.Addin.Extensions;
-using ISI.Extensions.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.PackageComponents
 {
@@ -45,9 +44,9 @@ namespace ISI.Cake.Addin.PackageComponents
 
 			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), logger, jsonSerializer);
-			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, nugetApi, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(new ISI.Extensions.VisualStudio.Configuration(), logger, dateTimeStamper, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
-			var sBomApi = new ISI.Extensions.Sbom.SbomApi(new ISI.Extensions.Sbom.Configuration(), logger, dateTimeStamper);
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), logger, jsonSerializer);
+			var packagerApi = new ISI.Extensions.VisualStudio.PackagerApi(logger, nugetApi, new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.VisualStudio.Configuration>(), logger, dateTimeStamper, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.XmlTransformApi(logger));
+			var sBomApi = new ISI.Extensions.Sbom.SbomApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Sbom.Configuration>(), logger, dateTimeStamper);
 
 			ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.AfterBuildPackageComponentDelegate getAfterBuildPackageComponentDelegate(AfterBuildPackageComponentDelegate afterBuildPackageComponent)
 			{
@@ -64,14 +63,17 @@ namespace ISI.Cake.Addin.PackageComponents
 						var packageName = System.IO.Path.GetFileNameWithoutExtension(context.ProjectFullName);
 						var packageSourceDirectory = System.IO.Path.GetDirectoryName(context.ProjectFullName);
 
-						sBomApi.GenerateSBom(new()
+						var generateSBomUsingSettingsRequest = request.SbomConfiguration as PackageComponentsRequestSbomConfigurationUsingSettings;
+						var generateSBomRequest = request.SbomConfiguration as PackageComponentsRequestSbomConfiguration;
+
+						sBomApi.GeneratePackageSBom(new()
 						{
 							PackageComponentDirectory = context.PackageComponentDirectory,
 							PackageSourceDirectory = packageSourceDirectory,
 							PackageName = packageName,
 							PackageVersion = request.SbomConfiguration.PackageVersion,
-							PackageAuthor = request.SbomConfiguration.PackageAuthor,
-							PackageNamespace = request.SbomConfiguration.PackageNamespaceUri,
+							PackageAuthor = generateSBomRequest?.PackageAuthor ?? generateSBomUsingSettingsRequest?.Settings.SBom.Author ?? string.Empty,
+							PackageNamespace = generateSBomRequest?.PackageNamespaceUri ?? new Uri(generateSBomUsingSettingsRequest?.Settings.SBom.Namespace),
 						});
 					};
 				}
@@ -82,8 +84,8 @@ namespace ISI.Cake.Addin.PackageComponents
 					PackageComponentDirectory = context.PackageComponentDirectory,
 				});
 			}
-			
-			packagerApi.PackageComponents(new ISI.Extensions.VisualStudio.DataTransferObjects.PackagerApi.PackageComponentsRequest()
+
+			packagerApi.PackageComponents(new ()
 			{
 				Configuration = request.Configuration,
 				BuildVersion = request.BuildVersion.ToMSBuildVersion(),

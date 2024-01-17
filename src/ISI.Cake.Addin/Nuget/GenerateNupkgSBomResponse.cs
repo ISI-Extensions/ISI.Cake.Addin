@@ -19,30 +19,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Extensions.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public static partial class Aliases
+	public class GenerateNupkgSBomResponse
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, RestoreNugetPackagesRequest request)
-		{
-			ServiceProvider.Initialize();
-
-			var response = new RestoreNugetPackagesResponse();
-
-			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
-
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
-
-			nugetApi.RestoreNugetPackages(new ()
-			{
-				Solution = request.Solution,
-				PackagesConfigFileName = request.PackagesConfigFileName,
-			});
-
-			return response;
-		}
 	}
 }

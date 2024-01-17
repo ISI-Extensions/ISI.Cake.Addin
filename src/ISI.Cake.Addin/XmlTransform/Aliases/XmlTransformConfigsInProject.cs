@@ -34,7 +34,7 @@ namespace ISI.Cake.Addin.XmlTransform
 
 			var xmlTransformApi = new ISI.Extensions.VisualStudio.XmlTransformApi(logger);
 
-			xmlTransformApi.XmlTransformConfigsInProject(new ISI.Extensions.VisualStudio.DataTransferObjects.XmlTransformApi.XmlTransformConfigsInProjectRequest()
+			xmlTransformApi.XmlTransformConfigsInProject(new ()
 			{
 				ProjectFullName = request.ProjectFullName,
 				DestinationDirectory = request.DestinationDirectory,

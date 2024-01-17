@@ -19,30 +19,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Extensions.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public static partial class Aliases
+	public interface IGenerateNupkgSBomRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, RestoreNugetPackagesRequest request)
-		{
-			ServiceProvider.Initialize();
+		string ProjectFullName { get; }
 
-			var response = new RestoreNugetPackagesResponse();
+		string Configuration { get; }
 
-			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+		string NupkgName { get; }
+		string NupkgVersion { get; }
+	}
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
+	public class GenerateNupkgSBomRequest : IGenerateNupkgSBomRequest
+	{
+		public string ProjectFullName { get; set; }
 
-			nugetApi.RestoreNugetPackages(new ()
-			{
-				Solution = request.Solution,
-				PackagesConfigFileName = request.PackagesConfigFileName,
-			});
+		public string Configuration { get; set; } = "Release";
 
-			return response;
-		}
+		public string NupkgName { get; set; }
+		public string NupkgVersion { get; set; }
+		public string NupkgAuthor { get; set; }
+		public Uri NupkgNamespace { get; set; }
+	}
+
+	public class GenerateNupkgSBomUsingSettingsRequest : IGenerateNupkgSBomRequest
+	{
+		public string ProjectFullName { get; set; }
+
+		public string Configuration { get; set; } = "Release";
+
+		public string NupkgName { get; set; }
+		public string NupkgVersion { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

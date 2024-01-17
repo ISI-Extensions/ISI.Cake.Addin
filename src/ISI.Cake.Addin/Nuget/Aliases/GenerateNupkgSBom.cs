@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Extensions.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Nuget
@@ -26,20 +25,28 @@ namespace ISI.Cake.Addin.Nuget
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, RestoreNugetPackagesRequest request)
+		public static GenerateNupkgSBomResponse GenerateNupkgSBom(this global::Cake.Core.ICakeContext cakeContext, IGenerateNupkgSBomRequest request)
 		{
 			ServiceProvider.Initialize();
 
-			var response = new RestoreNugetPackagesResponse();
+			var response = new GenerateNupkgSBomResponse();
 
-			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+			var logger = new CakeContextLogger(cakeContext);
+			var dateTimeStamper = new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper();
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
+			var sBomApi = new ISI.Extensions.Sbom.SbomApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Sbom.Configuration>(), logger, dateTimeStamper);
 
-			nugetApi.RestoreNugetPackages(new ()
+			var generateNupkgSBomUsingSettingsRequest = request as GenerateNupkgSBomUsingSettingsRequest;
+			var generateNupkgSBomRequest = request as GenerateNupkgSBomRequest;
+
+			sBomApi.GenerateNupkgSBom(new()
 			{
-				Solution = request.Solution,
-				PackagesConfigFileName = request.PackagesConfigFileName,
+				ProjectFullName = request.ProjectFullName,
+				Configuration = request.Configuration,
+				NupkgName = request.NupkgName,
+				NupkgVersion = request.NupkgVersion,
+				NupkgAuthor = generateNupkgSBomRequest?.NupkgAuthor ?? generateNupkgSBomUsingSettingsRequest?.Settings.SBom.Author ?? string.Empty,
+				NupkgNamespace = generateNupkgSBomRequest?.NupkgNamespace ?? new Uri(generateNupkgSBomUsingSettingsRequest?.Settings.SBom.Namespace),
 			});
 
 			return response;

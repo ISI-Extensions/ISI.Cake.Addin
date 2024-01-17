@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.Svn
 
 			var svnApi = new ISI.Extensions.Svn.SvnApi(new CakeContextLogger(cakeContext));
 
-			response.Success = svnApi.Commit(new ISI.Extensions.Svn.DataTransferObjects.SvnApi.CommitRequest()
+			response.Success = svnApi.Commit(new ()
 			{
 				UserName = request.UserName,
 				Password = request.Password,

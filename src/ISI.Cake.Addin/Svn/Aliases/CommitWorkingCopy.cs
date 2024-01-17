@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.Svn
 
 			var svnApi = new ISI.Extensions.Svn.SvnApi(new CakeContextLogger(cakeContext));
 
-			response.Success = svnApi.CommitWorkingCopy(new ISI.Extensions.Svn.DataTransferObjects.SvnApi.CommitWorkingCopyRequest()
+			response.Success = svnApi.CommitWorkingCopy(new ()
 			{
 				UserName = request.UserName,
 				Password = request.Password,

@@ -25,8 +25,11 @@ namespace ISI.Cake.Addin.Nuget
 	{
 		public string ProjectFullName { get; set; }
 		public string Configuration { get; set; } = "Release";
+		public bool IncludeSBom { get; set; } = false;
 		public bool IncludePdb { get; set; } = true;
 		public ISI.Extensions.Nuget.DataTransferObjects.NugetApi.TryGetPackageVersion TryGetPackageVersion { get; set; } = null;
 		public bool BuildTargetFrameworks { get; set; } = false;
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

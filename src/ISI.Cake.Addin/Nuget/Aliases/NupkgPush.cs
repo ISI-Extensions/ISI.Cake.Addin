@@ -81,9 +81,9 @@ namespace ISI.Cake.Addin.Nuget
 
 			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-			var nugetApi = new ISI.Extensions.Nuget.NugetApi(new ISI.Extensions.Nuget.Configuration(), new CakeContextLogger(cakeContext), jsonSerializer);
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
 
-			nugetApi.NupkgPush(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.NupkgPushRequest()
+			nugetApi.NupkgPush(new ()
 			{
 				NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(nupkgPath => nupkgPath.FullPath),
 				NugetApiKey = nupkgPushRequest.NugetApiKey,
