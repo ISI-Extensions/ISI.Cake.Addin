@@ -45,22 +45,22 @@ namespace ISI.Cake.Addin.Nuget
 				BuildTargetFrameworks = request.BuildTargetFrameworks,
 			}).Nuspec;
 
-			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecIconUrl))
+			if (!string.IsNullOrWhiteSpace(request.Settings?.Nuget.NuSpecIconUrl))
 			{
 				response.Nuspec.IconUri = new Uri(request.Settings.Nuget.NuSpecIconUrl);
 			}
 
-			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecCopyright))
+			if (!string.IsNullOrWhiteSpace(request.Settings?.Nuget.NuSpecCopyright))
 			{
 				response.Nuspec.Copyright = request.Settings.Nuget.NuSpecCopyright.Replace("{Year}", DateTime.UtcNow.Year.ToString());
 			}
 
-			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecAuthor))
+			if (!string.IsNullOrWhiteSpace(request.Settings?.Nuget.NuSpecAuthor))
 			{
 				response.Nuspec.Authors = new[] { request.Settings.Nuget.NuSpecAuthor };
 			}
 
-			if (!string.IsNullOrWhiteSpace(request.Settings.Nuget.NuSpecOwner))
+			if (!string.IsNullOrWhiteSpace(request.Settings?.Nuget.NuSpecOwner))
 			{
 				response.Nuspec.Owners = new[] { request.Settings.Nuget.NuSpecOwner };
 			}

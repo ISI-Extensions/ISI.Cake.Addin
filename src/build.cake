@@ -103,15 +103,12 @@ Task("Nuget")
 			{
 				ProjectFullName = project.Path.FullPath,
 				IncludeSBom = false,
+				Settings = settings,
 			}).Nuspec;
 			nuspec.Version = assemblyVersion;
-			nuspec.IconUri = GetNullableUri(@"https://github.com/ISI-Extensions/ISI.Cake.Addin/Lantern.png");
 			nuspec.ProjectUri = GetNullableUri(sourceControlUrl);
 			nuspec.Title = project.Name;
 			nuspec.Description = project.Name;
-			nuspec.Copyright = string.Format("Copyright (c) {0}, Integrated Solutions, Inc.", DateTime.Now.Year);
-			nuspec.Authors = new [] { "Integrated Solutions, Inc." };
-			nuspec.Owners = new [] { "Integrated Solutions, Inc." };
 
 			var nuspecFile = File(project.Path.GetDirectory() + "/" + project.Name + ".nuspec");
 
