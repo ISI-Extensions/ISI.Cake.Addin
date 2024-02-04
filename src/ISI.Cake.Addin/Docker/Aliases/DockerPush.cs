@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.Docker
 			var response = new DockerPushResponse();
 
 			var dockerRegistryDomainName = (request as IDockerPushUsingDockerRegistryDomainNameRequest)?.DockerRegistryDomainName ?? (request as IDockerPushUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
-			var imageReference = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageName ?? (request as IDockerPushUsingImageReferenceTagRequest)?.ImageReference ?? string.Empty;
+			var imageReference = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerRepository ?? (request as IDockerPushUsingImageReferenceTagRequest)?.ImageReference ?? string.Empty;
 			var tag = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageTag ?? (request as IDockerPushUsingImageReferenceTagRequest)?.Tag ?? string.Empty;
 
 			var registryReference = $"{dockerRegistryDomainName}/{imageReference}:{tag}";

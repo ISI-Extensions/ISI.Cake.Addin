@@ -46,7 +46,7 @@ namespace ISI.Cake.Addin.Docker
 			});
 
 			response.TargetOperatingSystem = getDockerImageDetailsResponse.TargetOperatingSystem;
-			response.ContainerImageName = getDockerImageDetailsResponse.ContainerImageName;
+			response.ContainerRepository = getDockerImageDetailsResponse.ContainerRepository;
 			response.ContainerImageTag = getDockerImageDetailsResponse.ContainerImageTag;
 
 			return response;
