@@ -29,6 +29,16 @@ namespace ISI.Cake.Addin.Docker
 		public string ContainerRepository { get; set; }
 		public string ContainerImageTag { get; set; }
 
+		public string GetRuntime(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
+		{
+			if (msBuildPlatform == global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic)
+			{
+				return $"{TargetOperatingSystem}-x64".ToLower();
+			}
+
+			return $"{TargetOperatingSystem}-{msBuildPlatform.GetKey()}".ToLower();
+		}
+
 		public string GetRuntimes(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
 		{
 			switch (msBuildPlatform)
