@@ -33,9 +33,12 @@ namespace ISI.Cake.Addin.VisualStudio
 
 			var logger = new CakeContextLogger(cakeContext);
 
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
 			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+			var configuration = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.VisualStudio.Configuration>();
+			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), logger, jsonSerializer);
 
-			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.VisualStudio.Configuration>(), logger, jsonSerializer, new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.ProjectApi(logger), new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), logger, jsonSerializer));
+			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(configuration, logger, jsonSerializer, new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(configuration, logger, dateTimeStamper, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.ProjectApi(logger), nugetApi);
 
 			if (string.IsNullOrWhiteSpace(solutionFullName))
 			{
