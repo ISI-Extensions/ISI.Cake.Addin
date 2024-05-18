@@ -44,6 +44,7 @@ namespace ISI.Cake.Addin.Docker
 			{
 				ComposeDirectory = request.ComposeDirectory,
 				Context = request.Context,
+				EnvironmentFileFullNames = request.EnvironmentFileFullNames,
 			});
 
 			return response;

@@ -27,5 +27,7 @@ namespace ISI.Cake.Addin.Docker
 		public string ComposeDirectory{ get; set; }
 		
 		public string Context { get; set; }
+
+		public string[] EnvironmentFileFullNames { get; set; }
 	}
 }
