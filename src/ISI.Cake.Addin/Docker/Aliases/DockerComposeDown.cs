@@ -12,69 +12,42 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public interface IDockerPushRequest
+	public static partial class Aliases
 	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerComposeDownResponse DockerComposeDown(this global::Cake.Core.ICakeContext cakeContext, DockerComposeDownRequest request)
+		{
+			ServiceProvider.Initialize();
 
-	}
+			var response = new DockerComposeDownResponse();
 
-	public interface IDockerPushUsingImageReferenceTagRequest : IDockerPushRequest
-	{
-		string ImageReference { get; set; }
-		string Tag { get; set; }
-	}
+			var logger = new CakeContextLogger(cakeContext);
 
-	public interface IDockerPushUsingDockerImageDetailsRequest : IDockerPushRequest
-	{
-		GetDockerImageDetailsResponse DockerImageDetails { get; set; }
-	}
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-	public interface IDockerPushUsingDockerRegistryDomainNameRequest : IDockerPushRequest
-	{
-		string DockerRegistryDomainName { get; set; }
-	}
+			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
 
-	public interface IDockerPushUsingSettingsRequest : IDockerPushRequest
-	{
-		ISI.Extensions.Scm.Settings Settings { get; set; }
-	}
+			dockerApi.ComposeDown(new()
+			{
+				ComposeDirectory = request.ComposeDirectory,
+				Context = request.Context,
+				RemoveVolumes = request.RemoveVolumes,
+			});
 
-	public class DockerPushRequest : IDockerPushUsingImageReferenceTagRequest, IDockerPushUsingDockerRegistryDomainNameRequest
-	{
-		public string ImageReference { get; set; }
-		public string Tag { get; set; }
-
-		public string DockerRegistryDomainName { get; set; }
-	}
-
-	public class DockerPushUsingSettingsRequest : IDockerPushUsingImageReferenceTagRequest, IDockerPushUsingSettingsRequest
-	{
-		public string ImageReference { get; set; }
-		public string Tag { get; set; }
-
-		public ISI.Extensions.Scm.Settings Settings { get; set; }
-	}
-
-	public class DockerPushUsingDockerImageDetailsRequest : IDockerPushUsingDockerImageDetailsRequest, IDockerPushUsingDockerRegistryDomainNameRequest
-	{
-		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
-
-		public string DockerRegistryDomainName { get; set; }
-	}
-
-	public class DockerPushUsingDockerImageDetailsSettingsRequest : IDockerPushUsingDockerImageDetailsRequest, IDockerPushUsingSettingsRequest
-	{
-		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
-
-		public ISI.Extensions.Scm.Settings Settings { get; set; }
+			return response;
+		}
 	}
 }

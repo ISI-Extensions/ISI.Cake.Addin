@@ -18,39 +18,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public static partial class Aliases
+	public class SetDockerImageDetailsRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, GetDockerImageDetailsRequest request)
+		public string Project { get; set; }
+
+		public string TargetOperatingSystem { get; set; }
+		public string ContainerRegistry { get; set; }
+		public string ContainerRepository { get; set; }
+		public string[] ContainerImageTags { get; set; }
+
+		public string GetRuntime(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
 		{
-			return GetDockerImageDetails(cakeContext, request.Project);
+			if (msBuildPlatform == global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic)
+			{
+				return $"{TargetOperatingSystem}-x64".ToLower();
+			}
+
+			return $"{TargetOperatingSystem}-{msBuildPlatform.GetKey()}".ToLower();
 		}
 
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, string project)
+		public string GetRuntimes(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
 		{
-			var response = new GetDockerImageDetailsResponse();
-
-			var logger = new CakeContextLogger(cakeContext);
-
-			var projectApi = new ISI.Extensions.VisualStudio.ProjectApi(logger);
-
-			var getDockerImageDetailsResponse = projectApi.GetDockerImageDetails(new()
+			switch (msBuildPlatform)
 			{
-				Project = project,
-			});
+				case global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic:
+				case global::Cake.Common.Tools.MSBuild.MSBuildPlatform.x64:
+					return $"{TargetOperatingSystem}-x64,{TargetOperatingSystem}-arm64".ToLower();
 
-			response.TargetOperatingSystem = getDockerImageDetailsResponse.TargetOperatingSystem;
-			response.ContainerRegistry = getDockerImageDetailsResponse.ContainerRegistry;
-			response.ContainerRepository = getDockerImageDetailsResponse.ContainerRepository;
-			response.ContainerImageTags = getDockerImageDetailsResponse.ContainerImageTags;
+				case global::Cake.Common.Tools.MSBuild.MSBuildPlatform.x86:
+					return $"{TargetOperatingSystem}-x86,{TargetOperatingSystem}-arm".ToLower();
 
-			return response;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(msBuildPlatform), msBuildPlatform, null);
+			}
 		}
 	}
 }

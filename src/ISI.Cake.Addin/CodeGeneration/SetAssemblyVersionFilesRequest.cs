@@ -18,27 +18,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.Docker
+namespace ISI.Cake.Addin.CodeGeneration
 {
-	public static partial class Aliases
+	public class SetAssemblyVersionFilesRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerPushResponse DockerPush(this global::Cake.Core.ICakeContext cakeContext, IDockerPushRequest request)
-		{
-			var response = new DockerPushResponse();
-
-			var dockerRegistryDomainName = (request as IDockerPushUsingDockerRegistryDomainNameRequest)?.DockerRegistryDomainName ?? (request as IDockerPushUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
-			var imageReference = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerRepository ?? (request as IDockerPushUsingImageReferenceTagRequest)?.ImageReference ?? string.Empty;
-			var tag = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageTag ?? (request as IDockerPushUsingImageReferenceTagRequest)?.Tag ?? string.Empty;
-
-			var registryReference = $"{dockerRegistryDomainName}/{imageReference}:{tag}";
-
-			global::Cake.Docker.DockerAliases.DockerPush(cakeContext, registryReference);
-
-			return response;
-		}
+		public ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary AssemblyVersionFiles { get; set; }
 	}
 }

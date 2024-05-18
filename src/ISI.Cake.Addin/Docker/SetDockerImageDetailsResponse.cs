@@ -22,58 +22,10 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public interface IDockerTagRequest
+	public class SetDockerImageDetailsResponse : AbstractDockerImageDetailsResponse, IDisposable
 	{
-	}
+		internal Action ResetDockerImageDetails { get; set; }
 
-	public interface IDockerTagUsingImageReferenceTagRequest : IDockerTagRequest
-	{
-		string ImageReference { get; set; }
-		string Tag { get; set; }
-	}
-
-	public interface IDockerTagUsingDockerImageDetailsRequest : IDockerTagRequest
-	{
-		GetDockerImageDetailsResponse DockerImageDetails { get; set; }
-	}
-
-	public interface IDockerTagUsingDockerRegistryDomainNameRequest : IDockerTagRequest
-	{
-		string DockerRegistryDomainName { get; set; }
-	}
-
-	public interface IDockerTagUsingSettingsRequest : IDockerTagRequest
-	{
-		ISI.Extensions.Scm.Settings Settings { get; set; }
-	}
-
-	public class DockerTagRequest : IDockerTagUsingImageReferenceTagRequest, IDockerTagUsingDockerRegistryDomainNameRequest
-	{
-		public string ImageReference { get; set; }
-		public string Tag { get; set; }
-
-		public string DockerRegistryDomainName { get; set; }
-	}
-
-	public class DockerTagUsingSettingsRequest : IDockerTagUsingImageReferenceTagRequest, IDockerTagUsingSettingsRequest
-	{
-		public string ImageReference { get; set; }
-		public string Tag { get; set; }
-
-		public ISI.Extensions.Scm.Settings Settings { get; set; }
-	}
-
-	public class DockerTagUsingDockerImageDetailsRequest : IDockerTagUsingDockerImageDetailsRequest, IDockerTagUsingDockerRegistryDomainNameRequest
-	{
-		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
-
-		public string DockerRegistryDomainName { get; set; }
-	}
-
-	public class DockerTagUsingDockerImageDetailsSettingsRequest : IDockerTagUsingDockerImageDetailsRequest, IDockerTagUsingSettingsRequest
-	{
-		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
-
-		public ISI.Extensions.Scm.Settings Settings { get; set; }
+		public void Dispose() => ResetDockerImageDetails?.Invoke();
 	}
 }

@@ -18,28 +18,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Cake.Common.IO;
-using Cake.Common.Solution.Project.Properties;
-using LogLevel = Cake.Core.Diagnostics.LogLevel;
-using Verbosity = Cake.Core.Diagnostics.Verbosity;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.CodeGeneration
 {
-	public static partial class Aliases
+	public class SetAssemblyVersionFilesResponse : IDisposable
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void SetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary assemblyVersionFiles)
-		{
-			ServiceProvider.Initialize();
+		internal Action ResetAssemblyVersionFiles { get; set; }
 
-			var logger = new CakeContextLogger(cakeContext);
-
-			var codeGenerationApi = new ISI.Extensions.VisualStudio.CodeGenerationApi(logger);
-
-			codeGenerationApi.SetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeGenerationApi.SetAssemblyVersionFilesRequest()
-			{
-				AssemblyVersionFiles = assemblyVersionFiles,
-			});
-		}
+		public void Dispose() => ResetAssemblyVersionFiles?.Invoke();
 	}
 }

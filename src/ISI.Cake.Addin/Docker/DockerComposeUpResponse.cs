@@ -22,7 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerTagResponse
+	public class DockerComposeUpResponse
 	{
 	}
 }

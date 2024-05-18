@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Docker
 {
@@ -28,13 +29,23 @@ namespace ISI.Cake.Addin.Docker
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Scm.Settings settings)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new DockerLoginResponse();
 
-			global::Cake.Docker.DockerAliases.DockerLogin(cakeContext, new global::Cake.Docker.DockerRegistryLoginSettings()
+			var logger = new CakeContextLogger(cakeContext);
+
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
+
+			dockerApi.Login(new()
 			{
-				Username = settings.DockerRegistry.UserName,
+				Host = settings.DockerRegistry.DomainName,
+				UserName = settings.DockerRegistry.UserName,
 				Password = settings.DockerRegistry.Password,
-			}, settings.DockerRegistry.DomainName);
+			});
 
 			return response;
 		}

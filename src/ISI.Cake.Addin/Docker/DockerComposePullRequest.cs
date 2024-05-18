@@ -18,27 +18,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public static partial class Aliases
+	public class DockerComposePullRequest
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerTagResponse DockerTag(this global::Cake.Core.ICakeContext cakeContext, IDockerTagRequest request)
-		{
-			var response = new DockerTagResponse();
-
-			var dockerRegistryDomainName = (request as IDockerTagUsingDockerRegistryDomainNameRequest)?.DockerRegistryDomainName ?? (request as IDockerTagUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
-			var imageReference = (request as IDockerTagUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerRepository ?? (request as IDockerTagUsingImageReferenceTagRequest)?.ImageReference ?? string.Empty;
-			var tag = (request as IDockerTagUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageTag ?? (request as IDockerTagUsingImageReferenceTagRequest)?.Tag ?? string.Empty;
-
-			var registryReference = $"{dockerRegistryDomainName}/{imageReference}:{tag}";
-
-			global::Cake.Docker.DockerAliases.DockerTag(cakeContext, imageReference, registryReference);
-
-			return response;
-		}
+		public string ComposeDirectory{ get; set; }
+		
+		public string Context { get; set; }
 	}
 }

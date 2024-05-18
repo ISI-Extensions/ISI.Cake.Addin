@@ -20,35 +20,31 @@ using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Docker
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, GetDockerImageDetailsRequest request)
+		public static DockerComposePullResponse DockerComposePull(this global::Cake.Core.ICakeContext cakeContext, DockerComposePullRequest request)
 		{
-			return GetDockerImageDetails(cakeContext, request.Project);
-		}
+			ServiceProvider.Initialize();
 
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, string project)
-		{
-			var response = new GetDockerImageDetailsResponse();
+			var response = new DockerComposePullResponse();
 
 			var logger = new CakeContextLogger(cakeContext);
 
-			var projectApi = new ISI.Extensions.VisualStudio.ProjectApi(logger);
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 
-			var getDockerImageDetailsResponse = projectApi.GetDockerImageDetails(new()
+			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
+
+			dockerApi.ComposePull(new()
 			{
-				Project = project,
+				ComposeDirectory = request.ComposeDirectory,
+				Context = request.Context,
 			});
-
-			response.TargetOperatingSystem = getDockerImageDetailsResponse.TargetOperatingSystem;
-			response.ContainerRegistry = getDockerImageDetailsResponse.ContainerRegistry;
-			response.ContainerRepository = getDockerImageDetailsResponse.ContainerRepository;
-			response.ContainerImageTags = getDockerImageDetailsResponse.ContainerImageTags;
 
 			return response;
 		}

@@ -19,47 +19,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Extensions.Extensions;
-using MSBuildPlatform = Cake.Common.Tools.MSBuild.MSBuildPlatform;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class GetDockerImageDetailsResponse
+	public class GetDockerImageDetailsResponse : AbstractDockerImageDetailsResponse
 	{
-		public string TargetOperatingSystem { get; set; }
-		public string ContainerRepository { get; set; }
-		public string ContainerImageTag { get; set; }
-
-		public string GetRuntime(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
-		{
-			if (msBuildPlatform == global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic)
-			{
-				return $"{TargetOperatingSystem}-x64".ToLower();
-			}
-
-			return $"{TargetOperatingSystem}-{msBuildPlatform.GetKey()}".ToLower();
-		}
-
-		public string GetRuntimes(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
-		{
-			switch (msBuildPlatform)
-			{
-				case MSBuildPlatform.Automatic:
-				case MSBuildPlatform.x64:
-					return $"{TargetOperatingSystem}-x64,{TargetOperatingSystem}-arm64".ToLower();
-
-				case MSBuildPlatform.x86:
-					return $"{TargetOperatingSystem}-x86,{TargetOperatingSystem}-arm".ToLower();
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(msBuildPlatform), msBuildPlatform, null);
-			}
-
-			//if (msBuildPlatform == global::Cake.Common.Tools.MSBuild.MSBuildPlatform.Automatic)
-			//{
-			//	return $"{TargetOperatingSystem}-x64".ToLower();
-			//}
-
-			//return $"{TargetOperatingSystem}-{msBuildPlatform.GetKey()}".ToLower();
-		}
 	}
 }

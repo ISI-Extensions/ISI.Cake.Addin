@@ -18,39 +18,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
-using ISI.Extensions.Extensions;
+using Cake.Common.IO;
+using Cake.Common.Solution.Project.Properties;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace ISI.Cake.Addin.Docker
+namespace ISI.Cake.Addin.CodeGeneration
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, GetDockerImageDetailsRequest request)
+		public static ResetAssemblyVersionFilesResponse ResetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ResetAssemblyVersionFilesRequest request)
 		{
-			return GetDockerImageDetails(cakeContext, request.Project);
+			return ResetAssemblyVersionFiles(cakeContext, request.AssemblyVersionFiles);
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GetDockerImageDetailsResponse GetDockerImageDetails(this global::Cake.Core.ICakeContext cakeContext, string project)
+		public static ResetAssemblyVersionFilesResponse ResetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary assemblyVersionFiles)
 		{
-			var response = new GetDockerImageDetailsResponse();
+			ServiceProvider.Initialize();
+
+			var reponse = new ResetAssemblyVersionFilesResponse();
 
 			var logger = new CakeContextLogger(cakeContext);
 
-			var projectApi = new ISI.Extensions.VisualStudio.ProjectApi(logger);
+			var codeGenerationApi = new ISI.Extensions.VisualStudio.CodeGenerationApi(logger);
 
-			var getDockerImageDetailsResponse = projectApi.GetDockerImageDetails(new()
+			codeGenerationApi.ResetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeGenerationApi.ResetAssemblyVersionFilesRequest()
 			{
-				Project = project,
+				AssemblyVersionFiles = assemblyVersionFiles,
 			});
 
-			response.TargetOperatingSystem = getDockerImageDetailsResponse.TargetOperatingSystem;
-			response.ContainerRegistry = getDockerImageDetailsResponse.ContainerRegistry;
-			response.ContainerRepository = getDockerImageDetailsResponse.ContainerRepository;
-			response.ContainerImageTags = getDockerImageDetailsResponse.ContainerImageTags;
-
-			return response;
+			return reponse;
 		}
 	}
 }

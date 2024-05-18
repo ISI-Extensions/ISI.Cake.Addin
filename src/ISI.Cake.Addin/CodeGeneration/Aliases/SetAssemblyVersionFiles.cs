@@ -20,26 +20,36 @@ using System.Text;
 using System.Threading.Tasks;
 using Cake.Common.IO;
 using Cake.Common.Solution.Project.Properties;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace ISI.Cake.Addin
+namespace ISI.Cake.Addin.CodeGeneration
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static void ResetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary assemblyVersionFiles)
+		public static SetAssemblyVersionFilesResponse SetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, SetAssemblyVersionFilesRequest request)
+		{
+			return SetAssemblyVersionFiles(cakeContext, request.AssemblyVersionFiles);
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static SetAssemblyVersionFilesResponse SetAssemblyVersionFiles(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.VisualStudio.AssemblyVersionFileDictionary assemblyVersionFiles)
 		{
 			ServiceProvider.Initialize();
 
+			var response = new SetAssemblyVersionFilesResponse();
+			
 			var logger = new CakeContextLogger(cakeContext);
 
 			var codeGenerationApi = new ISI.Extensions.VisualStudio.CodeGenerationApi(logger);
 
-			codeGenerationApi.ResetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeGenerationApi.ResetAssemblyVersionFilesRequest()
+			codeGenerationApi.SetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeGenerationApi.SetAssemblyVersionFilesRequest()
 			{
 				AssemblyVersionFiles = assemblyVersionFiles,
 			});
+
+			response.ResetAssemblyVersionFiles = () => ResetAssemblyVersionFiles(cakeContext, assemblyVersionFiles);
+
+			return response;
 		}
 	}
 }
