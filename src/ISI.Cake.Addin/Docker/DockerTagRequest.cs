@@ -22,13 +22,58 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerComposePullRequest
+	public interface IDockerTagRequest
 	{
-		public string ComposeDirectory{ get; set; }
-		
-		public string Context { get; set; }
+	}
 
-		public string[] EnvironmentFileFullNames { get; set; }
-		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
+	public interface IDockerTagUsingImageReferenceTagRequest : IDockerTagRequest
+	{
+		string ImageReference { get; set; }
+		string Tag { get; set; }
+	}
+
+	public interface IDockerTagUsingDockerImageDetailsRequest : IDockerTagRequest
+	{
+		GetDockerImageDetailsResponse DockerImageDetails { get; set; }
+	}
+
+	public interface IDockerTagUsingDockerRegistryDomainNameRequest : IDockerTagRequest
+	{
+		string DockerRegistryDomainName { get; set; }
+	}
+
+	public interface IDockerTagUsingSettingsRequest : IDockerTagRequest
+	{
+		ISI.Extensions.Scm.Settings Settings { get; set; }
+	}
+
+	public class DockerTagRequest : IDockerTagUsingImageReferenceTagRequest, IDockerTagUsingDockerRegistryDomainNameRequest
+	{
+		public string ImageReference { get; set; }
+		public string Tag { get; set; }
+
+		public string DockerRegistryDomainName { get; set; }
+	}
+
+	public class DockerTagUsingSettingsRequest : IDockerTagUsingImageReferenceTagRequest, IDockerTagUsingSettingsRequest
+	{
+		public string ImageReference { get; set; }
+		public string Tag { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
+	}
+
+	public class DockerTagUsingDockerImageDetailsRequest : IDockerTagUsingDockerImageDetailsRequest, IDockerTagUsingDockerRegistryDomainNameRequest
+	{
+		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
+
+		public string DockerRegistryDomainName { get; set; }
+	}
+
+	public class DockerTagUsingDockerImageDetailsSettingsRequest : IDockerTagUsingDockerImageDetailsRequest, IDockerTagUsingSettingsRequest
+	{
+		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

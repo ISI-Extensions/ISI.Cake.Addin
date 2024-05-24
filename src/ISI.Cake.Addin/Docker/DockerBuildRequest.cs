@@ -22,13 +22,36 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerComposePullRequest
+	public interface IDockerBuildRequest
 	{
-		public string ComposeDirectory{ get; set; }
-		
-		public string Context { get; set; }
+		global::Cake.Common.IO.Paths.ConvertableFilePath File { get; }
 
-		public string[] EnvironmentFileFullNames { get; set; }
-		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
+		string ContainerRepository { get; }
+		string[] ContainerImageTags { get; }
+
+		string Path { get; }
+	}
+
+	public class DockerBuildRequest : IDockerBuildRequest
+	{
+		public global::Cake.Common.IO.Paths.ConvertableFilePath File { get; set; }
+
+		public string ContainerRegistry { get; set; }
+		public string ContainerRepository { get; set; }
+		public string[] ContainerImageTags { get; set; }
+
+		public string Path { get; set; }
+	}
+
+	public class DockerBuildUsingSettingsRequest : IDockerBuildRequest
+	{
+		public global::Cake.Common.IO.Paths.ConvertableFilePath File { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
+
+		public string ContainerRepository { get; set; }
+		public string[] ContainerImageTags { get; set; }
+
+		public string Path { get; set; }
 	}
 }

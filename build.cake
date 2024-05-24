@@ -10,15 +10,18 @@ var settings = GetSettings(settingsFullName);
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
-var solutionPath = File("./ISI.Cake.Addin.sln");
+var solutionPath = File("./src/ISI.Cake.Addin.sln");
 var solution = ParseSolution(solutionPath);
 
-var assemblyVersionFile = File("./ISI.Cake.Addin.Version.cs");
+var rootAssemblyVersionKey = "ISI.Cake.Addin";
 
 var buildDateTime = DateTime.UtcNow;
 var buildDateTimeStamp = GetDateTimeStamp(buildDateTime);
 var buildRevision = GetBuildRevision(buildDateTime);
-var assemblyVersion = GetAssemblyVersion(ParseAssemblyInfo(assemblyVersionFile).AssemblyVersion, buildRevision);
+
+var assemblyVersions = GetAssemblyVersionFiles(rootAssemblyVersionKey, buildRevision);
+var assemblyVersion = assemblyVersions[rootAssemblyVersionKey].AssemblyVersion;
+
 Information("AssemblyVersion: {0}", assemblyVersion);
 
 var nugetPackOutputDirectory = Argument("NugetPackOutputDirectory", System.IO.Path.GetFullPath("../Nuget"));
@@ -54,22 +57,15 @@ Task("Build")
 	.IsDependentOn("NugetPackageRestore")
 	.Does(() => 
 	{
-		CreateAssemblyInfo(assemblyVersionFile, new AssemblyInfoSettings()
+		using(SetAssemblyVersionFiles(assemblyVersions))
 		{
-			Version = assemblyVersion,
-		});
-
-		MSBuild(solutionPath, configurator => configurator
-			.SetConfiguration(configuration)
-			.SetVerbosity(Verbosity.Quiet)
-			.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-			.SetPlatformTarget(PlatformTarget.MSIL)
-			.WithTarget("Build"));
-
-		CreateAssemblyInfo(assemblyVersionFile, new AssemblyInfoSettings()
-		{
-			Version = GetAssemblyVersion(assemblyVersion, "*"),
-		});
+			MSBuild(solutionPath, configurator => configurator
+				.SetConfiguration(configuration)
+				.SetVerbosity(Verbosity.Quiet)
+				.SetMSBuildPlatform(MSBuildPlatform.Automatic)
+				.SetPlatformTarget(PlatformTarget.MSIL)
+				.WithTarget("Build"));
+		}
 	});
 
 Task("Sign")

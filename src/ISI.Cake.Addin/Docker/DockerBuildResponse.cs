@@ -22,13 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerComposePullRequest
+	public class DockerBuildResponse
 	{
-		public string ComposeDirectory{ get; set; }
-		
-		public string Context { get; set; }
-
-		public string[] EnvironmentFileFullNames { get; set; }
-		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
 	}
 }

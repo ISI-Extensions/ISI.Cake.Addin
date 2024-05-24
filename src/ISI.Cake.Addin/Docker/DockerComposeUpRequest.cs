@@ -29,5 +29,6 @@ namespace ISI.Cake.Addin.Docker
 		public string Context { get; set; }
 
 		public string[] EnvironmentFileFullNames { get; set; }
+		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
 	}
 }

@@ -22,13 +22,59 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerComposePullRequest
+	public interface IDockerPushRequest
 	{
-		public string ComposeDirectory{ get; set; }
-		
-		public string Context { get; set; }
 
-		public string[] EnvironmentFileFullNames { get; set; }
-		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
+	}
+
+	public interface IDockerPushUsingImageReferenceTagRequest : IDockerPushRequest
+	{
+		string ImageReference { get; set; }
+		string Tag { get; set; }
+	}
+
+	public interface IDockerPushUsingDockerImageDetailsRequest : IDockerPushRequest
+	{
+		GetDockerImageDetailsResponse DockerImageDetails { get; set; }
+	}
+
+	public interface IDockerPushUsingDockerRegistryDomainNameRequest : IDockerPushRequest
+	{
+		string DockerRegistryDomainName { get; set; }
+	}
+
+	public interface IDockerPushUsingSettingsRequest : IDockerPushRequest
+	{
+		ISI.Extensions.Scm.Settings Settings { get; set; }
+	}
+
+	public class DockerPushRequest : IDockerPushUsingImageReferenceTagRequest, IDockerPushUsingDockerRegistryDomainNameRequest
+	{
+		public string ImageReference { get; set; }
+		public string Tag { get; set; }
+
+		public string DockerRegistryDomainName { get; set; }
+	}
+
+	public class DockerPushUsingSettingsRequest : IDockerPushUsingImageReferenceTagRequest, IDockerPushUsingSettingsRequest
+	{
+		public string ImageReference { get; set; }
+		public string Tag { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
+	}
+
+	public class DockerPushUsingDockerImageDetailsRequest : IDockerPushUsingDockerImageDetailsRequest, IDockerPushUsingDockerRegistryDomainNameRequest
+	{
+		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
+
+		public string DockerRegistryDomainName { get; set; }
+	}
+
+	public class DockerPushUsingDockerImageDetailsSettingsRequest : IDockerPushUsingDockerImageDetailsRequest, IDockerPushUsingSettingsRequest
+	{
+		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }

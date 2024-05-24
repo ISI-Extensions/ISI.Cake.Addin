@@ -18,17 +18,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerComposePullRequest
+	public static partial class Aliases
 	{
-		public string ComposeDirectory{ get; set; }
-		
-		public string Context { get; set; }
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerPushResponse DockerPush(this global::Cake.Core.ICakeContext cakeContext, IDockerPushRequest request)
+		{
+			var response = new DockerPushResponse();
 
-		public string[] EnvironmentFileFullNames { get; set; }
-		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
+			var containerRegistry = (request as IDockerPushUsingDockerRegistryDomainNameRequest)?.DockerRegistryDomainName ?? (request as IDockerPushUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
+			var containerRepository = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerRepository ?? (request as IDockerPushUsingImageReferenceTagRequest)?.ImageReference ?? string.Empty;
+			var containerImageTag = (request as IDockerPushUsingDockerImageDetailsRequest)?.DockerImageDetails.ContainerImageTags.NullCheckedFirstOrDefault() ?? (request as IDockerPushUsingImageReferenceTagRequest)?.Tag ?? string.Empty;
+
+			var registryReference = $"{containerRegistry}/{containerRepository}:{containerImageTag}";
+
+			global::Cake.Docker.DockerAliases.DockerPush(cakeContext, registryReference);
+
+			return response;
+		}
 	}
 }

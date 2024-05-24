@@ -18,17 +18,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerComposePullRequest
+	public static partial class Aliases
 	{
-		public string ComposeDirectory{ get; set; }
-		
-		public string Context { get; set; }
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerBuildResponse DockerBuild(this global::Cake.Core.ICakeContext cakeContext, IDockerBuildRequest request)
+		{
+			var response = new DockerBuildResponse();
 
-		public string[] EnvironmentFileFullNames { get; set; }
-		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
+			var containerRegistry = (request as DockerBuildRequest)?.ContainerRegistry ?? (request as DockerBuildUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
+			
+			var containerRepository = request.ContainerRepository;
+			var containerImageTags = (request.ContainerImageTags.NullCheckedAny() ? request.ContainerImageTags : new[] { " latest" });
+
+			var path = (string.IsNullOrWhiteSpace(request.Path) ? request.File.Path.GetDirectory().FullPath : request.Path);
+
+			if (string.IsNullOrWhiteSpace(containerRegistry))
+			{
+				for (var index = 0; index < containerImageTags.Length; index++)
+				{
+					containerImageTags[index] = $"{containerRepository}:{containerImageTags[index]}";
+				}
+			}
+			else
+			{
+				for (var index = 0; index < containerImageTags.Length; index++)
+				{
+					containerImageTags[index] = $"{containerRegistry}/{containerRepository}:{containerImageTags[index]}";
+				}
+			}
+			
+			global::Cake.Docker.DockerAliases.DockerBuild(cakeContext, new global::Cake.Docker.DockerImageBuildSettings()
+			{
+				File = request.File,
+				Tag = containerImageTags,
+			}, path);
+
+			if (!string.IsNullOrWhiteSpace(containerRegistry))
+			{
+				foreach (var containerImageTag in containerImageTags)
+				{
+					global::Cake.Docker.DockerAliases.DockerPush(cakeContext, containerImageTag);
+				}
+			}
+
+			return response;
+		}
 	}
 }

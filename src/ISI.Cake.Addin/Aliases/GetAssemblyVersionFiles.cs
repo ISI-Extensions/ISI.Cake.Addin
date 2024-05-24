@@ -54,7 +54,7 @@ namespace ISI.Cake.Addin
 
 			var solutionApi = new ISI.Extensions.VisualStudio.SolutionApi(configuration, logger, jsonSerializer, new ISI.Extensions.Scm.BuildScriptApi(logger), new ISI.Extensions.Scm.SourceControlClientApi(logger), new ISI.Extensions.VisualStudio.MSBuildApi(logger, new ISI.Extensions.VisualStudio.VsWhereApi(configuration, logger, dateTimeStamper, nugetApi)), new ISI.Extensions.VisualStudio.CodeGenerationApi(logger), new ISI.Extensions.VisualStudio.ProjectApi(logger), nugetApi);
 
-			return solutionApi.GetAssemblyVersionFiles(new ISI.Extensions.VisualStudio.DataTransferObjects.SolutionApi.GetAssemblyVersionFilesRequest()
+			return solutionApi.GetAssemblyVersionFiles(new ()
 			{
 				Solution = solution ?? cakeContext.Environment.WorkingDirectory.FullPath,
 				RootAssemblyVersionKey = rootAssemblyVersionKey,
