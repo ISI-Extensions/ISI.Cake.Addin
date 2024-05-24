@@ -24,7 +24,7 @@ var assemblyVersion = assemblyVersions[rootAssemblyVersionKey].AssemblyVersion;
 
 Information("AssemblyVersion: {0}", assemblyVersion);
 
-var nugetPackOutputDirectory = Argument("NugetPackOutputDirectory", System.IO.Path.GetFullPath("../Nuget"));
+var nugetPackOutputDirectory = Argument("NugetPackOutputDirectory", System.IO.Path.GetFullPath("./Nuget"));
 
 Task("Clean")
 	.Does(() =>
