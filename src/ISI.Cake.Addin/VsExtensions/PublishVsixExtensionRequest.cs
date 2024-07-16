@@ -35,7 +35,6 @@ namespace ISI.Cake.Addin.VsExtensions
 
 		PublishVsixExtensionRequestPricingCategory PriceCategory { get; }
 		string[] Categories { get; }
-		string[] Tags { get; }
 
 		bool Public { get; }
 		bool QuestionAndAnswer { get; }
@@ -57,7 +56,6 @@ namespace ISI.Cake.Addin.VsExtensions
 
 		public PublishVsixExtensionRequestPricingCategory PriceCategory { get; set; } = PublishVsixExtensionRequestPricingCategory.Free;
 		public string[] Categories { get; set; }
-		public string[] Tags { get; set; }
 
 		public bool Public { get; set; } = true;
 		public bool QuestionAndAnswer { get; set; } = true;
@@ -78,7 +76,6 @@ namespace ISI.Cake.Addin.VsExtensions
 
 		public PublishVsixExtensionRequestPricingCategory PriceCategory { get; set; } = PublishVsixExtensionRequestPricingCategory.Free;
 		public string[] Categories { get; set; }
-		public string[] Tags { get; set; }
 
 		public bool Public { get; set; } = true;
 		public bool QuestionAndAnswer { get; set; } = true;

@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.Nuget
 
 			var nugetApi = new ISI.Extensions.Nuget.NugetApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Nuget.Configuration>(), new CakeContextLogger(cakeContext), jsonSerializer);
 
-			nugetApi.RestoreNugetPackages(new ()
+			nugetApi.RestoreNugetPackages(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.RestoreNugetPackagesRequest()
 			{
 				Solution = request.Solution,
 				PackagesConfigFileName = request.PackagesConfigFileName,

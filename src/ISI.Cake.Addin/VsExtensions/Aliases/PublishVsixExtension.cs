@@ -56,7 +56,6 @@ namespace ISI.Cake.Addin.VsExtensions
 				ReadMeFullName = request.ReadMeFullName,
 				PriceCategory = ISI.Extensions.VisualStudio.DataTransferObjects.VsixPublisherApi.GenerateVsixPublishManifestRequestPricingCategory.Free,
 				Categories = request.Categories,
-				Tags = request.Tags,
 
 				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			});
