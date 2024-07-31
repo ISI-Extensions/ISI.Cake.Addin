@@ -18,40 +18,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public static partial class Aliases
-	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerComposeUpResponse DockerComposeUp(this global::Cake.Core.ICakeContext cakeContext, DockerComposeUpRequest request)
-		{
-			ServiceProvider.Initialize();
-
-			var response = new DockerComposeUpResponse();
-
-			var logger = new CakeContextLogger(cakeContext);
-
-			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
-			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
-
-			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
-
-			dockerApi.ComposeUp(new()
-			{
-				ComposeDirectory = (string.IsNullOrWhiteSpace(request.ComposeDirectory) ? cakeContext.Environment.WorkingDirectory.FullPath : request.ComposeDirectory),
-				ProjectName = request.ProjectName,
-				Context = request.Context,
-				EnvironmentFileFullNames = request.EnvironmentFileFullNames,
-				EnvironmentVariables = request.EnvironmentVariables,
-				OnComposeUpStart = tryGetEnvironmentValue => { request.OnComposeUpStart?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value)); },
-				OnComposeUpFinish = (tryGetEnvironmentValue, errored) => { request.OnComposeUpFinish?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value), errored); },
-			});
-
-			return response;
-		}
-	}
+	public delegate bool TryGetEnvironmentValueDelegate(string key, out string value);
 }

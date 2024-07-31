@@ -48,6 +48,8 @@ namespace ISI.Cake.Addin.Docker
 				EnvironmentFileFullNames = request.EnvironmentFileFullNames,
 				EnvironmentVariables = request.EnvironmentVariables,
 				RemoveVolumes = request.RemoveVolumes,
+				OnComposeDownStart = tryGetEnvironmentValue => { request.OnComposeDownStart?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value)); },
+				OnComposeDownFinish = (tryGetEnvironmentValue, errored) => { request.OnComposeDownFinish?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value), errored); },
 			});
 
 			return response;

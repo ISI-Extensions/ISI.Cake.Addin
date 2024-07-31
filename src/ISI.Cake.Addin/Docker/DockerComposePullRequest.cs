@@ -22,6 +22,9 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
+	public delegate void OnComposePullStartDelegate(TryGetEnvironmentValueDelegate tryGetEnvironmentValue);
+	public delegate void OnComposePullFinishDelegate(TryGetEnvironmentValueDelegate tryGetEnvironmentValue, bool errored);
+
 	public class DockerComposePullRequest
 	{
 		public string ComposeDirectory { get; set; }
@@ -32,5 +35,8 @@ namespace ISI.Cake.Addin.Docker
 
 		public string[] EnvironmentFileFullNames { get; set; }
 		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
+		
+		public OnComposePullStartDelegate OnComposePullStart { get; set; } = null;
+		public OnComposePullFinishDelegate OnComposePullFinish { get; set; } = null;
 	}
 }
