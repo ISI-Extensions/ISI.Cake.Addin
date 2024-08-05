@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.Docker
 {
@@ -48,7 +49,7 @@ namespace ISI.Cake.Addin.Docker
 				EnvironmentFileFullNames = request.EnvironmentFileFullNames,
 				EnvironmentVariables = request.EnvironmentVariables,
 				OnComposeUpStart = tryGetEnvironmentValue => { request.OnComposeUpStart?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value)); },
-				OnComposeUpFinish = (tryGetEnvironmentValue, errored) => { request.OnComposeUpFinish?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value), errored); },
+				OnComposeUpFinish = (tryGetEnvironmentValue, errored) => request.OnComposeUpFinish?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value), errored),
 			});
 
 			return response;
