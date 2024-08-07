@@ -21,6 +21,8 @@ namespace ISI.Cake.Addin.Docker
 {
 	public class DockerLoginRequest
 	{
+		public string Context { get; set; }
+
 		public string DomainName { get; set; }
 
 		public string UserName { get; set; }

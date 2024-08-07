@@ -42,6 +42,7 @@ namespace ISI.Cake.Addin.Docker
 
 			dockerApi.Login(new()
 			{
+				Context = request.Context,
 				Host = request.DomainName,
 				UserName = request.UserName,
 				Password = request.Password,
