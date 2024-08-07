@@ -27,7 +27,7 @@ namespace ISI.Cake.Addin.Docker
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Scm.Settings settings)
+		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, DockerLoginRequest request)
 		{
 			ServiceProvider.Initialize();
 
@@ -42,12 +42,23 @@ namespace ISI.Cake.Addin.Docker
 
 			dockerApi.Login(new()
 			{
-				Host = settings.DockerRegistry.DomainName,
-				UserName = settings.DockerRegistry.UserName,
-				Password = settings.DockerRegistry.Password,
+				Host = request.DomainName,
+				UserName = request.UserName,
+				Password = request.Password,
 			});
 
 			return response;
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Scm.Settings settings)
+		{
+			return DockerLogin(cakeContext, new DockerLoginRequest()
+			{
+				DomainName = settings.DockerRegistry.DomainName,
+				UserName = settings.DockerRegistry.UserName,
+				Password = settings.DockerRegistry.Password,
+			});
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
