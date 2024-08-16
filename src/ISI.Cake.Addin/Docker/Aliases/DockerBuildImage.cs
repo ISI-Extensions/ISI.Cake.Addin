@@ -43,6 +43,7 @@ namespace ISI.Cake.Addin.Docker
 			dockerApi.BuildImage(new()
 			{
 				AppDirectory = (string.IsNullOrWhiteSpace(request.AppDirectory) ? cakeContext.Environment.WorkingDirectory.FullPath : request.AppDirectory),
+				DockerFileFullName = request.DockerFileFullName,
 				Context = request.Context,
 				EnvironmentFileFullNames = request.EnvironmentFileFullNames,
 				EnvironmentVariables = request.EnvironmentVariables,

@@ -42,7 +42,6 @@ namespace ISI.Cake.Addin.Docker
 
 			dockerApi.PushImage(new()
 			{
-				AppDirectory = (string.IsNullOrWhiteSpace(request.AppDirectory) ? cakeContext.Environment.WorkingDirectory.FullPath : request.AppDirectory),
 				Context = request.Context,
 				ContainerImageTag = request.ContainerImageTag,
 				RemoveImage = request.RemoveImage,

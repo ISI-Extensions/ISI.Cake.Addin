@@ -24,8 +24,6 @@ namespace ISI.Cake.Addin.Docker
 {
 	public class DockerPushImageRequest
 	{
-		public string AppDirectory { get; set; }
-		
 		public string Context { get; set; }
 
 		public string ContainerImageTag { get; set; }
