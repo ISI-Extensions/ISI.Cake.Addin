@@ -65,7 +65,13 @@ namespace ISI.Cake.Addin.Docker
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, DockerLoginUsingSettingsRequest request)
 		{
-			return DockerLogin(cakeContext, request.Settings);
+			return DockerLogin(cakeContext, new DockerLoginRequest()
+			{
+				Context = request.Context,
+				DomainName = request.Settings.DockerRegistry.DomainName,
+				UserName = request.Settings.DockerRegistry.UserName,
+				Password = request.Settings.DockerRegistry.Password,
+			});
 		}
 	}
 }

@@ -32,6 +32,8 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerLoginUsingSettingsRequest
 	{
+		public string Context { get; set; }
+
 		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }
