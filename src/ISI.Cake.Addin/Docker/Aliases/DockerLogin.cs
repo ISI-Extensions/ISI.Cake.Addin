@@ -52,6 +52,18 @@ namespace ISI.Cake.Addin.Docker
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, string context, ISI.Extensions.Scm.Settings settings)
+		{
+			return DockerLogin(cakeContext, new DockerLoginRequest()
+			{
+				Context = context,
+				DomainName = settings.DockerRegistry.DomainName,
+				UserName = settings.DockerRegistry.UserName,
+				Password = settings.DockerRegistry.Password,
+			});
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static DockerLoginResponse DockerLogin(this global::Cake.Core.ICakeContext cakeContext, ISI.Extensions.Scm.Settings settings)
 		{
 			return DockerLogin(cakeContext, new DockerLoginRequest()
