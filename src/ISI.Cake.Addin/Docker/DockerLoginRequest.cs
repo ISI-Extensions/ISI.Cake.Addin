@@ -21,9 +21,10 @@ namespace ISI.Cake.Addin.Docker
 {
 	public class DockerLoginRequest
 	{
+		public string Host { get; set; }
 		public string Context { get; set; }
 
-		public string DomainName { get; set; }
+		public string FQDN { get; set; }
 
 		public string UserName { get; set; }
 		public string Password { get; set; }
@@ -32,6 +33,7 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerLoginUsingSettingsRequest
 	{
+		public string Host { get; set; }
 		public string Context { get; set; }
 
 		public ISI.Extensions.Scm.Settings Settings { get; set; }

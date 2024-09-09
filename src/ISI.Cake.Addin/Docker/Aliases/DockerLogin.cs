@@ -42,8 +42,9 @@ namespace ISI.Cake.Addin.Docker
 
 			dockerApi.Login(new()
 			{
+				Host = request.Host,
 				Context = request.Context,
-				Host = request.DomainName,
+				FQDN = request.FQDN,
 				UserName = request.UserName,
 				Password = request.Password,
 			});
@@ -57,7 +58,31 @@ namespace ISI.Cake.Addin.Docker
 			return DockerLogin(cakeContext, new DockerLoginRequest()
 			{
 				Context = context,
-				DomainName = settings.DockerRegistry.DomainName,
+				FQDN = settings.DockerRegistry.DomainName,
+				UserName = settings.DockerRegistry.UserName,
+				Password = settings.DockerRegistry.Password,
+			});
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerLoginResponse DockerLoginWithHost(this global::Cake.Core.ICakeContext cakeContext, string host, ISI.Extensions.Scm.Settings settings)
+		{
+			return DockerLogin(cakeContext, new DockerLoginRequest()
+			{
+				Host = host,
+				FQDN = settings.DockerRegistry.DomainName,
+				UserName = settings.DockerRegistry.UserName,
+				Password = settings.DockerRegistry.Password,
+			});
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerLoginResponse DockerLoginWithContext(this global::Cake.Core.ICakeContext cakeContext, string context, ISI.Extensions.Scm.Settings settings)
+		{
+			return DockerLogin(cakeContext, new DockerLoginRequest()
+			{
+				Context = context,
+				FQDN = settings.DockerRegistry.DomainName,
 				UserName = settings.DockerRegistry.UserName,
 				Password = settings.DockerRegistry.Password,
 			});
@@ -68,7 +93,7 @@ namespace ISI.Cake.Addin.Docker
 		{
 			return DockerLogin(cakeContext, new DockerLoginRequest()
 			{
-				DomainName = settings.DockerRegistry.DomainName,
+				FQDN = settings.DockerRegistry.DomainName,
 				UserName = settings.DockerRegistry.UserName,
 				Password = settings.DockerRegistry.Password,
 			});
@@ -79,8 +104,9 @@ namespace ISI.Cake.Addin.Docker
 		{
 			return DockerLogin(cakeContext, new DockerLoginRequest()
 			{
+				Host = request.Host,
 				Context = request.Context,
-				DomainName = request.Settings.DockerRegistry.DomainName,
+				FQDN = request.Settings.DockerRegistry.DomainName,
 				UserName = request.Settings.DockerRegistry.UserName,
 				Password = request.Settings.DockerRegistry.Password,
 			});
