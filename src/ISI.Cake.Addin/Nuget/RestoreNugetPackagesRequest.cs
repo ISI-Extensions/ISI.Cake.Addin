@@ -24,6 +24,5 @@ namespace ISI.Cake.Addin.Nuget
 	public class RestoreNugetPackagesRequest
 	{
 		public string Solution { get; set; }
-		public string PackagesConfigFileName { get; set; }
 	}
 }

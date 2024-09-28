@@ -26,6 +26,33 @@ namespace ISI.Cake.Addin.Nuget
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.IO.Paths.ConvertableFilePath solution)
+		{
+			return RestoreNugetPackages(cakeContext, new RestoreNugetPackagesRequest()
+			{
+				Solution = solution.Path.FullPath,
+			});
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Core.IO.FilePath solution)
+		{
+			return RestoreNugetPackages(cakeContext, new RestoreNugetPackagesRequest()
+			{
+				Solution = solution.FullPath,
+			});
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, string solution)
+		{
+			return RestoreNugetPackages(cakeContext, new RestoreNugetPackagesRequest()
+			{
+				Solution = solution,
+			});
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static RestoreNugetPackagesResponse RestoreNugetPackages(this global::Cake.Core.ICakeContext cakeContext, RestoreNugetPackagesRequest request)
 		{
 			ServiceProvider.Initialize();
@@ -39,7 +66,6 @@ namespace ISI.Cake.Addin.Nuget
 			nugetApi.RestoreNugetPackages(new ISI.Extensions.Nuget.DataTransferObjects.NugetApi.RestoreNugetPackagesRequest()
 			{
 				Solution = request.Solution,
-				PackagesConfigFileName = request.PackagesConfigFileName,
 			});
 
 			return response;
