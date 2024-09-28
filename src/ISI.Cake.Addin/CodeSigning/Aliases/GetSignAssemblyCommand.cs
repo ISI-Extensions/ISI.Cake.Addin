@@ -78,6 +78,7 @@ namespace ISI.Cake.Addin.CodeSigning
 					DigestAlgorithm = signAssembliesRequest.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
 					OverwriteAnyExistingSignature = signAssembliesRequest.OverwriteAnyExistingSignature,
 					Verbosity = signAssembliesRequest.Verbosity.ToCodeSigningVerbosity(),
+					UseShortPathName = request.UseShortPathName,
 				});
 
 				response.Command = getSignAssemblyCommandResponse.Command;

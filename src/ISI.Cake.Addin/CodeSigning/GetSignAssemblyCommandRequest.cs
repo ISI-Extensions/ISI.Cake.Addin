@@ -23,7 +23,7 @@ namespace ISI.Cake.Addin.CodeSigning
 {
 	public interface IGetSignAssemblyCommandRequest
 	{
-
+		bool UseShortPathName { get; }
 	}
 
 	public class GetSignAssemblyCommandRequest : IGetSignAssemblyCommandRequest
@@ -53,10 +53,14 @@ namespace ISI.Cake.Addin.CodeSigning
 		public bool RunAsync { get; set; } = false;
 
 		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
+
+		public bool UseShortPathName { get; set; }
 	}
 
 	public class GetSignAssemblyCommandUsingSettingsRequest : IGetSignAssemblyCommandRequest
 	{
 		public ISI.Extensions.Scm.Settings Settings { get; set; }
+
+		public bool UseShortPathName { get; set; }
 	}
 }
