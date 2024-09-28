@@ -52,6 +52,7 @@ namespace ISI.Cake.Addin.CodeSigning
 					CertificateFingerprint = signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificateFingerprint,
 					DigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signAssembliesUsingSettingsRequest.Settings.CodeSigning.DigestAlgorithm),
 					RunAsync = signAssembliesUsingSettingsRequest.Settings.CodeSigning.RunAsync,
+					UseShortPathName = request.UseShortPathName,
 				};
 			}
 
