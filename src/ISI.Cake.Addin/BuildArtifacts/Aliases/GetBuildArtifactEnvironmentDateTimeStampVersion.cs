@@ -31,7 +31,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			
 			request.WarmUpWebService(cakeContext.Log);
 
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi( new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
 			response.DateTimeStampVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ()
 			{

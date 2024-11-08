@@ -27,6 +27,30 @@ namespace ISI.Cake.Addin.Docker
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerPruneImagesResponse DockerPruneImages(this global::Cake.Core.ICakeContext cakeContext, string context, bool all = true, bool force = true)
+		{
+			ServiceProvider.Initialize();
+
+			var response = new DockerPruneImagesResponse();
+
+			var logger = new CakeContextLogger(cakeContext);
+
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
+
+			dockerApi.PruneImages(new()
+			{
+				Context = context,
+				All = all,
+				Force = force,
+			});
+
+			return response;
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static DockerPruneImagesResponse DockerPruneImages(this global::Cake.Core.ICakeContext cakeContext, DockerPruneImagesRequest request)
 		{
 			ServiceProvider.Initialize();
