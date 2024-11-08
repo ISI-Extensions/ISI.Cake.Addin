@@ -22,12 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerPushImageRequest
+	public class DockerCopyImagesResponse
 	{
-		public string Context { get; set; }
-
-		public string ContainerImageTag { get; set; }
-
-		public bool RemoveImage { get; set; }
 	}
 }

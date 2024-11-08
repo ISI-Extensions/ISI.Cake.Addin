@@ -18,11 +18,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerPushImageResponse
+	public static partial class Aliases
 	{
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerPullImagesResponse DockerPullImages(this global::Cake.Core.ICakeContext cakeContext, DockerPullImagesRequest request)
+		{
+			ServiceProvider.Initialize();
+
+			var response = new DockerPullImagesResponse();
+
+			var logger = new CakeContextLogger(cakeContext);
+
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
+
+			dockerApi.PullImages(new()
+			{
+				Context = request.Context,
+				ContainerRegistry = request.ContainerRegistry,
+				ContainerRepository = request.ContainerRepository,
+				ContainerImageTags = request.ContainerImageTags,
+			});
+
+			return response;
+		}
 	}
 }
