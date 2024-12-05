@@ -28,6 +28,9 @@ namespace ISI.Cake.Addin.Docker
 		public string ContainerRegistry { get; set; }
 		public string ContainerRepository { get; set; }
 		public string[] ContainerImageTags { get; set; }
+		public string ContainerFamily { get; set; }
+		public string ContainerBaseImage { get; set; }
+		public string ContainerWorkingDirectory { get; set; }
 
 		public string GetRuntime(global::Cake.Common.Tools.MSBuild.MSBuildPlatform msBuildPlatform)
 		{

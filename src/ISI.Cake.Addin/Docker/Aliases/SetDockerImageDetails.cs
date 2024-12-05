@@ -43,6 +43,9 @@ namespace ISI.Cake.Addin.Docker
 			response.ContainerRegistry = getDockerImageDetailsResponse.ContainerRegistry;
 			response.ContainerRepository = getDockerImageDetailsResponse.ContainerRepository;
 			response.ContainerImageTags = getDockerImageDetailsResponse.ContainerImageTags;
+			response.ContainerFamily = getDockerImageDetailsResponse.ContainerFamily;
+			response.ContainerBaseImage = getDockerImageDetailsResponse.ContainerBaseImage;
+			response.ContainerWorkingDirectory = getDockerImageDetailsResponse.ContainerWorkingDirectory;
 
 			var setDockerImageDetailsResponse = projectApi.SetDockerImageDetails(new()
 			{
@@ -52,6 +55,9 @@ namespace ISI.Cake.Addin.Docker
 				ContainerRegistry = request.ContainerRegistry,
 				ContainerRepository = request.ContainerRepository,
 				ContainerImageTags = request.ContainerImageTags.ToNullCheckedArray(),
+				ContainerFamily = request.ContainerFamily,
+				ContainerBaseImage = request.ContainerBaseImage,
+				ContainerWorkingDirectory = request.ContainerWorkingDirectory,
 			});
 
 			response.ResetDockerImageDetails = () =>

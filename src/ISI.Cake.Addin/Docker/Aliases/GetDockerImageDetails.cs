@@ -49,6 +49,9 @@ namespace ISI.Cake.Addin.Docker
 			response.ContainerRegistry = getDockerImageDetailsResponse.ContainerRegistry;
 			response.ContainerRepository = getDockerImageDetailsResponse.ContainerRepository;
 			response.ContainerImageTags = getDockerImageDetailsResponse.ContainerImageTags;
+			response.ContainerFamily = getDockerImageDetailsResponse.ContainerFamily;
+			response.ContainerBaseImage = getDockerImageDetailsResponse.ContainerBaseImage;
+			response.ContainerWorkingDirectory = getDockerImageDetailsResponse.ContainerWorkingDirectory;
 
 			return response;
 		}
