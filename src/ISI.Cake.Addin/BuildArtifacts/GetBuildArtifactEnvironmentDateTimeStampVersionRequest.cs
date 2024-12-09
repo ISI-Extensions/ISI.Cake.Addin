@@ -30,6 +30,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		
 		public string Environment { get; set; }
 
+		public bool DoNotThrowErrorIfNotFound { get; set; }
+
 		Uri IWarmUpWebService.WebServiceUri => BuildArtifactsApiUri;
 		public bool WarmUpWebService { get; } = true;
 		public int WarmUpWebServiceMaxTries { get; set; } = 5;

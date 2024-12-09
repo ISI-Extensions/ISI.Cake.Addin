@@ -41,7 +41,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				Environment = request.Environment,
 			}).DateTimeStampVersion;
 			
-			if (!(response.DateTimeStampVersion?.HasValue ?? false))
+			if (!(response.DateTimeStampVersion?.HasValue ?? false) && !request.DoNotThrowErrorIfNotFound)
 			{
 				throw new Exception("Could not get BuildArtifactEnvironmentDateTimeStampVersion");
 			}
