@@ -43,6 +43,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 					{
 						BuildArtifactName = request.BuildArtifactName,
 						DateTimeStamp = request.DateTimeStampVersion.DateTimeStamp,
+						Version = request.DateTimeStampVersion.Version,
 						Key = request.Key,
 						Value = request.Value,
 					}
