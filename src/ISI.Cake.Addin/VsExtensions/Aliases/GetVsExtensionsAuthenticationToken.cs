@@ -29,7 +29,7 @@ namespace ISI.Cake.Addin.VsExtensions
 		{
 			var response = new GetVsExtensionsAuthenticationTokenResponse();
 
-			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.VsExtensionsApi(new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
+			var vsExtensionsApi = new ISI.Services.SCM.VsExtensions.VsExtensionsApi(new (), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
 			var getAuthenticationTokenResponse = vsExtensionsApi.GetAuthenticationToken(new ()
 			{
