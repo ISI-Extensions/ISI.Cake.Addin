@@ -46,10 +46,10 @@ Task("NugetPackageRestore")
 	.IsDependentOn("Clean")
 	.Does(() =>
 	{
+		Information("Restoring Nuget Packages ...");
 		using(GetNugetLock())
 		{
-			Information("Restoring Nuget Packages ...");
-			NuGetRestore(solutionPath);
+			RestoreNugetPackages(solutionFile);
 		}
 	});
 
@@ -59,12 +59,10 @@ Task("Build")
 	{
 		using(SetAssemblyVersionFiles(assemblyVersions))
 		{
-			MSBuild(solutionPath, configurator => configurator
-				.SetConfiguration(configuration)
-				.SetVerbosity(Verbosity.Quiet)
-				.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-				.SetPlatformTarget(PlatformTarget.MSIL)
-				.WithTarget("Build"));
+			DotNetBuild(solutionFile, new DotNetBuildSettings()
+			{
+				Configuration = configuration,
+			});
 		}
 	});
 
