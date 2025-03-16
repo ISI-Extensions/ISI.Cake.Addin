@@ -10,7 +10,7 @@ var settings = GetSettings(settingsFullName);
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
-var solutionPath = File("./src/ISI.Cake.Addin.sln");
+var solutionPath = File("./src/ISI.Cake.Addin.slnx");
 var solution = ParseSolution(solutionPath);
 
 var rootAssemblyVersionKey = "ISI.Cake.Addin";
