@@ -10,8 +10,8 @@ var settings = GetSettings(settingsFullName);
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
-var solutionPath = File("./src/ISI.Cake.Addin.slnx");
-var solution = ParseSolution(solutionPath);
+var solutionFile = File("./src/ISI.Cake.Addin.slnx");
+var solutionDetails = GetSolutionDetails(solutionFile);
 
 var rootAssemblyVersionKey = "ISI.Cake.Addin";
 
@@ -31,7 +31,7 @@ Task("Clean")
 	{
 		Information("Cleaning Projects ...");
 
-		foreach(var projectPath in new HashSet<string>(solution.Projects.Select(p => p.Path.GetDirectory().ToString())))
+		foreach(var projectPath in new HashSet<string>(solutionDetails.ProjectDetailsSet.Select(project => project.ProjectDirectory)))
 		{
 			Information("Cleaning {0}", projectPath);
 			CleanDirectories(projectPath + "/**/bin/" + configuration);
@@ -89,22 +89,22 @@ Task("Nuget")
 		var sourceControlUrl = GetSolutionSourceControlUrl();
 		var nupkgFiles = new FilePathCollection();
 
-		foreach(var project in solution.Projects.Where(project => project.Path.FullPath.EndsWith(".csproj")))
+		foreach(var project in solutionDetails.ProjectDetailsSet.Where(project => project.ProjectFullName.EndsWith(".csproj")))
 		{
-			Information(project.Name);
+			Information(project.ProjectName);
 
 			var nuspec = GenerateNuspecFromProject(new ISI.Cake.Addin.Nuget.GenerateNuspecFromProjectRequest()
 			{
-				ProjectFullName = project.Path.FullPath,
+				ProjectFullName =  System.IO.Path.GetFullPath(project.ProjectFullName),
 				IncludeSBom = false,
 				Settings = settings,
 			}).Nuspec;
 			nuspec.Version = assemblyVersion;
 			nuspec.ProjectUri = GetNullableUri(sourceControlUrl);
-			nuspec.Title = project.Name;
-			nuspec.Description = project.Name;
+			nuspec.Title = project.ProjectName;
+			nuspec.Description = project.ProjectName;
 
-			var nuspecFile = File(project.Path.GetDirectory() + "/" + project.Name + ".nuspec");
+			var nuspecFile = File(project.ProjectDirectory + "/" + project.ProjectName + ".nuspec");
 
 			CreateNuspecFile(new ISI.Cake.Addin.Nuget.CreateNuspecFileRequest()
 			{
@@ -115,13 +115,13 @@ Task("Nuget")
 			NupkgPack(new ISI.Cake.Addin.Nuget.NupkgPackRequest()
 			{
 				NuspecFullName = nuspecFile.Path.FullPath,
-				CsProjFullName = project.Path.FullPath,
+				CsProjFullName = project.ProjectFullName,
 				OutputDirectory = nugetPackOutputDirectory,
 			});
 
 			DeleteFile(nuspecFile);
 
-			nupkgFiles.Add(File(nugetPackOutputDirectory + "/" + project.Name + "." + assemblyVersion + ".nupkg"));
+			nupkgFiles.Add(File(nugetPackOutputDirectory + "/" + project.ProjectName + "." + assemblyVersion + ".nupkg"));
 
 			if(settings.CodeSigning.DoCodeSigning)
 			{

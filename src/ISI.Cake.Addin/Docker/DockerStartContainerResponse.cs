@@ -15,33 +15,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ISI.Extensions.Extensions;
 
-namespace ISI.Cake.Addin.PackageComponents
+namespace ISI.Cake.Addin.Docker
 {
-	public class PackageComponentWindowsApplication : IPackageComponent
+	public class DockerStartContainerResponse
 	{
-		public string ProjectFullName { get; set; }
-		
-		public string IconFileName { get; set; }
-
-		public bool DoNotXmlTransformConfigs { get; set; }
-
-		public List<string> ExcludeFiles { get; set; } =
-		[
-			..new[]
-			{
-				"*.xml",
-				"T4LocalContent",
-				"T4CMS",
-				"*.licenseheader",
-				"*.vshost.exe",
-				"*.vshost.exe.*",
-				"Dockerfile",
-				"*Manifests.lst",
-			}
-		];
-
-		public AfterBuildPackageComponentDelegate AfterBuildPackageComponent { get; set; } = null;
+		public string Output { get; set; }
+		public bool Errored { get; set; }
 	}
 }

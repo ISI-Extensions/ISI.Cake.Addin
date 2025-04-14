@@ -38,7 +38,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			{
 				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				BuildArtifactNames = new[] { request.BuildArtifactName },
+				BuildArtifactNames = [request.BuildArtifactName],
 			}).BuildArtifactRedirects.ToNullCheckedArray(NullCheckCollectionResult.Empty);
 
 			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));

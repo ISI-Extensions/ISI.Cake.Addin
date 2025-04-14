@@ -15,33 +15,42 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace ISI.Cake.Addin.PackageComponents
+namespace ISI.Cake.Addin.Docker
 {
-	public class PackageComponentWindowsApplication : IPackageComponent
+	public static partial class Aliases
 	{
-		public string ProjectFullName { get; set; }
-		
-		public string IconFileName { get; set; }
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static DockerStartContainerResponse DockerStartContainer(this global::Cake.Core.ICakeContext cakeContext, DockerStartContainerRequest request)
+		{
+			ServiceProvider.Initialize();
 
-		public bool DoNotXmlTransformConfigs { get; set; }
+			var response = new DockerStartContainerResponse();
 
-		public List<string> ExcludeFiles { get; set; } =
-		[
-			..new[]
+			var logger = new CakeContextLogger(cakeContext);
+
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
+
+			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
+
+			var DockerStartContainerResponse = dockerApi.StartContainer(new()
 			{
-				"*.xml",
-				"T4LocalContent",
-				"T4CMS",
-				"*.licenseheader",
-				"*.vshost.exe",
-				"*.vshost.exe.*",
-				"Dockerfile",
-				"*Manifests.lst",
-			}
-		];
+				Host = request.Host,
+				Context = request.Context,
+				Container = request.Container,
+			});
 
-		public AfterBuildPackageComponentDelegate AfterBuildPackageComponent { get; set; } = null;
+			response.Output = DockerStartContainerResponse.Output;
+			response.Errored = DockerStartContainerResponse.Errored;
+
+			return response;
+		}
 	}
 }

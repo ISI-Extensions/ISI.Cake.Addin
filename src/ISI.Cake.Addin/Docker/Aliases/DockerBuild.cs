@@ -33,7 +33,7 @@ namespace ISI.Cake.Addin.Docker
 			var containerRegistry = (request as DockerBuildRequest)?.ContainerRegistry ?? (request as DockerBuildUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
 
 			var containerRepository = request.ContainerRepository;
-			var containerImageTags = (request.ContainerImageTags.NullCheckedAny() ? request.ContainerImageTags : new[] { " latest" });
+			var containerImageTags = (request.ContainerImageTags.NullCheckedAny() ? request.ContainerImageTags : [" latest"]);
 
 			var path = (string.IsNullOrWhiteSpace(request.Path) ? request.File.Path.GetDirectory().FullPath : request.Path);
 

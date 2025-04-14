@@ -60,7 +60,7 @@ namespace ISI.Cake.Addin
 
 			var processStartInfo = new System.Diagnostics.ProcessStartInfo(processExeFullName)
 			{
-				Arguments = string.Join(" ", arguments ?? new string[0]),
+				Arguments = string.Join(" ", arguments ?? []),
 				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
 				CreateNoWindow = true,

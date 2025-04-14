@@ -57,12 +57,12 @@ namespace ISI.Cake.Addin.Nuget
 
 			if (!string.IsNullOrWhiteSpace(request.Settings?.Nuget.NuSpecAuthor))
 			{
-				response.Nuspec.Authors = new[] { request.Settings.Nuget.NuSpecAuthor };
+				response.Nuspec.Authors = [request.Settings.Nuget.NuSpecAuthor];
 			}
 
 			if (!string.IsNullOrWhiteSpace(request.Settings?.Nuget.NuSpecOwner))
 			{
-				response.Nuspec.Owners = new[] { request.Settings.Nuget.NuSpecOwner };
+				response.Nuspec.Owners = [request.Settings.Nuget.NuSpecOwner];
 			}
 
 			return response;

@@ -27,17 +27,20 @@ namespace ISI.Cake.Addin.PackageComponents
 
 		public bool DoNotXmlTransformConfigs { get; set; }
 
-		public List<string> ExcludeFiles { get; set; } = new(new[]
-		{
-			"*.xml",
-			"T4LocalContent",
-			"T4CMS",
-			"*.licenseheader",
-			"*.vshost.exe",
-			"*.vshost.exe.*",
-			"Dockerfile",
-			"*Manifests.lst",
-		});
+		public List<string> ExcludeFiles { get; set; } =
+		[
+			..new[]
+			{
+				"*.xml",
+				"T4LocalContent",
+				"T4CMS",
+				"*.licenseheader",
+				"*.vshost.exe",
+				"*.vshost.exe.*",
+				"Dockerfile",
+				"*Manifests.lst",
+			}
+		];
 
 		public AfterBuildPackageComponentDelegate AfterBuildPackageComponent { get; set; } = null;
 	}
