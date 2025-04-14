@@ -18,39 +18,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public static partial class Aliases
+	public class DockerGetContainerStatusResponse
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerStopContainerResponse DockerStopContainer(this global::Cake.Core.ICakeContext cakeContext, DockerStopContainerRequest request)
-		{
-			ServiceProvider.Initialize();
+		public string Status { get; set; }
 
-			var response = new DockerStopContainerResponse();
-
-			var logger = new CakeContextLogger(cakeContext);
-
-			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
-			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
-
-			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
-
-			var dockerStopContainerResponse = dockerApi.StopContainer(new()
-			{
-				Host = request.Host,
-				Context = request.Context,
-				Container = request.Container,
-			});
-
-			response.Output = dockerStopContainerResponse.Output;
-			response.Errored = dockerStopContainerResponse.Errored;
-
-			return response;
-		}
+		public bool Errored { get; set; }
 	}
 }

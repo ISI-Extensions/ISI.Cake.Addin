@@ -40,15 +40,15 @@ namespace ISI.Cake.Addin.Docker
 
 			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
 
-			var DockerRestartContainerResponse = dockerApi.RestartContainer(new()
+			var dockerRestartContainerResponse = dockerApi.RestartContainer(new()
 			{
 				Host = request.Host,
 				Context = request.Context,
 				Container = request.Container,
 			});
 
-			response.Output = DockerRestartContainerResponse.Output;
-			response.Errored = DockerRestartContainerResponse.Errored;
+			response.Output = dockerRestartContainerResponse.Output;
+			response.Errored = dockerRestartContainerResponse.Errored;
 
 			return response;
 		}

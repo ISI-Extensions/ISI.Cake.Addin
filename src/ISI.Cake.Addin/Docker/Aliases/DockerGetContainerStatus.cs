@@ -27,11 +27,11 @@ namespace ISI.Cake.Addin.Docker
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerStopContainerResponse DockerStopContainer(this global::Cake.Core.ICakeContext cakeContext, DockerStopContainerRequest request)
+		public static DockerGetContainerStatusResponse DockerGetContainerStatus(this global::Cake.Core.ICakeContext cakeContext, DockerGetContainerStatusRequest request)
 		{
 			ServiceProvider.Initialize();
 
-			var response = new DockerStopContainerResponse();
+			var response = new DockerGetContainerStatusResponse();
 
 			var logger = new CakeContextLogger(cakeContext);
 
@@ -40,15 +40,15 @@ namespace ISI.Cake.Addin.Docker
 
 			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
 
-			var dockerStopContainerResponse = dockerApi.StopContainer(new()
+			var dockerGetContainerStatusResponse = dockerApi.GetContainerStatus(new()
 			{
 				Host = request.Host,
 				Context = request.Context,
 				Container = request.Container,
 			});
 
-			response.Output = dockerStopContainerResponse.Output;
-			response.Errored = dockerStopContainerResponse.Errored;
+			response.Status = dockerGetContainerStatusResponse.Status;
+			response.Errored = dockerGetContainerStatusResponse.Errored;
 
 			return response;
 		}
