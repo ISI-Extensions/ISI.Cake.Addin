@@ -22,46 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.VisualStudio
 {
-	public class GenerateCycloneDXRequest
+	public class UploadCycloneDXToDependencyTrackResponse
 	{
-		public string FullName { get; set; }
-
-		public string Framework { get; set; }
-		public string Runtime { get; set; }
-
-		public string OutputDirectory { get; set; }
-		public string OutputFilename { get; set; }
-		public bool OutputJson { get; set; }
-
-		public ISI.Extensions.Sbom.DataTransferObjects.SbomApi.GenerateCycloneDxRequestDependency[] ExcludeDependencies { get; set; }
-
-		public bool ExcludeDevelopmentDependencies { get; set; }
-		public bool ExcludeTestProjects { get; set; }
-
-		public string AlternativeNugetUrl { get; set; }
-		public string AlternativeNugetUserName { get; set; }
-		public string AlternativeNugetPasswordApiKey { get; set; }
-		public bool AlternativeNugetPasswordIsClearText { get; set; }
-
-		public bool Recursive { get; set; }
-
-		public bool OmitSerialNumber { get; set; }
-
-		public string GitHubUserName { get; set; }
-		public string GitHubToken { get; set; }
-		public string GitHubBearerToken { get; set; }
-		public bool GitHubEnableLicenses { get; set; }
-
-		public bool DisablePackageRestore { get; set; }
-		public bool DisableHashComputation { get; set; }
-		public TimeSpan? DotnetCommandTimeout { get; set; }
-
-		public string BaseIntermediateOutputPath { get; set; }
-		public string ImportMetadataPath { get; set; }
-		public bool IncludeProjectPeferences { get; set; }
-		public string SetName { get; set; }
-		public Version? SetVersion { get; set; }
-		public ISI.Extensions.Sbom.ComponentType? SetComponentType { get; set; }
-		public string SetNugetPurl { get; set; }
 	}
 }

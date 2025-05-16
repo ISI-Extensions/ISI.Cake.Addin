@@ -66,7 +66,7 @@ namespace ISI.Cake.Addin.PackageComponents
 						var generateSBomUsingSettingsRequest = request.SbomConfiguration as PackageComponentsRequestSbomConfigurationUsingSettings;
 						var generateSBomRequest = request.SbomConfiguration as PackageComponentsRequestSbomConfiguration;
 
-						sBomApi.GeneratePackageSBom(new()
+						sBomApi.GeneratePackageSPDX(new()
 						{
 							PackageComponentDirectory = context.PackageComponentDirectory,
 							PackageSourceDirectory = packageSourceDirectory,

@@ -22,7 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public interface IGenerateNupkgSBomRequest
+	public interface IGenerateNupkgSBomSPDXRequest
 	{
 		string ProjectFullName { get; }
 
@@ -32,7 +32,7 @@ namespace ISI.Cake.Addin.Nuget
 		string NupkgVersion { get; }
 	}
 
-	public class GenerateNupkgSBomRequest : IGenerateNupkgSBomRequest
+	public class GenerateNupkgSBomSPDXRequest : IGenerateNupkgSBomSPDXRequest
 	{
 		public string ProjectFullName { get; set; }
 
@@ -40,11 +40,12 @@ namespace ISI.Cake.Addin.Nuget
 
 		public string NupkgName { get; set; }
 		public string NupkgVersion { get; set; }
+
 		public string NupkgAuthor { get; set; }
 		public Uri NupkgNamespace { get; set; }
 	}
 
-	public class GenerateNupkgSBomUsingSettingsRequest : IGenerateNupkgSBomRequest
+	public class GenerateNupkgSBomSPDXUsingSettingsRequest : IGenerateNupkgSBomSPDXRequest
 	{
 		public string ProjectFullName { get; set; }
 

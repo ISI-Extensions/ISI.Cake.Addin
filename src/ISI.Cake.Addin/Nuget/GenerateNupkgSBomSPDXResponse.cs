@@ -22,7 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Nuget
 {
-	public class GenerateNupkgSBomResponse
+	public class GenerateNupkgSBomSPDXResponse
 	{
 	}
 }

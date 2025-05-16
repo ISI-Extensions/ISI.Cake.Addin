@@ -25,28 +25,28 @@ namespace ISI.Cake.Addin.Nuget
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static GenerateNupkgSBomResponse GenerateNupkgSBom(this global::Cake.Core.ICakeContext cakeContext, IGenerateNupkgSBomRequest request)
+		public static GenerateNupkgSBomSPDXResponse GenerateNupkgSBomSPDX(this global::Cake.Core.ICakeContext cakeContext, IGenerateNupkgSBomSPDXRequest request)
 		{
 			ServiceProvider.Initialize();
 
-			var response = new GenerateNupkgSBomResponse();
+			var response = new GenerateNupkgSBomSPDXResponse();
 
 			var logger = new CakeContextLogger(cakeContext);
 			var dateTimeStamper = new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper();
 
 			var sBomApi = new ISI.Extensions.Sbom.SbomApi(ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.Sbom.Configuration>(), logger, dateTimeStamper);
 
-			var generateNupkgSBomUsingSettingsRequest = request as GenerateNupkgSBomUsingSettingsRequest;
-			var generateNupkgSBomRequest = request as GenerateNupkgSBomRequest;
+			var generateNupkgSBomSPDXUsingSettingsRequest = request as GenerateNupkgSBomSPDXUsingSettingsRequest;
+			var generateNupkgSBomSPDXRequest = request as GenerateNupkgSBomSPDXRequest;
 
-			sBomApi.GenerateNupkgSBom(new()
+			sBomApi.GenerateNupkgSPDX(new()
 			{
 				ProjectFullName = request.ProjectFullName,
 				Configuration = request.Configuration,
 				NupkgName = request.NupkgName,
 				NupkgVersion = request.NupkgVersion,
-				NupkgAuthor = generateNupkgSBomRequest?.NupkgAuthor ?? generateNupkgSBomUsingSettingsRequest?.Settings.SBom.Author ?? string.Empty,
-				NupkgNamespace = generateNupkgSBomRequest?.NupkgNamespace ?? new Uri(generateNupkgSBomUsingSettingsRequest?.Settings.SBom.Namespace),
+				NupkgAuthor = generateNupkgSBomSPDXRequest?.NupkgAuthor ?? generateNupkgSBomSPDXUsingSettingsRequest?.Settings.SBom.Author ?? string.Empty,
+				NupkgNamespace = generateNupkgSBomSPDXRequest?.NupkgNamespace ?? new Uri(generateNupkgSBomSPDXUsingSettingsRequest?.Settings.SBom.Namespace),
 			});
 
 			return response;

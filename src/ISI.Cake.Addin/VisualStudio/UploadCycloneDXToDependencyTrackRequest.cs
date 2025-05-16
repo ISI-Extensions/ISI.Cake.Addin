@@ -12,7 +12,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,46 +22,53 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.VisualStudio
 {
-	public class GenerateCycloneDXRequest
+	public interface IUploadCycloneDXToDependencyTrackRequest
 	{
-		public string FullName { get; set; }
+		string ProjectName { get; }
+		IEnumerable<string> ProjectTags { get; }
+		bool AutoCreate { get; }
 
-		public string Framework { get; set; }
-		public string Runtime { get; set; }
+		Version ProjectVersion { get; }
+		bool IsLatestProjectVersion { get; }
 
-		public string OutputDirectory { get; set; }
-		public string OutputFilename { get; set; }
-		public bool OutputJson { get; set; }
+		string ParentProjectName { get; }
+		Version ParentProjectVersion { get; }
 
-		public ISI.Extensions.Sbom.DataTransferObjects.SbomApi.GenerateCycloneDxRequestDependency[] ExcludeDependencies { get; set; }
+		string CycloneDXFullName { get; }
+	}
 
-		public bool ExcludeDevelopmentDependencies { get; set; }
-		public bool ExcludeTestProjects { get; set; }
+	public class UploadCycloneDXToDependencyTrackRequest : IUploadCycloneDXToDependencyTrackRequest
+	{
+		public string DependencyTrackApiUrl { get; set; }
+		public string DependencyTrackApiKey { get; set; }
 
-		public string AlternativeNugetUrl { get; set; }
-		public string AlternativeNugetUserName { get; set; }
-		public string AlternativeNugetPasswordApiKey { get; set; }
-		public bool AlternativeNugetPasswordIsClearText { get; set; }
+		public string ProjectName { get; set; }
+		public IEnumerable<string> ProjectTags { get; set; }
+		public bool AutoCreate { get; set; }
 
-		public bool Recursive { get; set; }
+		public Version ProjectVersion { get; set; }
+		public bool IsLatestProjectVersion { get; set; }
 
-		public bool OmitSerialNumber { get; set; }
+		public string ParentProjectName { get; set; }
+		public Version ParentProjectVersion { get; set; }
 
-		public string GitHubUserName { get; set; }
-		public string GitHubToken { get; set; }
-		public string GitHubBearerToken { get; set; }
-		public bool GitHubEnableLicenses { get; set; }
+		public string CycloneDXFullName { get; set; }
+	}
 
-		public bool DisablePackageRestore { get; set; }
-		public bool DisableHashComputation { get; set; }
-		public TimeSpan? DotnetCommandTimeout { get; set; }
+	public class UploadCycloneDXToDependencyTrackUsingSettingsRequest : IUploadCycloneDXToDependencyTrackRequest
+	{
+		public string ProjectName { get; set; }
+		public IEnumerable<string> ProjectTags { get; set; }
+		public bool AutoCreate { get; set; }
 
-		public string BaseIntermediateOutputPath { get; set; }
-		public string ImportMetadataPath { get; set; }
-		public bool IncludeProjectPeferences { get; set; }
-		public string SetName { get; set; }
-		public Version? SetVersion { get; set; }
-		public ISI.Extensions.Sbom.ComponentType? SetComponentType { get; set; }
-		public string SetNugetPurl { get; set; }
+		public Version ProjectVersion { get; set; }
+		public bool IsLatestProjectVersion { get; set; }
+
+		public string ParentProjectName { get; set; }
+		public Version ParentProjectVersion { get; set; }
+
+		public string CycloneDXFullName { get; set; }
+
+		public ISI.Extensions.Scm.Settings Settings { get; set; }
 	}
 }
