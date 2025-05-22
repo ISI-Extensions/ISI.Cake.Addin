@@ -1,42 +1,44 @@
-<?xml version="1.1" encoding="UTF-8"?><project>
-	<actions/>
-	<description/>
-	<displayName>ISI.Cake.Addin.Build</displayName>
-	<keepDependencies>false</keepDependencies>
-	<properties>
-		<hudson.security.AuthorizationMatrixProperty>
-			<inheritanceStrategy class="org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy"/>
-		</hudson.security.AuthorizationMatrixProperty>
-	</properties>
-	<scm class="hudson.plugins.git.GitSCM" plugin="git@4.7.1">
-		<configVersion>2</configVersion>
-		<userRemoteConfigs>
-			<hudson.plugins.git.UserRemoteConfig>
-				<url>git@github.com:ISI-Extensions/ISI.Cake.Addin.git</url>
-			</hudson.plugins.git.UserRemoteConfig>
-		</userRemoteConfigs>
-		<branches>
-			<hudson.plugins.git.BranchSpec>
-				<name>*/main</name>
-			</hudson.plugins.git.BranchSpec>
-		</branches>
-		<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-		<submoduleCfg class="empty-list"/>
-		<extensions/>
-	</scm>
-	<canRoam>true</canRoam>
-	<disabled>false</disabled>
-	<blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-	<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-	<triggers/>
-	<concurrentBuild>false</concurrentBuild>
-	<customWorkspace>F:\${JOB_NAME}</customWorkspace>
-	<builders>
-		<hudson.tasks.BatchFile>
-			<command>dotnet cake --Target=Default</command>
-			<configuredLocalRules/>
-		</hudson.tasks.BatchFile>
-	</builders>
-	<publishers/>
-	<buildWrappers/>
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <displayName>ISI.Cake.Addin.Build</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <inheritanceStrategy class="org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy"/>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@5.7.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>git@github.com:ISI-Extensions/ISI.Cake.Addin.git</url>
+        <credentialsId>SSH-Build-Service</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>**</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="empty-list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>F:\${JOB_NAME}</customWorkspace>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>dotnet cake --Target=Default</command>
+      <configuredLocalRules/>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
 </project>
