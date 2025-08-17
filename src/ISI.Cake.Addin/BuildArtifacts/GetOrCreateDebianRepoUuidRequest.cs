@@ -18,33 +18,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
-	public static partial class Aliases
+	public class GetOrCreateDebianRepoUuidRequest : IWarmUpWebService
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DownloadBuildArtifactResponse DownloadBuildArtifact(this global::Cake.Core.ICakeContext cakeContext, DownloadBuildArtifactRequest request)
-		{
-			var response = new DownloadBuildArtifactResponse();
+		public Uri BuildArtifactsApiUri { get; set; }
+		public string BuildArtifactsApiKey { get; set; }
 
-			request.WarmUpWebService(cakeContext.Log);
+		public string DebianRepoName { get; set; }
 
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
-
-			buildArtifactsApi.DownloadBuildArtifact(new ()
-			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
-				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				BuildArtifactName = request.BuildArtifactName,
-				BuildArtifactType = request.BuildArtifactType,
-				Architecture = request.Architecture,
-				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,
-				TargetFileName = request.TargetFileName,
-			});
-
-			return response;
-		}
+		Uri IWarmUpWebService.WebServiceUri => BuildArtifactsApiUri;
+		public bool WarmUpWebService { get; } = true;
+		public int WarmUpWebServiceMaxTries { get; set; } = 5;
 	}
 }

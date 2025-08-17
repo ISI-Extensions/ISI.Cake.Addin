@@ -29,8 +29,12 @@ namespace ISI.Cake.Addin.BuildArtifacts
 		public string SourceFileName { get; set; }
 
 		public string BuildArtifactName { get; set; }
-		
+		public ISI.Services.SCM.BuildArtifacts.BuildArtifactType BuildArtifactType { get; set; } = ISI.Services.SCM.BuildArtifacts.BuildArtifactType.Generic;
+		public string Architecture { get; set; }
+
 		public ISI.Extensions.Scm.DateTimeStampVersion DateTimeStampVersion { get; set; }
+
+		public ISI.Services.SCM.BuildArtifacts.DataTransferObjects.BuildArtifactsApi.PostUploadBuildArtifactAction[] PostUploadBuildArtifactActions { get; set; }
 
 		public int? MaxTries { get; set; }
 

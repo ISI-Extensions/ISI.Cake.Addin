@@ -25,24 +25,25 @@ namespace ISI.Cake.Addin.BuildArtifacts
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DownloadBuildArtifactResponse DownloadBuildArtifact(this global::Cake.Core.ICakeContext cakeContext, DownloadBuildArtifactRequest request)
+		public static SetDebianRepoBuildArtifactEnvironmentDateTimeStampVersionResponse SetDebianRepoBuildArtifactEnvironmentDateTimeStampVersion(this global::Cake.Core.ICakeContext cakeContext, SetDebianRepoBuildArtifactEnvironmentDateTimeStampVersionRequest request)
 		{
-			var response = new DownloadBuildArtifactResponse();
-
+			var response = new SetDebianRepoBuildArtifactEnvironmentDateTimeStampVersionResponse();
+			
 			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			buildArtifactsApi.DownloadBuildArtifact(new ()
+			response.Status = buildArtifactsApi.SetDebianRepoBuildArtifactEnvironmentDateTimeStampVersion(new ()
 			{
 				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
+				DebianRepoUuid = request.DebianRepoUuid,
 				BuildArtifactName = request.BuildArtifactName,
 				BuildArtifactType = request.BuildArtifactType,
 				Architecture = request.Architecture,
-				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,
-				TargetFileName = request.TargetFileName,
-			});
+				Environment = request.Environment,
+				DateTimeStampVersion = request.DateTimeStampVersion,
+			}).Status;
 
 			return response;
 		}

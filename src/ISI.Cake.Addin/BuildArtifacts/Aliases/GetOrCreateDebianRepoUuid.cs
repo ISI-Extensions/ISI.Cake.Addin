@@ -19,30 +19,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ISI.Cake.Addin.Extensions;
+using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DownloadBuildArtifactResponse DownloadBuildArtifact(this global::Cake.Core.ICakeContext cakeContext, DownloadBuildArtifactRequest request)
+		public static GetOrCreateDebianRepoUuidResponse GetOrCreateDebianRepoUuid(this global::Cake.Core.ICakeContext cakeContext, GetOrCreateDebianRepoUuidRequest request)
 		{
-			var response = new DownloadBuildArtifactResponse();
+			var response = new GetOrCreateDebianRepoUuidResponse();
 
 			request.WarmUpWebService(cakeContext.Log);
 
 			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			buildArtifactsApi.DownloadBuildArtifact(new ()
+			var apiResponse = buildArtifactsApi.GetOrCreateDebianRepoUuid(new()
 			{
 				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				BuildArtifactName = request.BuildArtifactName,
-				BuildArtifactType = request.BuildArtifactType,
-				Architecture = request.Architecture,
-				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,
-				TargetFileName = request.TargetFileName,
+				DebianRepoName = request.DebianRepoName,
 			});
+
+			response.DebianRepoUuid = apiResponse.DebianRepoUuid;
 
 			return response;
 		}

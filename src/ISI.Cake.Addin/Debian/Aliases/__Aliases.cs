@@ -18,33 +18,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ISI.Cake.Addin.Extensions;
 
-namespace ISI.Cake.Addin.BuildArtifacts
+namespace ISI.Cake.Addin.Debian
 {
+	[global::Cake.Core.Annotations.CakeAliasCategory("ISI-Debian-AddIn")]
 	public static partial class Aliases
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DownloadBuildArtifactResponse DownloadBuildArtifact(this global::Cake.Core.ICakeContext cakeContext, DownloadBuildArtifactRequest request)
-		{
-			var response = new DownloadBuildArtifactResponse();
-
-			request.WarmUpWebService(cakeContext.Log);
-
-			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
-
-			buildArtifactsApi.DownloadBuildArtifact(new ()
-			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
-				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				BuildArtifactName = request.BuildArtifactName,
-				BuildArtifactType = request.BuildArtifactType,
-				Architecture = request.Architecture,
-				DateTimeStamp = request.DateTimeStampVersion?.DateTimeStamp,
-				TargetFileName = request.TargetFileName,
-			});
-
-			return response;
-		}
 	}
 }
