@@ -25,49 +25,49 @@ namespace ISI.Cake.Addin.Docker
 {
 	public static partial class Aliases
 	{
-		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static DockerBuildResponse DockerBuild(this global::Cake.Core.ICakeContext cakeContext, IDockerBuildRequest request)
-		{
-			var response = new DockerBuildResponse();
+		//[global::Cake.Core.Annotations.CakeMethodAlias]
+		//public static DockerBuildResponse DockerBuild(this global::Cake.Core.ICakeContext cakeContext, IDockerBuildRequest request)
+		//{
+		//	var response = new DockerBuildResponse();
 
-			var containerRegistry = (request as DockerBuildRequest)?.ContainerRegistry ?? (request as DockerBuildUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
+		//	var containerRegistry = (request as DockerBuildRequest)?.ContainerRegistry ?? (request as DockerBuildUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName ?? string.Empty;
 
-			var containerRepository = request.ContainerRepository;
-			var containerImageTags = (request.ContainerImageTags.NullCheckedAny() ? request.ContainerImageTags : [" latest"]);
+		//	var containerRepository = request.ContainerRepository;
+		//	var containerImageTags = (request.ContainerImageTags.NullCheckedAny() ? request.ContainerImageTags : [" latest"]);
 
-			var path = (string.IsNullOrWhiteSpace(request.Path) ? request.File.Path.GetDirectory().FullPath : request.Path);
+		//	var path = (string.IsNullOrWhiteSpace(request.Path) ? request.File.Path.GetDirectory().FullPath : request.Path);
 
-			if (string.IsNullOrWhiteSpace(containerRegistry))
-			{
-				for (var index = 0; index < containerImageTags.Length; index++)
-				{
-					containerImageTags[index] = $"{containerRepository}:{containerImageTags[index]}";
-				}
-			}
-			else
-			{
-				for (var index = 0; index < containerImageTags.Length; index++)
-				{
-					containerImageTags[index] = $"{containerRegistry}/{containerRepository}:{containerImageTags[index]}";
-				}
-			}
+		//	if (string.IsNullOrWhiteSpace(containerRegistry))
+		//	{
+		//		for (var index = 0; index < containerImageTags.Length; index++)
+		//		{
+		//			containerImageTags[index] = $"{containerRepository}:{containerImageTags[index]}";
+		//		}
+		//	}
+		//	else
+		//	{
+		//		for (var index = 0; index < containerImageTags.Length; index++)
+		//		{
+		//			containerImageTags[index] = $"{containerRegistry}/{containerRepository}:{containerImageTags[index]}";
+		//		}
+		//	}
 
-			global::Cake.Docker.DockerAliases.DockerBuild(cakeContext, new global::Cake.Docker.DockerImageBuildSettings()
-			{
-				File = request.File,
-				Tag = containerImageTags,
-				Progress = "plain",
-			}, path);
+		//	global::Cake.Docker.DockerAliases.DockerBuild(cakeContext, new global::Cake.Docker.DockerImageBuildSettings()
+		//	{
+		//		File = request.File,
+		//		Tag = containerImageTags,
+		//		Progress = "plain",
+		//	}, path);
 
-			if (!string.IsNullOrWhiteSpace(containerRegistry))
-			{
-				foreach (var containerImageTag in containerImageTags)
-				{
-					global::Cake.Docker.DockerAliases.DockerPush(cakeContext, containerImageTag);
-				}
-			}
+		//	if (!string.IsNullOrWhiteSpace(containerRegistry))
+		//	{
+		//		foreach (var containerImageTag in containerImageTags)
+		//		{
+		//			global::Cake.Docker.DockerAliases.DockerPush(cakeContext, containerImageTag);
+		//		}
+		//	}
 
-			return response;
-		}
+		//	return response;
+		//}
 	}
 }

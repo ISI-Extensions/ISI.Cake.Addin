@@ -1,6 +1,6 @@
 //dotnet tool install Cake.Tool -g
 //dotnet tool update Cake.Tool -g
-#addin nuget:?package=Cake.FileHelpers
+//#addin nuget:?package=Cake.FileHelpers
 #addin nuget:?package=ISI.Cake.AddIn&loaddependencies=true
 
 //mklink /D Secrets S:\
@@ -59,6 +59,7 @@ Task("Build")
 	{
 		using(SetAssemblyVersionFiles(assemblyVersions))
 		{
+			//ISI.Extensions.Process.WaitForProcessResponse("C:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe", "/v:quiet", "/p:Configuration=Release", "/target:Rebuild", solutionFile.Path.FullPath);
 			DotNetBuild(solutionFile, new DotNetBuildSettings()
 			{
 				Configuration = configuration,

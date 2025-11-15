@@ -28,15 +28,15 @@ namespace ISI.Cake.Addin.Docker
 	public class DockerBuildImageRequest
 	{
 		public string AppDirectory { get; set; }
-		
+
 		public string DockerFileFullName { get; set; }
-		
+
 		public string Host { get; set; }
 		public string Context { get; set; }
 
 		public string[] EnvironmentFileFullNames { get; set; }
 		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
-		
+
 		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> BuildArguments { get; set; }
 
 		public string ContainerRegistry { get; set; }

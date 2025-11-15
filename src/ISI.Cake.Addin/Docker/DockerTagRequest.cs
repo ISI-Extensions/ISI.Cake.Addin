@@ -24,6 +24,8 @@ namespace ISI.Cake.Addin.Docker
 {
 	public interface IDockerTagRequest
 	{
+		string Host { get; }
+		string Context { get; }
 	}
 
 	public interface IDockerTagUsingImageReferenceTagRequest : IDockerTagRequest
@@ -49,6 +51,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerTagRequest : IDockerTagUsingImageReferenceTagRequest, IDockerTagUsingDockerRegistryDomainNameRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public string ImageReference { get; set; }
 		public string Tag { get; set; }
 
@@ -57,6 +62,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerTagUsingSettingsRequest : IDockerTagUsingImageReferenceTagRequest, IDockerTagUsingSettingsRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public string ImageReference { get; set; }
 		public string Tag { get; set; }
 
@@ -65,6 +73,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerTagUsingDockerImageDetailsRequest : IDockerTagUsingDockerImageDetailsRequest, IDockerTagUsingDockerRegistryDomainNameRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
 
 		public string DockerRegistryDomainName { get; set; }
@@ -72,6 +83,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerTagUsingDockerImageDetailsSettingsRequest : IDockerTagUsingDockerImageDetailsRequest, IDockerTagUsingSettingsRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
 
 		public ISI.Extensions.Scm.Settings Settings { get; set; }

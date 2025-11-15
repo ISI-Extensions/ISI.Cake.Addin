@@ -24,7 +24,8 @@ namespace ISI.Cake.Addin.Docker
 {
 	public interface IDockerPushRequest
 	{
-
+		string Host { get; }
+		string Context { get; }
 	}
 
 	public interface IDockerPushUsingImageReferenceTagRequest : IDockerPushRequest
@@ -50,6 +51,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerPushRequest : IDockerPushUsingImageReferenceTagRequest, IDockerPushUsingDockerRegistryDomainNameRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public string ImageReference { get; set; }
 		public string Tag { get; set; }
 
@@ -58,6 +62,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerPushUsingSettingsRequest : IDockerPushUsingImageReferenceTagRequest, IDockerPushUsingSettingsRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public string ImageReference { get; set; }
 		public string Tag { get; set; }
 
@@ -66,6 +73,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerPushUsingDockerImageDetailsRequest : IDockerPushUsingDockerImageDetailsRequest, IDockerPushUsingDockerRegistryDomainNameRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
 
 		public string DockerRegistryDomainName { get; set; }
@@ -73,6 +83,9 @@ namespace ISI.Cake.Addin.Docker
 
 	public class DockerPushUsingDockerImageDetailsSettingsRequest : IDockerPushUsingDockerImageDetailsRequest, IDockerPushUsingSettingsRequest
 	{
+		public string Host { get; set; }
+		public string Context { get; set; }
+
 		public GetDockerImageDetailsResponse DockerImageDetails { get; set; }
 
 		public ISI.Extensions.Scm.Settings Settings { get; set; }
