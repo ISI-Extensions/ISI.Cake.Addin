@@ -59,11 +59,19 @@ Task("Build")
 	{
 		using(SetAssemblyVersionFiles(assemblyVersions))
 		{
-			//ISI.Extensions.Process.WaitForProcessResponse("C:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe", "/v:quiet", "/p:Configuration=Release", "/target:Rebuild", solutionFile.Path.FullPath);
-			DotNetBuild(solutionFile, new DotNetBuildSettings()
+			BuildSolution(solutionFile, new ISI.Cake.Addin.VisualStudio.BuildSolutionRequest()
 			{
 				Configuration = configuration,
+				Target = "Rebuild",
+				UseMSBuild = true,
+				Verbosity = ISI.Extensions.VisualStudio.MSBuildVerbosity.Quiet,
 			});
+
+			//ISI.Extensions.Process.WaitForProcessResponse("C:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe", "/v:quiet", "/p:Configuration=Release", "/target:Rebuild", solutionFile.Path.FullPath);
+			//DotNetBuild(solutionFile, new DotNetBuildSettings()
+			//{
+			//	Configuration = configuration,
+			//});
 		}
 	});
 

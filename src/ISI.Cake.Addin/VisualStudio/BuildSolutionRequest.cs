@@ -12,5 +12,7 @@ namespace ISI.Cake.Addin.VisualStudio
 		public string Configuration { get; set; } = "Release";
 		public string Target { get; set; } = "Rebuild";
 		public ISI.Extensions.VisualStudio.MSBuildVerbosity? Verbosity { get; set; }
+
+		public bool UseMSBuild { get; set; } = false;
 	}
 }

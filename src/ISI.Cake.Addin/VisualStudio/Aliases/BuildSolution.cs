@@ -29,13 +29,13 @@ namespace ISI.Cake.Addin.VisualStudio
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static BuildSolutionResponse BuildSolution(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.IO.Paths.ConvertableDirectoryPath solutionFullName, BuildSolutionRequest request = null)
 		{
-			return BuildSolution(cakeContext, solutionFullName.Path.FullPath);
+			return BuildSolution(cakeContext, solutionFullName.Path.FullPath, request);
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static BuildSolutionResponse BuildSolution(this global::Cake.Core.ICakeContext cakeContext, global::Cake.Common.IO.Paths.ConvertableFilePath solutionFullName, BuildSolutionRequest request = null)
 		{
-			return BuildSolution(cakeContext, solutionFullName.Path.FullPath);
+			return BuildSolution(cakeContext, solutionFullName.Path.FullPath, request);
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
@@ -64,7 +64,9 @@ namespace ISI.Cake.Addin.VisualStudio
 			var msBuildRequest  = new ISI.Extensions.VisualStudio.DataTransferObjects.MSBuildApi.MSBuildRequest()
 			{
 				FullName = solutionFullName,
-				
+
+				UseMSBuild = request.UseMSBuild,
+
 				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
 			};
 
