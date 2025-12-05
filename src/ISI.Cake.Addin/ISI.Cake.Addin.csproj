@@ -19,20 +19,20 @@
   <ItemGroup>
     <PackageReference Include="Cake.Common" Version="5.0.0" />
     <PackageReference Include="Cake.Core" Version="5.0.0" />
-    <PackageReference Include="ISI.Extensions" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Alpine" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Docker" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Debian" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Git" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.SBom" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Ssh" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.9456.35460" />
-    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.9456.35460" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Alpine" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Docker" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Debian" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.SBom" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Ssh" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.9467.32649" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.9467.32649" />
     <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9456.36993" />
     <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.9456.36995" />
     <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.9456.36986" />
@@ -43,7 +43,7 @@
     <PackageReference Include="Microsoft.Sbom.Extensions" Version="4.1.3" />
     <PackageReference Include="Microsoft.Sbom.Extensions.DependencyInjection" Version="4.1.3" />
     <PackageReference Include="Microsoft.Web.Xdt" Version="3.2.0" />
-    <PackageReference Include="NuGet.Frameworks" Version="7.0.0" />
-    <PackageReference Include="NuGet.Versioning" Version="7.0.0" />
+    <PackageReference Include="NuGet.Frameworks" Version="7.0.1" />
+    <PackageReference Include="NuGet.Versioning" Version="7.0.1" />
   </ItemGroup>
 </Project>

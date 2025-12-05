@@ -65,6 +65,9 @@ namespace ISI.Cake.Addin.VisualStudio
 			{
 				FullName = solutionFullName,
 
+				MsBuildVersion = request.MsBuildVersion,
+				MsBuildPlatform = request.MsBuildPlatform,
+
 				UseMSBuild = request.UseMSBuild,
 
 				AddToLog = (logEntryLevel, description) => logger.LogInformation(description),
