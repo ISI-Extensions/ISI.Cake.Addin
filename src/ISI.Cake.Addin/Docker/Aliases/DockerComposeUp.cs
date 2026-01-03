@@ -44,6 +44,7 @@ namespace ISI.Cake.Addin.Docker
 			dockerApi.ComposeUp(new()
 			{
 				ComposeDirectory = (string.IsNullOrWhiteSpace(request.ComposeDirectory) ? cakeContext.Environment.WorkingDirectory.FullPath : request.ComposeDirectory),
+				ComposeFile = request.ComposeFile,
 				ProjectName = request.ProjectName,
 				Host = request.Host,
 				Context = request.Context,

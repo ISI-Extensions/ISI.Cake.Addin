@@ -28,7 +28,8 @@ namespace ISI.Cake.Addin.Docker
 	public class DockerComposeDownRequest
 	{
 		public string ComposeDirectory { get; set; }
-		
+		public string ComposeFile { get; set; }
+
 		public string ProjectName { get; set; }
 
 		public string Host { get; set; }
