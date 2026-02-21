@@ -27,6 +27,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static UpdateWindowsDeploymentAgentServiceResponse UpdateWindowsDeploymentAgentService(this global::Cake.Core.ICakeContext cakeContext, UpdateWindowsDeploymentAgentServiceRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new UpdateWindowsDeploymentAgentServiceResponse();
 
 			request.WarmUpWebService(cakeContext.Log);

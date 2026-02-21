@@ -29,6 +29,8 @@ namespace ISI.Cake.Addin.DeploymentManager
 		[global::Cake.Core.Annotations.CakeMethodAlias]
 		public static DeployBuildArtifactResponse DeployBuildArtifact(this global::Cake.Core.ICakeContext cakeContext, DeployBuildArtifactRequest request)
 		{
+			ServiceProvider.Initialize();
+
 			var response = new DeployBuildArtifactResponse();
 
 			request.WarmUpWebService(cakeContext.Log);
