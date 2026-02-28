@@ -43,17 +43,18 @@ namespace ISI.Cake.Addin.CodeSigning
 					OutputDirectory = signNupkgsUsingSettingsRequest.OutputDirectory,
 					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiUrl),
 					RemoteCodeSigningServiceApiKey = signNupkgsUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiKey,
+					CodeSigningCertificateTokenCertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CertificateType),
 					CodeSigningCertificateTokenCertificateFileName = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
 					CodeSigningCertificateTokenPassword = signNupkgsUsingSettingsRequest.Settings.CodeSigning.Token.Password,
 					TimeStampUri = cakeContext.GetNullableUri(signNupkgsUsingSettingsRequest.Settings.CodeSigning.TimeStampUrl),
 					TimeStampDigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signNupkgsUsingSettingsRequest.Settings.CodeSigning.TimeStampDigestAlgorithm),
+					CertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signNupkgsUsingSettingsRequest.Settings.CodeSigning.CertificateType),
 					CertificatePath = cakeContext.GetNullableFile(signNupkgsUsingSettingsRequest.Settings.CodeSigning.CertificateFileName),
 					CertificatePassword = signNupkgsUsingSettingsRequest.Settings.CodeSigning.CertificatePassword,
 					CertificateFingerprint = signNupkgsUsingSettingsRequest.Settings.CodeSigning.CertificateFingerprint,
 					DigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signNupkgsUsingSettingsRequest.Settings.CodeSigning.DigestAlgorithm),
-					RunAsync = signNupkgsUsingSettingsRequest.Settings.CodeSigning.RunAsync,
 				};
 			}
 
@@ -70,12 +71,14 @@ namespace ISI.Cake.Addin.CodeSigning
 					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					WorkingDirectory = cakeContext.Environment?.WorkingDirectory?.FullPath,
+					CodeSigningCertificateTokenCertificateType = signNupkgsRequest.CodeSigningCertificateTokenCertificateType,
 					CodeSigningCertificateTokenCertificateFileName = signNupkgsRequest.CodeSigningCertificateTokenCertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signNupkgsRequest.CodeSigningCertificateTokenCryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signNupkgsRequest.CodeSigningCertificateTokenContainerName,
 					CodeSigningCertificateTokenPassword = signNupkgsRequest.CodeSigningCertificateTokenPassword,
 					TimeStampUri = signNupkgsRequest.TimeStampUri,
 					TimeStampDigestAlgorithm = signNupkgsRequest.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					CertificateType = signNupkgsRequest.CertificateType,
 					CertificateFileName = signNupkgsRequest.CertificatePath?.FullPath,
 					CertificatePassword = signNupkgsRequest.CertificatePassword,
 					CertificateStoreName = signNupkgsRequest.CertificateStoreName,
@@ -84,7 +87,6 @@ namespace ISI.Cake.Addin.CodeSigning
 					CertificateFingerprint = signNupkgsRequest.CertificateFingerprint,
 					DigestAlgorithm = signNupkgsRequest.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
 					OverwriteAnyExistingSignature = signNupkgsRequest.OverwriteAnyExistingSignature,
-					RunAsync = signNupkgsRequest.RunAsync,
 					Verbosity = signNupkgsRequest.Verbosity.ToCodeSigningVerbosity(),
 				});
 			}
@@ -99,7 +101,6 @@ namespace ISI.Cake.Addin.CodeSigning
 					NupkgFullNames = request.NupkgPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = signNupkgsRequest.OverwriteAnyExistingSignature,
-					RunAsync = signNupkgsRequest.RunAsync,
 					Verbosity = signNupkgsRequest.Verbosity.ToRemoteCodeSigningVerbosity(),
 				});
 			}

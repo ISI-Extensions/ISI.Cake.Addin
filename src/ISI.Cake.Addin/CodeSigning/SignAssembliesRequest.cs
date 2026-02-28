@@ -37,6 +37,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public Uri RemoteCodeSigningServiceUri { get; set; }
 		public string RemoteCodeSigningServiceApiKey { get; set; }
 
+		public ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType CodeSigningCertificateTokenCertificateType { get; set; } = ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType.File;
 		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
 		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }
 		public string CodeSigningCertificateTokenContainerName { get; set; }
@@ -45,6 +46,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public Uri TimeStampUri { get; set; } = new("http://timestamp.digicert.com");
 		public CodeSigningDigestAlgorithm TimeStampDigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
 
+		public ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType CertificateType { get; set; } = ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType.File;
 		public global::Cake.Core.IO.FilePath CertificatePath { get; set; }
 		public string CertificatePassword { get; set; }
 		public string CertificateStoreName { get; set; } = "My";
@@ -55,8 +57,6 @@ namespace ISI.Cake.Addin.CodeSigning
 		public CodeSigningDigestAlgorithm DigestAlgorithm { get; set; } = CodeSigningDigestAlgorithm.Sha256;
 
 		public bool OverwriteAnyExistingSignature { get; set; } = false;
-
-		public bool RunAsync { get; set; } = false;
 
 		public CodeSigningVerbosity Verbosity { get; set; } = CodeSigningVerbosity.Normal;
 	}

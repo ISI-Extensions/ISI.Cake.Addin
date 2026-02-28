@@ -43,17 +43,18 @@ namespace ISI.Cake.Addin.CodeSigning
 					OutputDirectory = signVsixesUsingSettingsRequest.OutputDirectory,
 					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiUrl),
 					RemoteCodeSigningServiceApiKey = signVsixesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiKey,
+					CodeSigningCertificateTokenCertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateType),
 					CodeSigningCertificateTokenCertificateFileName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
 					CodeSigningCertificateTokenPassword = signVsixesUsingSettingsRequest.Settings.CodeSigning.Token.Password,
 					TimeStampUri = cakeContext.GetNullableUri(signVsixesUsingSettingsRequest.Settings.CodeSigning.TimeStampUrl),
 					TimeStampDigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signVsixesUsingSettingsRequest.Settings.CodeSigning.TimeStampDigestAlgorithm),
+					CertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificateType),
 					CertificatePath = cakeContext.GetNullableFile(signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificateFileName),
 					CertificatePassword = signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificatePassword,
 					CertificateFingerprint = signVsixesUsingSettingsRequest.Settings.CodeSigning.CertificateFingerprint,
 					DigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signVsixesUsingSettingsRequest.Settings.CodeSigning.DigestAlgorithm),
-					RunAsync = signVsixesUsingSettingsRequest.Settings.CodeSigning.RunAsync,
 				};
 			}
 
@@ -69,12 +70,14 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
+					CodeSigningCertificateTokenCertificateType = signVsixesRequest.CodeSigningCertificateTokenCertificateType,
 					CodeSigningCertificateTokenCertificateFileName = signVsixesRequest.CodeSigningCertificateTokenCertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signVsixesRequest.CodeSigningCertificateTokenCryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signVsixesRequest.CodeSigningCertificateTokenContainerName,
 					CodeSigningCertificateTokenPassword = signVsixesRequest.CodeSigningCertificateTokenPassword,
 					TimeStampUri = signVsixesRequest.TimeStampUri,
 					TimeStampDigestAlgorithm = signVsixesRequest.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					CertificateType = signVsixesRequest.CertificateType,
 					CertificateFileName = signVsixesRequest.CertificatePath?.FullPath,
 					CertificatePassword = signVsixesRequest.CertificatePassword,
 					CertificateStoreName = signVsixesRequest.CertificateStoreName,
@@ -83,7 +86,6 @@ namespace ISI.Cake.Addin.CodeSigning
 					CertificateFingerprint = signVsixesRequest.CertificateFingerprint,
 					DigestAlgorithm = signVsixesRequest.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
 					OverwriteAnyExistingSignature = signVsixesRequest.OverwriteAnyExistingSignature,
-					RunAsync = signVsixesRequest.RunAsync,
 					Verbosity = signVsixesRequest.Verbosity.ToCodeSigningVerbosity(),
 				});
 			}
@@ -98,7 +100,6 @@ namespace ISI.Cake.Addin.CodeSigning
 					VsixFullNames = request.VsixPaths.ToNullCheckedArray(vsixPath => vsixPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = signVsixesRequest.OverwriteAnyExistingSignature,
-					RunAsync = signVsixesRequest.RunAsync,
 					Verbosity = signVsixesRequest.Verbosity.ToRemoteCodeSigningVerbosity(),
 				});
 			}

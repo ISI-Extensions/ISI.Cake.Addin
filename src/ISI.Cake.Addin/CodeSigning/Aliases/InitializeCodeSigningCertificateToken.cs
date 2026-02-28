@@ -40,6 +40,7 @@ namespace ISI.Cake.Addin.CodeSigning
 
 			codeSigningApi.InitializeCodeSigningCertificateToken(new ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.InitializeCodeSigningCertificateTokenRequest()
 			{
+				CodeSigningCertificateTokenCertificateType = request.CodeSigningCertificateTokenCertificateType,
 				CodeSigningCertificateTokenCertificateFileName = request.CodeSigningCertificateTokenCertificateFileName,
 				CodeSigningCertificateTokenCryptographicProvider = request.CodeSigningCertificateTokenCryptographicProvider,
 				CodeSigningCertificateTokenContainerName = request.CodeSigningCertificateTokenContainerName,

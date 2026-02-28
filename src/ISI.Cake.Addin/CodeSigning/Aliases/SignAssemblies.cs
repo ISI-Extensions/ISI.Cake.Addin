@@ -12,7 +12,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,17 +43,18 @@ namespace ISI.Cake.Addin.CodeSigning
 					OutputDirectory = signAssembliesUsingSettingsRequest.OutputDirectory,
 					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signAssembliesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiUrl),
 					RemoteCodeSigningServiceApiKey = signAssembliesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiKey,
+					CodeSigningCertificateTokenCertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateType),
 					CodeSigningCertificateTokenCertificateFileName = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
 					CodeSigningCertificateTokenPassword = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.Password,
 					TimeStampUri = cakeContext.GetNullableUri(signAssembliesUsingSettingsRequest.Settings.CodeSigning.TimeStampUrl),
 					TimeStampDigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signAssembliesUsingSettingsRequest.Settings.CodeSigning.TimeStampDigestAlgorithm),
+					CertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificateType),
 					CertificatePath = cakeContext.GetNullableFile(signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificateFileName),
 					CertificatePassword = signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificatePassword,
 					CertificateFingerprint = signAssembliesUsingSettingsRequest.Settings.CodeSigning.CertificateFingerprint,
 					DigestAlgorithm = cakeContext.GetCodeSigningDigestAlgorithm(signAssembliesUsingSettingsRequest.Settings.CodeSigning.DigestAlgorithm),
-					RunAsync = signAssembliesUsingSettingsRequest.Settings.CodeSigning.RunAsync,
 				};
 			}
 
@@ -69,19 +70,20 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					AssemblyFullNames = request.AssemblyPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
+					CodeSigningCertificateTokenCertificateType = signAssembliesRequest.CodeSigningCertificateTokenCertificateType,
 					CodeSigningCertificateTokenCertificateFileName = signAssembliesRequest.CodeSigningCertificateTokenCertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signAssembliesRequest.CodeSigningCertificateTokenCryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signAssembliesRequest.CodeSigningCertificateTokenContainerName,
 					CodeSigningCertificateTokenPassword = signAssembliesRequest.CodeSigningCertificateTokenPassword,
 					TimeStampUri = signAssembliesRequest.TimeStampUri,
 					TimeStampDigestAlgorithm = signAssembliesRequest.TimeStampDigestAlgorithm.ToCodeSigningDigestAlgorithm(),
+					CertificateType = signAssembliesRequest.CertificateType,
 					CertificateFileName = signAssembliesRequest.CertificatePath?.FullPath,
 					CertificatePassword = signAssembliesRequest.CertificatePassword,
 					CertificateSubjectName = signAssembliesRequest.CertificateSubjectName,
 					CertificateFingerprint = signAssembliesRequest.CertificateFingerprint,
 					DigestAlgorithm = signAssembliesRequest.DigestAlgorithm.ToCodeSigningDigestAlgorithm(),
 					OverwriteAnyExistingSignature = signAssembliesRequest.OverwriteAnyExistingSignature,
-					RunAsync = signAssembliesRequest.RunAsync,
 					Verbosity = signAssembliesRequest.Verbosity.ToCodeSigningVerbosity(),
 				});
 			}
@@ -96,7 +98,6 @@ namespace ISI.Cake.Addin.CodeSigning
 					AssemblyFullNames = request.AssemblyPaths.ToNullCheckedArray(assemblyPath => assemblyPath.FullPath),
 					OutputDirectory = request.OutputDirectory?.FullPath,
 					OverwriteAnyExistingSignature = signAssembliesRequest.OverwriteAnyExistingSignature,
-					RunAsync = signAssembliesRequest.RunAsync,
 					Verbosity = signAssembliesRequest.Verbosity.ToRemoteCodeSigningVerbosity(),
 				});
 			}
