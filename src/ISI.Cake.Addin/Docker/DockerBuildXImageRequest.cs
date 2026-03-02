@@ -36,10 +36,14 @@ namespace ISI.Cake.Addin.Docker
 
 		public string Platform { get; set; }
 
+		public bool UseDockerBuildKit { get; set; }
+
 		public string[] EnvironmentFileFullNames { get; set; }
 		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> EnvironmentVariables { get; set; }
 		
 		public ISI.Extensions.InvariantCultureIgnoreCaseStringDictionary<string> BuildArguments { get; set; }
+
+		public string OutputDirectory { get; set; }
 
 		public string ContainerRegistry { get; set; }
 		public string ContainerRepository { get; set; }
