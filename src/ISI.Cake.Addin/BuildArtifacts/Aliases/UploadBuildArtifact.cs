@@ -34,24 +34,36 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			var uploadBuildArtifactRequest = new ISI.Services.SCM.BuildArtifacts.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactFileRequest()
+			using (var stream = new ISI.Extensions.Stream.TempFileStream())
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
-				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				BuildArtifactFileName = request.SourceFileName,
-				BuildArtifactName = request.BuildArtifactName,
-				BuildArtifactType = request.BuildArtifactType,
-				Architecture = request.Architecture,
-				DateTimeStampVersion = request.DateTimeStampVersion,
-				PostUploadBuildArtifactActions = request.PostUploadBuildArtifactActions.ToNullCheckedArray(),
-			};
+				using (var sourceStream = System.IO.File.OpenRead(request.SourceFileName))
+				{
+					sourceStream.CopyTo(stream);
+					stream.Flush();
+				}
 
-			if (request.MaxTries.HasValue)
-			{
-				uploadBuildArtifactRequest.MaxTries = request.MaxTries.Value;
+				stream.Rewind();
+
+				var uploadBuildArtifactRequest = new ISI.Services.SCM.BuildArtifacts.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactStreamRequest()
+				{
+					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
+					BuildArtifactFileName = System.IO.Path.GetFileName(request.SourceFileName),
+					BuildArtifactStream = stream,
+					BuildArtifactName = request.BuildArtifactName,
+					BuildArtifactType = request.BuildArtifactType,
+					Architecture = request.Architecture,
+					DateTimeStampVersion = request.DateTimeStampVersion,
+					PostUploadBuildArtifactActions = request.PostUploadBuildArtifactActions.ToNullCheckedArray(),
+				};
+
+				if (request.MaxTries.HasValue)
+				{
+					uploadBuildArtifactRequest.MaxTries = request.MaxTries.Value;
+				}
+
+				buildArtifactsApi.UploadBuildArtifact(uploadBuildArtifactRequest);
 			}
-
-			buildArtifactsApi.UploadBuildArtifact(uploadBuildArtifactRequest);
 
 			return response;
 		}
