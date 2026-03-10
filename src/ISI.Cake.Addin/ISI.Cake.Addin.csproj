@@ -19,30 +19,30 @@
   <ItemGroup>
     <PackageReference Include="Cake.Common" Version="6.1.0" />
     <PackageReference Include="Cake.Core" Version="6.1.0" />
-    <PackageReference Include="ISI.Extensions" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Alpine" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Docker" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Debian" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Git" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.SBom" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Ssh" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.9561.35859" />
-    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9561.37306" />
-    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.9561.38203" />
-    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.9561.37463" />
-    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.9563.25664" />
-    <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.9561.37591" />
-    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.9561.38629" />
+    <PackageReference Include="ISI.Extensions" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Alpine" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Docker" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Debian" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Git" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Jenkins" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.JsonSerialization.Newtonsoft" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Nuget" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.SBom" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Scm" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Ssh" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.Svn" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.9565.33005" />
+    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9565.41305" />
+    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.9565.42154" />
+    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.9565.41446" />
+    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.9565.41511" />
+    <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.9565.41566" />
+    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.9565.42574" />
     <PackageReference Include="Microsoft.Sbom.Api" Version="4.1.5" />
     <PackageReference Include="Microsoft.Sbom.Extensions" Version="4.1.5" />
     <PackageReference Include="Microsoft.Sbom.Extensions.DependencyInjection" Version="4.1.5" />
-    <PackageReference Include="Microsoft.Web.Xdt" Version="3.2.3" />
+    <PackageReference Include="Microsoft.Web.Xdt" Version="3.2.4" />
     <PackageReference Include="NuGet.Frameworks" Version="7.3.0" />
     <PackageReference Include="NuGet.Versioning" Version="7.3.0" />
   </ItemGroup>
