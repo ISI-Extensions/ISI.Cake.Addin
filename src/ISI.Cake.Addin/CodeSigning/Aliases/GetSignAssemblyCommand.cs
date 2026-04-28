@@ -41,6 +41,7 @@ namespace ISI.Cake.Addin.CodeSigning
 				{
 					RemoteCodeSigningServiceUri = cakeContext.GetNullableUri(signAssembliesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiUrl),
 					RemoteCodeSigningServiceApiKey = signAssembliesUsingSettingsRequest.Settings.CodeSigning.RemoteCodeSigningServiceApiKey,
+					CodeSigningCertificateTokenCertificateType = ISI.Extensions.Enum<ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType>.Parse(signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateType),
 					CodeSigningCertificateTokenCertificateFileName = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.CryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signAssembliesUsingSettingsRequest.Settings.CodeSigning.Token.ContainerName,
@@ -65,6 +66,7 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				var getSignAssemblyCommandResponse = codeSigningApi.GetSignAssemblyCommand(new ()
 				{
+					CodeSigningCertificateTokenCertificateType = signAssembliesRequest.CodeSigningCertificateTokenCertificateType,
 					CodeSigningCertificateTokenCertificateFileName = signAssembliesRequest.CodeSigningCertificateTokenCertificateFileName,
 					CodeSigningCertificateTokenCryptographicProvider = signAssembliesRequest.CodeSigningCertificateTokenCryptographicProvider,
 					CodeSigningCertificateTokenContainerName = signAssembliesRequest.CodeSigningCertificateTokenContainerName,

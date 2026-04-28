@@ -31,6 +31,7 @@ namespace ISI.Cake.Addin.CodeSigning
 		public Uri RemoteCodeSigningServiceUri { get; set; }
 		public string RemoteCodeSigningServiceApiKey { get; set; }
 
+		public ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType CodeSigningCertificateTokenCertificateType { get; set; } = ISI.Extensions.VisualStudio.DataTransferObjects.CodeSigningApi.CodeSigningCertificateType.File;
 		public string CodeSigningCertificateTokenCertificateFileName { get; set; }
 		public string CodeSigningCertificateTokenCryptographicProvider { get; set; }
 		public string CodeSigningCertificateTokenContainerName { get; set; }
