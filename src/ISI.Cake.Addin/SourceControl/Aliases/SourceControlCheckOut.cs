@@ -34,7 +34,7 @@ namespace ISI.Cake.Addin.SourceControl
 
 			response.Success = sourceControlClientApi.CheckOut(new()
 			{
-				SourceControlTypeUuid = (request.SourceControlTypeUuid == Guid.Empty ? ISI.Extensions.Git.GitApi.SourceControlTypeUuid.ToGuid() : request.SourceControlTypeUuid),
+				SourceControlClientTypeUuid = (request.SourceControlTypeUuid == Guid.Empty ? ISI.Extensions.Scm.SourceControlClientType.GitSourceControlClientTypeUuid.ToGuid() : request.SourceControlTypeUuid),
 				SourceUrl = request.SourceUrl,
 				TargetFullName = request.TargetFullName,
 			}).Success;
