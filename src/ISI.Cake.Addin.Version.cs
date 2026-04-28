@@ -21,5 +21,5 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 //------------------------------------------------------------------------------
 using System.Reflection;
 
-[assembly: AssemblyVersion("2025.12.*")]
+[assembly: AssemblyVersion("2026.1.*")]
 
