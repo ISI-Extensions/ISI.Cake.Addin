@@ -23,5 +23,6 @@ namespace ISI.Cake.Addin.BuildArtifacts
 {
 	public class UploadBuildArtifactResponse
 	{
+		public string AnonymousDownloadUrl { get; set; }
 	}
-}
+}	
