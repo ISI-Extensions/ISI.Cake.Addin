@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactRedirects = buildArtifactsApi.FindBuildArtifactRedirects(new ()
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactNames = [request.BuildArtifactName],
 			}).BuildArtifactRedirects.ToNullCheckedArray(NullCheckCollectionResult.Empty);
@@ -65,7 +65,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			{
 				buildArtifactsApi.SetBuildArtifactRedirects(new ()
 				{
-					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+					BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 					BuildArtifactRedirects = modifiedBuildArtifactRedirects,
 				});

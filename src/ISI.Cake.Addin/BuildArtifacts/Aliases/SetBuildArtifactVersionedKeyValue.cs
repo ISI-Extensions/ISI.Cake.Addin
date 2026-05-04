@@ -34,11 +34,12 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			var apiResponse = buildArtifactsApi.SetBuildArtifactVersionedKeyValuesAsync(new()
+			var apiResponse = buildArtifactsApi.SetBuildArtifactVersionedKeyValues(new()
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
-				BuildArtifactVersionedKeyValues = [
+				BuildArtifactVersionedKeyValues =
+				[
 					new ISI.Services.SCM.BuildArtifacts.BuildArtifactVersionedKeyValue()
 					{
 						BuildArtifactName = request.BuildArtifactName,
@@ -47,8 +48,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 						Key = request.Key,
 						Value = request.Value,
 					}
-					]
-			}).GetAwaiter().GetResult();
+				]
+			});
 
 			return response;
 		}

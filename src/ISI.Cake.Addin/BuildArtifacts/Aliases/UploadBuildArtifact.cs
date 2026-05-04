@@ -46,7 +46,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 				var uploadBuildArtifactRequest = new ISI.Services.SCM.BuildArtifacts.DataTransferObjects.BuildArtifactsApi.UploadBuildArtifactStreamRequest()
 				{
-					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+					BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 					BuildArtifactFileName = System.IO.Path.GetFileName(request.SourceFileName),
 					BuildArtifactStream = stream,

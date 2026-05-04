@@ -33,7 +33,7 @@
     <PackageReference Include="ISI.Extensions.Ssh" Version="10.0.9620.1291" />
     <PackageReference Include="ISI.Extensions.Svn" Version="10.0.9620.1291" />
     <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.9620.1291" />
-    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9620.5165" />
+    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9620.6891" />
     <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.9615.31427" />
     <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.9615.30367" />
     <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.9615.30452" />

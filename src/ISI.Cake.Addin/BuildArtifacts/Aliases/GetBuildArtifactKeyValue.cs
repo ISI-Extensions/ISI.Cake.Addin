@@ -34,12 +34,12 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactsApi = new ISI.Services.SCM.BuildArtifacts.BuildArtifactsApi(new ISI.Services.SCM.BuildArtifacts.Configuration(), new CakeContextLogger(cakeContext), new ISI.Extensions.DateTimeStamper.LocalMachineDateTimeStamper());
 
-			var apiResponse = buildArtifactsApi.GetBuildArtifactKeyValuesAsync(new()
+			var apiResponse = buildArtifactsApi.GetBuildArtifactKeyValues(new()
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				BuildArtifactKeyValueKeys = [(BuildArtifactName: request.BuildArtifactName, Key: request.Key)],
-			}).GetAwaiter().GetResult();
+			});
 
 			var buildArtifactKeyValue = apiResponse.BuildArtifactKeyValues.NullCheckedFirstOrDefault();
 

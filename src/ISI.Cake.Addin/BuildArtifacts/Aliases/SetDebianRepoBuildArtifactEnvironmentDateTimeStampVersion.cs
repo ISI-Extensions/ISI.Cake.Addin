@@ -35,7 +35,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			response.Status = buildArtifactsApi.SetDebianRepoBuildArtifactEnvironmentDateTimeStampVersion(new ()
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				DebianRepoUuid = request.DebianRepoUuid,
 				BuildArtifactName = request.BuildArtifactName,

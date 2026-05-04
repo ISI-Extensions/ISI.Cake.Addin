@@ -68,7 +68,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 				var getAuthenticationTokenResponse = buildArtifactsApi.GetAuthenticationToken(new()
 				{
-					BuildArtifactsApiUri = getBuildArtifactsApiKeyRequest.BuildArtifactsApiUri,
+					BuildArtifactsApiUrl = getBuildArtifactsApiKeyRequest.BuildArtifactsApiUri.ToString(),
 
 					UserName = getBuildArtifactsApiKeyRequest.UserName,
 					Password = getBuildArtifactsApiKeyRequest.Password,

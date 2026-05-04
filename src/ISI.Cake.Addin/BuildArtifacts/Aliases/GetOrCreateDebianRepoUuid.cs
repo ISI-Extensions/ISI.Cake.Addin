@@ -36,7 +36,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var apiResponse = buildArtifactsApi.GetOrCreateDebianRepoUuid(new()
 			{
-				BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+				BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 				BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 				DebianRepoName = request.DebianRepoName,
 			});

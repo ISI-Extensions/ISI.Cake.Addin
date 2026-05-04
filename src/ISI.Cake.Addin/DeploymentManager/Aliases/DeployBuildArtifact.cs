@@ -51,7 +51,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 				{
 					toVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ()
 					{
-						BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+						BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 						BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 						BuildArtifactName = request.BuildArtifactName,
 						Environment = request.FromEnvironment,
@@ -60,7 +60,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 				var currentVersion = buildArtifactsApi.GetBuildArtifactEnvironmentDateTimeStampVersion(new ()
 				{
-					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+					BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 					BuildArtifactName = request.BuildArtifactName,
 					Environment = request.ToEnvironment,
