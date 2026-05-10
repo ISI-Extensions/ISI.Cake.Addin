@@ -79,9 +79,9 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 				var deployArtifactResponse = deploymentManagerApi.DeployArtifact(new()
 				{
-					WindowsDeploymentApiUri = request.WindowsDeploymentApiUri,
+					WindowsDeploymentApiUrl = request.WindowsDeploymentApiUri.ToString(),
 					WindowsDeploymentApiKey = request.WindowsDeploymentApiKey,
-					BuildArtifactsApiUri = request.BuildArtifactsApiUri,
+					BuildArtifactsApiUrl = request.BuildArtifactsApiUri.ToString(),
 					BuildArtifactsApiKey = request.BuildArtifactsApiKey,
 					BuildArtifactName = request.BuildArtifactName,
 					BuildArtifactDateTimeStampVersionUrl = request.BuildArtifactDateTimeStampVersionUrl,

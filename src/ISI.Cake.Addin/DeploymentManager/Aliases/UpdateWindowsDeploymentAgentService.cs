@@ -37,7 +37,7 @@ namespace ISI.Cake.Addin.DeploymentManager
 
 			var apiResponse = windowsDeploymentApi.UpdateWindowsDeploymentAgentService(new ()
 			{
-				WindowsDeploymentApiUri = request.WindowsDeploymentApiUri,
+				WindowsDeploymentApiUrl = request.WindowsDeploymentApiUri.ToString(),
 				WindowsDeploymentApiKey = request.WindowsDeploymentApiKey,
 
 				VerificationWaitInSeconds = request.VerificationWaitInSeconds,
