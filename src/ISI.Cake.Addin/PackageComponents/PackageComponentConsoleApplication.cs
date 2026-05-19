@@ -29,17 +29,7 @@ namespace ISI.Cake.Addin.PackageComponents
 
 		public List<string> ExcludeFiles { get; set; } =
 		[
-			..new[]
-			{
-				"*.xml",
-				"T4LocalContent",
-				"T4CMS",
-				"*.licenseheader",
-				"*.vshost.exe",
-				"*.vshost.exe.*",
-				"Dockerfile",
-				"*Manifests.lst",
-			}
+			"*.xml", "T4LocalContent", "T4CMS", "*.licenseheader", "*.vshost.exe", "*.vshost.exe.*", "Dockerfile", "*Manifests.lst"
 		];
 
 		public AfterBuildPackageComponentDelegate AfterBuildPackageComponent { get; set; } = null;
