@@ -17,8 +17,8 @@
     <None Include="..\ISI.Cake.Addin.licenseheader" Link="ISI.Cake.Addin.licenseheader" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.Common" Version="6.2.0" />
-    <PackageReference Include="Cake.Core" Version="6.2.0" />
+    <PackageReference Include="Cake.Common" Version="6.1.0" />
+    <PackageReference Include="Cake.Core" Version="6.1.0" />
     <PackageReference Include="ISI.Extensions" Version="10.0.9651.41689" />
     <PackageReference Include="ISI.Extensions.Alpine" Version="10.0.9651.41689" />
     <PackageReference Include="ISI.Extensions.DependencyInjection.Iunq" Version="10.0.9651.41689" />
