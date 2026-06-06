@@ -33,6 +33,7 @@ namespace ISI.Cake.Addin.Docker
 		bool IncludeOpenjdk8 { get; }
 		bool IncludeOpenssl { get; }
 		bool IncludeCaCertificates { get; }
+		bool IncludeLdap { get; }
 		bool IncludeGit { get; }
 
 		string BaseImageContainerRepository { get; set; }
@@ -53,6 +54,7 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeOpenjdk8 { get; set; } = false;
 		public bool IncludeOpenssl { get; set; } = false;
 		public bool IncludeCaCertificates { get; set; } = false;
+		public bool IncludeLdap { get; set; } = false;
 		public bool IncludeGit { get; set; } = false;
 
 		public string BaseImageContainerRepository { get; set; }
@@ -76,6 +78,7 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeOpenjdk8 { get; set; } = false;
 		public bool IncludeOpenssl { get; set; } = false;
 		public bool IncludeCaCertificates { get; set; } = false;
+		public bool IncludeLdap { get; set; } = false;
 		public bool IncludeGit { get; set; } = false;
 
 		public string BaseImageContainerRegistry { get; set; }

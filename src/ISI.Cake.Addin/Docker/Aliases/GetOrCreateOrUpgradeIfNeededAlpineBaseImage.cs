@@ -80,6 +80,10 @@ namespace ISI.Cake.Addin.Docker
 				{
 					baseImageContainerRepositoryBuilder.Append("-certs");
 				}
+				if (request.IncludeLdap)
+				{
+					baseImageContainerRepositoryBuilder.Append("-ldap");
+				}
 				if (request.IncludeGit)
 				{
 					baseImageContainerRepositoryBuilder.Append("-git");
@@ -123,6 +127,11 @@ namespace ISI.Cake.Addin.Docker
 			if (request.IncludeCaCertificates)
 			{
 				alpinePackages.Add("ca-certificates");
+			}
+
+			if (request.IncludeLdap)
+			{
+				alpinePackages.Add("libldap");
 			}
 
 			if (request.IncludeGit)
