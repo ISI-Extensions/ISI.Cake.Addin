@@ -41,17 +41,17 @@ namespace ISI.Cake.Addin.Docker
 			var buildArtifactsApiKey = (request as GetOrCreateOrUpgradeIfNeededAlpineBaseImageRequest)?.BuildArtifactsApiKey ?? (request as GetOrCreateOrUpgradeIfNeededAlpineBaseImageUsingSettingsRequest)?.Settings?.BuildArtifacts?.ApiKey;
 			var baseImageContainerRegistry = (request as GetOrCreateOrUpgradeIfNeededAlpineBaseImageRequest)?.BaseImageContainerRegistry ?? (request as GetOrCreateOrUpgradeIfNeededAlpineBaseImageUsingSettingsRequest)?.Settings?.DockerRegistry?.DomainName;
 			var baseImageContainerRepository = request.BaseImageContainerRepository;
-			
+
 			if (request is GetOrCreateOrUpgradeIfNeededAlpineBaseImageUsingSettingsRequest alpineBaseImageUsingSettingsRequest)
 			{
-				if(string.IsNullOrWhiteSpace(buildArtifactsApiKey))
+				if (string.IsNullOrWhiteSpace(buildArtifactsApiKey))
 				{
 					buildArtifactsApiKey = ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactsApiKey(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactsApiKeyUsingSettingsActiveDirectoryRequest()
 					{
 						Settings = alpineBaseImageUsingSettingsRequest.Settings,
 					}).BuildArtifactsApiKey;
 				}
-				
+
 				DockerLogin(cakeContext, context, alpineBaseImageUsingSettingsRequest.Settings);
 			}
 
@@ -60,7 +60,7 @@ namespace ISI.Cake.Addin.Docker
 			if (string.IsNullOrWhiteSpace(baseImageContainerRepository))
 			{
 				var baseImageContainerRepositoryBuilder = new StringBuilder();
-				
+
 				baseImageContainerRepositoryBuilder.Append($"{request.SourceBaseImageContainerRepository.Replace("\\", "-").Replace("/", "-")}-{request.SourceBaseImageContainerImageTag}");
 				if (request.IncludeMicrosoftFonts)
 				{
@@ -126,32 +126,34 @@ namespace ISI.Cake.Addin.Docker
 			{
 				return $"{name}-version";
 			}
-			
+
 			// ReSharper disable once ForCanBeConvertedToForeach
 			for (var alpinePackageIndex = 0; alpinePackageIndex < alpinePackages.Count; alpinePackageIndex++)
 			{
 				var alpinePackage = alpinePackages[alpinePackageIndex];
 
-				alpinePackage.Version = ISI.Cake.Addin.Alpine.Aliases.GetAlpinePackageVersion(cakeContext, new ISI.Cake.Addin.Alpine.GetAlpinePackageVersionRequest()
+				alpinePackage.Version = (ISI.Cake.Addin.Alpine.Aliases.GetAlpinePackageVersion(cakeContext, new ISI.Cake.Addin.Alpine.GetAlpinePackageVersionRequest()
 				{
 					Branch = alpinePackage.Branch,
 					Repository = alpinePackage.Repository,
 					Architecture = alpinePackage.Architecture,
 					Package = alpinePackage.PackageName,
-				}).Version ?? string.Empty;
+				}).Version ?? string.Empty).Trim();
 
-				alpinePackage.ExistingVersion = ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
+				alpinePackage.ExistingVersion = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
 				{
 					BuildArtifactsApiUri = buildArtifactsApiUri,
 					BuildArtifactsApiKey = buildArtifactsApiKey,
 					BuildArtifactName = baseImageContainerRepository,
 					Key = getVersionKey(alpinePackage.PackageName),
-				}).Value ?? string.Empty;
+				}).Value ?? string.Empty).Trim();
 
 				logger.LogInformation($"Checking Alpine Package: {alpinePackage.PackageName}, Existing Version: {alpinePackage.ExistingVersion}, Repository Version: {alpinePackage.Version}");
-				
+
 				if (!string.Equals(alpinePackage.Version, alpinePackage.ExistingVersion, StringComparison.InvariantCulture))
 				{
+					logger.LogInformation($"Package Versions Don't Match !!!!!");
+
 					shouldBuild = true;
 				}
 			}
@@ -163,7 +165,25 @@ namespace ISI.Cake.Addin.Docker
 				ContainerRepository = request.SourceBaseImageContainerRepository,
 				ContainerImageTag = request.SourceBaseImageContainerImageTag,
 			}).ImageManifest?.ToString() ?? string.Empty;
-			
+
+			var existingBaseImageSignature = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
+			{
+				BuildArtifactsApiUri = buildArtifactsApiUri,
+				BuildArtifactsApiKey = buildArtifactsApiKey,
+				BuildArtifactName = baseImageContainerRepository,
+				Key = getVersionKey("baseImageSignature"),
+			}).Value ?? string.Empty).Trim();
+
+
+			logger.LogInformation($"Checking Base Image Signature, Existing: {existingBaseImageSignature}, Repository: {baseImageSignature}");
+
+			if (!string.Equals(existingBaseImageSignature, baseImageSignature, StringComparison.InvariantCulture))
+			{
+				logger.LogInformation($"BaseImage Signatures Don't Match !!!!!");
+
+				shouldBuild = true;
+			}
+
 			var baseImageContainerImageDateTimeStampVersion = ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactEnvironmentDateTimeStampVersion(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 			{
 				BuildArtifactsApiUri = buildArtifactsApiUri,
@@ -174,11 +194,10 @@ namespace ISI.Cake.Addin.Docker
 			}).DateTimeStampVersion;
 
 			var baseImageContainerImageTag = $"v{baseImageContainerImageDateTimeStampVersion.Version}";
-			var baseImageContainerImageSignature = string.Empty;
-			
+
 			if (!string.IsNullOrWhiteSpace(baseImageContainerImageTag))
 			{
-				baseImageContainerImageSignature = InspectImageManifest(cakeContext, new ISI.Cake.Addin.Docker.InspectImageManifestRequest()
+				var baseImageContainerImageSignature = InspectImageManifest(cakeContext, new ISI.Cake.Addin.Docker.InspectImageManifestRequest()
 				{
 					ContainerRegistry = baseImageContainerRegistry,
 					ContainerRepository = baseImageContainerRepository,
@@ -187,16 +206,12 @@ namespace ISI.Cake.Addin.Docker
 
 				if (string.IsNullOrWhiteSpace(baseImageContainerImageSignature))
 				{
-					baseImageContainerImageTag = string.Empty;
+					logger.LogInformation("Base Image missing");
+
+					shouldBuild = true;
 				}
 			}
 
-			logger.LogInformation($"Checking Base Image Signature, Existing: {baseImageContainerImageSignature}, Repository: {baseImageSignature}");
-
-			if (!string.Equals(baseImageSignature, baseImageContainerImageSignature, StringComparison.InvariantCulture))
-			{
-				shouldBuild = true;
-			}
 
 			if (shouldBuild)
 			{
@@ -272,6 +287,15 @@ namespace ISI.Cake.Addin.Docker
 						Value = alpinePackage.Version,
 					});
 				}
+
+				ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+				{
+					BuildArtifactsApiUri = buildArtifactsApiUri,
+					BuildArtifactsApiKey = buildArtifactsApiKey,
+					BuildArtifactName = baseImageContainerRepository,
+					Key = getVersionKey("baseImageSignature"),
+					Value = baseImageSignature,
+				});
 			}
 
 			response.BaseImageContainerRegistry = baseImageContainerRegistry;
