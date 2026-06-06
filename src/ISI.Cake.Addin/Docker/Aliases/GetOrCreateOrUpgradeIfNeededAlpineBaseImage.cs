@@ -78,7 +78,7 @@ namespace ISI.Cake.Addin.Docker
 				{
 					baseImageContainerRepositoryBuilder.Append("-ssl");
 				}
-				if (request.IncludeOpenssl)
+				if (request.IncludeCaCertificates)
 				{
 					baseImageContainerRepositoryBuilder.Append("-certs");
 				}
