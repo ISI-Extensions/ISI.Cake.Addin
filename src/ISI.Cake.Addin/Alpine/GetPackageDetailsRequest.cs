@@ -22,8 +22,10 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Alpine
 {
-	public class GetAlpinePackageVersionResponse
+	public class GetPackageDetailsRequest
 	{
-		public string Version { get; set; }
+		public string Branch { get; set; } = "latest-stable";
+		public string Architecture { get; set; } = "x86_64";
+		public string Package { get; set; }
 	}
 }

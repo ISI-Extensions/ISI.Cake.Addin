@@ -55,7 +55,7 @@ namespace ISI.Cake.Addin.Docker
 				DockerLogin(cakeContext, context, alpineBaseImageUsingSettingsRequest.Settings);
 			}
 
-			var alpinePackages = new List<(string PackageName, string Branch, string Repository, string Architecture, string Version, string ExistingVersion)>();
+			var alpinePackages = new List<(string PackageName, string Version, string ExistingVersion)>();
 
 			if (string.IsNullOrWhiteSpace(baseImageContainerRepository))
 			{
@@ -90,31 +90,31 @@ namespace ISI.Cake.Addin.Docker
 
 			if (request.IncludeMicrosoftFonts)
 			{
-				alpinePackages.Add((PackageName: "msttcorefonts-installer", Branch: "edge", Repository: "community", Architecture: "x86_64", Version: null, ExistingVersion: null));
-				alpinePackages.Add((PackageName: "fontconfig", Branch: "edge", Repository: "main", Architecture: "x86_64", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "msttcorefonts-installer", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "fontconfig", Version: null, ExistingVersion: null));
 			}
 
 			if (request.DisableInvariantGlobalization)
 			{
-				alpinePackages.Add((PackageName: "libgdiplus", Branch: "edge", Repository: "community", Architecture: "x86_64", Version: null, ExistingVersion: null));
-				alpinePackages.Add((PackageName: "libc6-compat", Branch: "edge", Repository: "main", Architecture: "x86_64", Version: null, ExistingVersion: null));
-				alpinePackages.Add((PackageName: "icu-data-full", Branch: "edge", Repository: "main", Architecture: "x86_64", Version: null, ExistingVersion: null));
-				alpinePackages.Add((PackageName: "icu-libs", Branch: "edge", Repository: "main", Architecture: "x86_64", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "libgdiplus", Version: null, ExistingVersion: null));
+				//alpinePackages.Add((PackageName: "libc6-compat", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "icu-data-full", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "icu-libs", Version: null, ExistingVersion: null));
 			}
 
 			if (request.IncludeOpenjdk8)
 			{
-				alpinePackages.Add((PackageName: "openjdk8", Branch: "edge", Repository: "community", Architecture: "x86_64", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "openjdk8", Version: null, ExistingVersion: null));
 			}
 
 			if (request.IncludeOpenssl)
 			{
-				alpinePackages.Add((PackageName: "openssl", Branch: "edge", Repository: "main", Architecture: "x86_64", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "openssl", Version: null, ExistingVersion: null));
 			}
 
 			if (request.IncludeCaCertificates)
 			{
-				alpinePackages.Add((PackageName: "ca-certificates", Branch: "edge", Repository: "main", Architecture: "x86_64", Version: null, ExistingVersion: null));
+				alpinePackages.Add((PackageName: "ca-certificates", Version: null, ExistingVersion: null));
 			}
 
 			//alpinePackages.Add((PackageName: "xxxxxxxxx", Branch: "xxxxxxxxx", Repository: "xxxxxxxxx", Architecture: "xxxxxxxxx", Version: null, ExistingVersion: null));
@@ -132,13 +132,10 @@ namespace ISI.Cake.Addin.Docker
 			{
 				var alpinePackage = alpinePackages[alpinePackageIndex];
 
-				alpinePackage.Version = (ISI.Cake.Addin.Alpine.Aliases.GetAlpinePackageVersion(cakeContext, new ISI.Cake.Addin.Alpine.GetAlpinePackageVersionRequest()
+				alpinePackage.Version = (ISI.Cake.Addin.Alpine.Aliases.GetPackageDetails(cakeContext, new ISI.Cake.Addin.Alpine.GetPackageDetailsRequest()
 				{
-					Branch = alpinePackage.Branch,
-					Repository = alpinePackage.Repository,
-					Architecture = alpinePackage.Architecture,
 					Package = alpinePackage.PackageName,
-				}).Version ?? string.Empty).Trim();
+				}).PackageDetails?.Version ?? string.Empty).Trim();
 
 				alpinePackage.ExistingVersion = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
 				{

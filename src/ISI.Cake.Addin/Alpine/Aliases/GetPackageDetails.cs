@@ -18,15 +18,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ISI.Cake.Addin.Extensions;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.Alpine
 {
-	public class GetAlpinePackageVersionRequest
+	public static partial class Aliases
 	{
-		public string Branch { get; set; } = "edge";
-		public string Repository { get; set; }
-		public string Architecture { get; set; } = "x86_64";
-		public string Package { get; set; }
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static GetPackageDetailsResponse GetPackageDetails(this global::Cake.Core.ICakeContext cakeContext, GetPackageDetailsRequest request)
+		{
+			ServiceProvider.Initialize();
+
+			var response = new GetPackageDetailsResponse();
+
+			var logger = new CakeContextLogger(cakeContext);
+
+			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+
+			var alpineApi = new ISI.Extensions.Alpine.AlpineApi(new ISI.Extensions.Alpine.Configuration(), logger, dateTimeStamper);
+
+			var getPackageVersionResponse = alpineApi.GetPackageDetails(new()
+			{
+				Branch = request.Branch,
+				Architecture = request.Architecture,
+				Package = request.Package,
+			});
+
+			response.PackageDetails = getPackageVersionResponse?.PackageDetails;
+
+			return response;
+		}
 	}
 }
