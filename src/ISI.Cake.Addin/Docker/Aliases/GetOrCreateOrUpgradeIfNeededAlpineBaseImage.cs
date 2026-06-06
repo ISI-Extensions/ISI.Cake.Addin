@@ -44,6 +44,14 @@ namespace ISI.Cake.Addin.Docker
 			
 			if (request is GetOrCreateOrUpgradeIfNeededAlpineBaseImageUsingSettingsRequest alpineBaseImageUsingSettingsRequest)
 			{
+				if(string.IsNullOrWhiteSpace(buildArtifactsApiKey))
+				{
+					buildArtifactsApiKey = ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactsApiKey(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactsApiKeyUsingSettingsActiveDirectoryRequest()
+					{
+						Settings = alpineBaseImageUsingSettingsRequest.Settings,
+					}).BuildArtifactsApiKey;
+				}
+				
 				DockerLogin(cakeContext, context, alpineBaseImageUsingSettingsRequest.Settings);
 			}
 
