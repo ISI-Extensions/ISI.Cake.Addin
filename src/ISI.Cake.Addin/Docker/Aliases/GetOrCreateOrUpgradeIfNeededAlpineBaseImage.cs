@@ -84,6 +84,10 @@ namespace ISI.Cake.Addin.Docker
 				{
 					baseImageContainerRepositoryBuilder.Append("-ldap");
 				}
+				if (request.IncludeSqlite)
+				{
+					baseImageContainerRepositoryBuilder.Append("-sqlite");
+				}
 				if (request.IncludeGit)
 				{
 					baseImageContainerRepositoryBuilder.Append("-git");
@@ -132,6 +136,11 @@ namespace ISI.Cake.Addin.Docker
 			if (request.IncludeLdap)
 			{
 				alpinePackages.Add("libldap");
+			}
+
+			if (request.IncludeSqlite)
+			{
+				alpinePackages.Add("sqlite");
 			}
 
 			if (request.IncludeGit)
