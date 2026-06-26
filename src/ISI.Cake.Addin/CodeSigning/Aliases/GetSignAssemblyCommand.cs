@@ -87,6 +87,17 @@ namespace ISI.Cake.Addin.CodeSigning
 
 				response.Command = getSignAssemblyCommandResponse.Command;
 			}
+			else
+			{
+				var arguments = new List<string>();
+
+				arguments.Add(ISI.Services.SCM.RemoteCodeSigning.CommandLineParameter.SignAssembliesCommand);
+				arguments.Add($"-{ISI.Services.SCM.RemoteCodeSigning.CommandLineParameter.RemoteCodeSigningServiceUrl} \"{signAssembliesRequest.RemoteCodeSigningServiceUri}\"");
+				arguments.Add($"-{ISI.Services.SCM.RemoteCodeSigning.CommandLineParameter.RemoteCodeSigningServiceApiKey} \"{signAssembliesRequest.RemoteCodeSigningServiceApiKey}\"");
+				arguments.Add($"-{ISI.Services.SCM.RemoteCodeSigning.CommandLineParameter.AssemblyFullNames}");
+
+				response.Command = $"ISI.SCM.RemoteCodeSigning.CommandLine.exe {string.Join(" ", arguments)}";
+			}
 
 			return response;
 		}
