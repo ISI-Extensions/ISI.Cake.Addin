@@ -12,17 +12,17 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
- 
-using Cake.Common.IO;
-using Cake.Common.Solution.Project.Properties;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cake.Common.IO;
+using Cake.Common.Solution.Project.Properties;
 using ISI.Extensions.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ISI.Cake.Addin.CodeGeneration
 {
@@ -34,14 +34,15 @@ namespace ISI.Cake.Addin.CodeGeneration
 			ServiceProvider.Initialize();
 
 			var response = new ReplaceRcsKeywordsResponse();
-			
+
 			var logger = new CakeContextLogger(cakeContext);
 			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 			var sourceControlClientApi = new ISI.Extensions.Scm.SourceControlClientApi(logger);
 
-			var rcsKeywordProcessorApi = new ISI.Extensions.Scm.RcsKeywordProcessorApi(logger, dateTimeStamper, sourceControlClientApi);
+			var rcsKeywordProcessorApi = new ISI.Extensions.Scm.RcsKeywordProcessorApi(new(), logger, dateTimeStamper, jsonSerializer, sourceControlClientApi);
 
-			var replaceRcsKeywordsResponse = rcsKeywordProcessorApi.ReplaceRcsKeywords(new ISI.Extensions.Scm.DataTransferObjects.RcsKeywordProcessorApi.ReplaceRcsKeywordsRequest()
+			var replaceRcsKeywordsResponse = rcsKeywordProcessorApi.ReplaceRcsKeywords(new()
 			{
 				SourceDirectory = request.SourceDirectory,
 				FileNameExtension = request.FileNameExtension,

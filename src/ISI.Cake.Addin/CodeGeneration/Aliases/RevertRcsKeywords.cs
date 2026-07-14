@@ -43,12 +43,13 @@ namespace ISI.Cake.Addin.CodeGeneration
 			ServiceProvider.Initialize();
 
 			var response = new RevertRcsKeywordsResponse();
-			
+
 			var logger = new CakeContextLogger(cakeContext);
 			var dateTimeStamper = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.DateTimeStamper.IDateTimeStamper>();
+			var jsonSerializer = ISI.Extensions.ServiceLocator.Current.GetService<ISI.Extensions.JsonSerialization.IJsonSerializer>();
 			var sourceControlClientApi = new ISI.Extensions.Scm.SourceControlClientApi(logger);
 
-			var rcsKeywordProcessorApi = new ISI.Extensions.Scm.RcsKeywordProcessorApi(logger, dateTimeStamper, sourceControlClientApi);
+			var rcsKeywordProcessorApi = new ISI.Extensions.Scm.RcsKeywordProcessorApi(new(), logger, dateTimeStamper, jsonSerializer, sourceControlClientApi);
 
 			var revertRcsKeywordsResponse = rcsKeywordProcessorApi.RevertRcsKeywords(new ISI.Extensions.Scm.DataTransferObjects.RcsKeywordProcessorApi.RevertRcsKeywordsRequest()
 			{
