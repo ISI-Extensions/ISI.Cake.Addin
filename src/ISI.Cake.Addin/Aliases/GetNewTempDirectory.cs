@@ -24,9 +24,12 @@ namespace ISI.Cake.Addin
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ISI.Extensions.IO.Path.TempDirectory GetNewTempDirectory(this global::Cake.Core.ICakeContext cakeContext)
+		public static ISI.Extensions.IO.Path.TempDirectory GetNewTempDirectory(this global::Cake.Core.ICakeContext cakeContext, bool deleteDirectory = true)
 		{
-			return new ISI.Extensions.IO.Path.TempDirectory();
+			return new ISI.Extensions.IO.Path.TempDirectory()
+			{
+				DeleteDirectory = deleteDirectory,
+			};
 		}
 	}
 }
