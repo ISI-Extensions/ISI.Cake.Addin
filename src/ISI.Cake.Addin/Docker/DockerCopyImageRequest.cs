@@ -22,15 +22,16 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class DockerCopyImagesRequest
+	public class DockerCopyImageRequest
 	{
 		public string Context { get; set; }
 
 		public string FromContainerRegistry { get; set; }
-		public string ToContainerRegistry { get; set; }
-		public string ContainerRepository { get; set; }
-		public string[] ContainerImageTags { get; set; }
+		public string FromContainerRepository { get; set; }
+		public string FromContainerImageTag { get; set; }
 
-		public bool UseBuildX { get; set; }
+		public string ToContainerRegistry { get; set; }
+		public string ToContainerRepository { get; set; }
+		public string ToContainerImageTag { get; set; }
 	}
 }

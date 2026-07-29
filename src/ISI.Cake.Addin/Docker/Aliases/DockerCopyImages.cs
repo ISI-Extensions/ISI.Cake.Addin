@@ -47,6 +47,7 @@ namespace ISI.Cake.Addin.Docker
 				ToContainerRegistry = request.ToContainerRegistry,
 				ContainerRepository = request.ContainerRepository,
 				ContainerImageTags = request.ContainerImageTags,
+				UseBuildX = request.UseBuildX,
 			});
 
 			return response;
