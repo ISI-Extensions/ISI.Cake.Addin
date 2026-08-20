@@ -29,6 +29,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 		public string BuildArtifactName { get; set; }
 		public string Environment { get; set; }
+		public ISI.Services.SCM.BuildArtifacts.BuildArtifactType BuildArtifactType { get; set; } = ISI.Services.SCM.BuildArtifacts.BuildArtifactType.Generic;
+		public string Architecture { get; set; }
 
 		Uri IWarmUpWebService.WebServiceUri => BuildArtifactsApiUri;
 		public bool WarmUpWebService { get; } = true;

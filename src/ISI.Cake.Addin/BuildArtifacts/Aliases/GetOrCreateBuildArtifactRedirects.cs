@@ -42,7 +42,11 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			}).BuildArtifactRedirects.ToNullCheckedArray(NullCheckCollectionResult.Empty);
 
 			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
-			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
+			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact)
+				.FirstOrDefault(buildArtifactRedirect => 
+					string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase) &&
+					(buildArtifactRedirect?.BuildArtifactType == request.BuildArtifactType) &&
+					string.Equals(buildArtifactRedirect?.Architecture ?? string.Empty, request.Architecture ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
 
 			var modifiedBuildArtifactRedirects = new List<ISI.Services.SCM.BuildArtifacts.IBuildArtifactRedirect>();
 
@@ -67,6 +71,9 @@ namespace ISI.Cake.Addin.BuildArtifacts
 					BuildArtifactRedirectUuid = Guid.NewGuid(),
 					Environment = request.Environment,
 					BuildArtifactName = request.BuildArtifactName,
+					BuildArtifactType = request.BuildArtifactType,
+					Architecture = request.Architecture,
+
 					IsActive = true,
 					CreateDateTimeUtc = DateTime.UtcNow,
 				};
