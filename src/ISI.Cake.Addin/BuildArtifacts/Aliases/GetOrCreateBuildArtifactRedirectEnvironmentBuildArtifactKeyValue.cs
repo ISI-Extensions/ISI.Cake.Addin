@@ -41,8 +41,10 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				BuildArtifactNames = [request.BuildArtifactName],
 			}).BuildArtifactRedirects.ToNullCheckedArray(NullCheckCollectionResult.Empty);
 
-			var buildArtifactRedirectEnvironmentBuildArtifactKeyValue = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactKeyValue).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase) &&
-			                                                                                                                                                                                                                                                                           string.Equals(buildArtifactRedirect?.Key ?? string.Empty, request.Key, StringComparison.InvariantCultureIgnoreCase));
+			var buildArtifactRedirectEnvironmentBuildArtifactKeyValue = buildArtifactRedirects
+				.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactKeyValue)
+				.FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase) &&
+				                                         string.Equals(buildArtifactRedirect?.Key ?? string.Empty, request.Key, StringComparison.InvariantCultureIgnoreCase));
 			
 			var modifiedBuildArtifactRedirects = new List<ISI.Services.SCM.BuildArtifacts.IBuildArtifactRedirect>();
 

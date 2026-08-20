@@ -43,7 +43,8 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
 			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact)
-				.FirstOrDefault(buildArtifactRedirect => 
+				.FirstOrDefault(buildArtifactRedirect =>
+					buildArtifactRedirect.IsActive &&
 					string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase) &&
 					(buildArtifactRedirect?.BuildArtifactType == request.BuildArtifactType) &&
 					string.Equals(buildArtifactRedirect?.Architecture ?? string.Empty, request.Architecture ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
