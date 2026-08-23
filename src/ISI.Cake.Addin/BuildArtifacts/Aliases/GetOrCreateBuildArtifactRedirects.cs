@@ -43,15 +43,17 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects
 				.NullCheckedSelect(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp, NullCheckCollectionResult.Empty)
-				.NullCheckedFirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
+				.NullCheckedWhere(buildArtifactRedirect => buildArtifactRedirect != null, NullCheckCollectionResult.Empty)
+				.NullCheckedFirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request?.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
 
 			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects
 				.NullCheckedSelect(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact, NullCheckCollectionResult.Empty)
+				.NullCheckedWhere(buildArtifactRedirect => buildArtifactRedirect != null, NullCheckCollectionResult.Empty)
 				.NullCheckedFirstOrDefault(buildArtifactRedirect =>
-					buildArtifactRedirect.IsActive &&
-					string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase) &&
+					(buildArtifactRedirect?.IsActive ?? false) &&
+					string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request?.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase) &&
 					(buildArtifactRedirect?.BuildArtifactType == request.BuildArtifactType) &&
-					string.Equals(buildArtifactRedirect?.Architecture ?? string.Empty, request.Architecture ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
+					string.Equals(buildArtifactRedirect?.Architecture ?? string.Empty, request?.Architecture ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
 
 			var modifiedBuildArtifactRedirects = new List<ISI.Services.SCM.BuildArtifacts.IBuildArtifactRedirect>();
 
