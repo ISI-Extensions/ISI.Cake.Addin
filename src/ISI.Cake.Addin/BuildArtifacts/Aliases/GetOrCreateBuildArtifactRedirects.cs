@@ -44,7 +44,9 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects
 				.NullCheckedSelect(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp, NullCheckCollectionResult.Empty)
 				.NullCheckedWhere(buildArtifactRedirect => buildArtifactRedirect != null, NullCheckCollectionResult.Empty)
-				.NullCheckedFirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request?.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
+				.NullCheckedFirstOrDefault(buildArtifactRedirect =>
+					(buildArtifactRedirect?.IsActive ?? false) &&
+					string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request?.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
 
 			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects
 				.NullCheckedSelect(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact, NullCheckCollectionResult.Empty)
