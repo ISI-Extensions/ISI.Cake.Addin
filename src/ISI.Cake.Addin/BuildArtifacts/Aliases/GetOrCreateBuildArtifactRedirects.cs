@@ -41,9 +41,13 @@ namespace ISI.Cake.Addin.BuildArtifacts
 				BuildArtifactNames = [request.BuildArtifactName],
 			}).BuildArtifactRedirects.ToNullCheckedArray(NullCheckCollectionResult.Empty);
 
-			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp).FirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
-			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects.Select(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact)
-				.FirstOrDefault(buildArtifactRedirect =>
+			var buildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp = buildArtifactRedirects
+				.NullCheckedSelect(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifactDateTimeStamp, NullCheckCollectionResult.Empty)
+				.NullCheckedFirstOrDefault(buildArtifactRedirect => string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment, StringComparison.InvariantCultureIgnoreCase));
+
+			var buildArtifactRedirectEnvironmentBuildArtifact = buildArtifactRedirects
+				.NullCheckedSelect(buildArtifactRedirect => buildArtifactRedirect as ISI.Services.SCM.BuildArtifacts.BuildArtifactRedirectEnvironmentBuildArtifact, NullCheckCollectionResult.Empty)
+				.NullCheckedFirstOrDefault(buildArtifactRedirect =>
 					buildArtifactRedirect.IsActive &&
 					string.Equals(buildArtifactRedirect?.Environment ?? string.Empty, request.Environment ?? string.Empty, StringComparison.InvariantCultureIgnoreCase) &&
 					(buildArtifactRedirect?.BuildArtifactType == request.BuildArtifactType) &&
