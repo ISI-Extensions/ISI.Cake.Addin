@@ -22,11 +22,35 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public interface IGetOrCreateOrUpgradeIfNeededAlpineBaseImageRequest
+	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact
 	{
-		string SourceBaseImageContainerRegistry { get; }
-		string SourceBaseImageContainerRepository { get; }
-		string SourceBaseImageContainerImageTag { get;  }
+		string ArtifactName { get; }
+		string DeployToDirectory { get; }
+	}
+
+	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownloadVersion
+	{
+		string DownloadVersionUrl { get; }
+	}
+
+	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownload
+	{
+		string DownloadUrl { get; }
+	}
+
+	public class GetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz : IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownloadVersion, IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownload, IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact
+	{
+		public string ArtifactName { get; set; }
+		public string DownloadVersionUrl { get; set; }
+		public string DownloadUrl { get; set; }
+		public string DeployToDirectory { get; set; }
+	}
+
+	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequest
+	{
+		string SourceBaseImageContainerRegistry { get; set; }
+		string SourceBaseImageContainerRepository { get; set; }
+		string SourceBaseImageContainerImageTag { get; set;  }
 
 		bool DisableInvariantGlobalization { get; }
 		bool IncludeMicrosoftFonts { get; }
@@ -36,19 +60,22 @@ namespace ISI.Cake.Addin.Docker
 		bool IncludeLdap { get; }
 		bool IncludeSqlite { get; }
 		bool IncludeGit { get; }
+		bool IncludeAnt { get; }
+
+		IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; }
 
 		string BaseImageContainerRepository { get; set; }
 
 		ISI.Extensions.Scm.DateTimeStampVersion BuildDateTimeStampVersion { get; }
 	}
 	
-	public class GetOrCreateOrUpgradeIfNeededAlpineBaseImageUsingSettingsRequest : IGetOrCreateOrUpgradeIfNeededAlpineBaseImageRequest
+	public class GetOrCreateOrUpgradeIfNeededBaseImageUsingSettingsRequest : IGetOrCreateOrUpgradeIfNeededBaseImageRequest
 	{
 		public ISI.Extensions.Scm.Settings Settings { get; set; }
 
-		public string SourceBaseImageContainerRegistry { get; set; } = "mcr.microsoft.com";
-		public string SourceBaseImageContainerRepository { get; set; } = "dotnet/aspnet";
-		public string SourceBaseImageContainerImageTag { get; set; } = "10.0-alpine";
+		public string SourceBaseImageContainerRegistry { get; set; }
+		public string SourceBaseImageContainerRepository { get; set; } = "alpine";
+		public string SourceBaseImageContainerImageTag { get; set; } = "latest";
 
 		public bool DisableInvariantGlobalization { get; set; } = true;
 		public bool IncludeMicrosoftFonts { get; set; } = true;
@@ -58,22 +85,25 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeLdap { get; set; } = false;
 		public bool IncludeSqlite { get; set; } = false;
 		public bool IncludeGit { get; set; } = false;
+		public bool IncludeAnt { get; set; } = false;
+
+		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 
 		public string BaseImageContainerRepository { get; set; }
 
 		public ISI.Extensions.Scm.DateTimeStampVersion BuildDateTimeStampVersion { get; set; }
 	}
 	
-	public class GetOrCreateOrUpgradeIfNeededAlpineBaseImageRequest : IGetOrCreateOrUpgradeIfNeededAlpineBaseImageRequest
+	public class GetOrCreateOrUpgradeIfNeededBaseImageRequest : IGetOrCreateOrUpgradeIfNeededBaseImageRequest
 	{
 		public Uri BuildArtifactsApiUri { get; set; }
 		public string BuildArtifactsApiKey { get; set; }
 
 		public string Context { get; set; }
 
-		public string SourceBaseImageContainerRegistry { get; set; } = "mcr.microsoft.com";
-		public string SourceBaseImageContainerRepository { get; set; } = "dotnet/aspnet";
-		public string SourceBaseImageContainerImageTag { get; set; } = "10.0-alpine";
+		public string SourceBaseImageContainerRegistry { get; set; }
+		public string SourceBaseImageContainerRepository { get; set; } = "alpine";
+		public string SourceBaseImageContainerImageTag { get; set; } = "latest";
 
 		public bool DisableInvariantGlobalization { get; set; } = true;
 		public bool IncludeMicrosoftFonts { get; set; } = true;
@@ -83,6 +113,9 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeLdap { get; set; } = false;
 		public bool IncludeSqlite { get; set; } = false;
 		public bool IncludeGit { get; set; } = false;
+		public bool IncludeAnt { get; set; } = false;
+
+		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 
 		public string BaseImageContainerRegistry { get; set; }
 		public string BaseImageContainerRepository { get; set; }

@@ -22,7 +22,7 @@ using ISI.Extensions.Extensions;
 
 namespace ISI.Cake.Addin.Docker
 {
-	public class GetOrCreateOrUpgradeIfNeededAlpineBaseImageResponse
+	public class GetOrCreateOrUpgradeIfNeededBaseImageResponse
 	{
 		public string BaseImageContainerRegistry { get; set; }
 		public string BaseImageContainerRepository { get; set; }
