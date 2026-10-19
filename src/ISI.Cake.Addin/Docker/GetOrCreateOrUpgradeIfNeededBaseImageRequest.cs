@@ -26,6 +26,7 @@ namespace ISI.Cake.Addin.Docker
 	{
 		string ArtifactName { get; }
 		string DeployToDirectory { get; }
+		string PostDeployCommand { get; }
 	}
 
 	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownloadVersion
@@ -38,12 +39,32 @@ namespace ISI.Cake.Addin.Docker
 		string DownloadUrl { get; }
 	}
 
-	public class GetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz : IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownloadVersion, IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownload, IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact
+	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz
+	{
+
+	}
+
+	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarBz2
+	{
+
+	}
+
+	public class GetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz : IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz, IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownloadVersion, IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownload, IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact
 	{
 		public string ArtifactName { get; set; }
 		public string DownloadVersionUrl { get; set; }
 		public string DownloadUrl { get; set; }
 		public string DeployToDirectory { get; set; }
+		public string PostDeployCommand { get; set; }
+	}
+
+	public class GetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarBz2 : IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarBz2, IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownloadVersion, IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownload, IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact
+	{
+		public string ArtifactName { get; set; }
+		public string DownloadVersionUrl { get; set; }
+		public string DownloadUrl { get; set; }
+		public string DeployToDirectory { get; set; }
+		public string PostDeployCommand { get; set; }
 	}
 
 	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequest
@@ -61,6 +82,7 @@ namespace ISI.Cake.Addin.Docker
 		bool IncludeSqlite { get; }
 		bool IncludeGit { get; }
 		bool IncludeAnt { get; }
+		bool IncludeLibnsl { get; }
 
 		IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; }
 
@@ -86,6 +108,7 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeSqlite { get; set; } = false;
 		public bool IncludeGit { get; set; } = false;
 		public bool IncludeAnt { get; set; } = false;
+		public bool IncludeLibnsl { get; set; } = false;
 
 		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 
@@ -114,6 +137,7 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeSqlite { get; set; } = false;
 		public bool IncludeGit { get; set; } = false;
 		public bool IncludeAnt { get; set; } = false;
+		public bool IncludeLibnsl { get; set; } = false;
 
 		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 

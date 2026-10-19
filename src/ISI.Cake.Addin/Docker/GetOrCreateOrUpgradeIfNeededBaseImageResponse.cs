@@ -24,6 +24,8 @@ namespace ISI.Cake.Addin.Docker
 {
 	public class GetOrCreateOrUpgradeIfNeededBaseImageResponse
 	{
+		public bool Errored { get; set; }
+
 		public string BaseImageContainerRegistry { get; set; }
 		public string BaseImageContainerRepository { get; set; }
 		public string BaseImageContainerImageTag { get; set; }

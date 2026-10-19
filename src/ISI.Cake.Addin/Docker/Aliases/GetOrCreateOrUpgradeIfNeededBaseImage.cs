@@ -58,8 +58,8 @@ namespace ISI.Cake.Addin.Docker
 			public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact Artifact { get; set; }
 			public string ExistingVersion { get; set; }
 			public string RepositoryVersion { get; set; }
-			public string TempFullName { get; set; }
-			public string TempDirectory { get; set; }
+			public string TempDownloadFullName { get; set; }
+			public string TempExtractionDirectory { get; set; }
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
@@ -140,6 +140,10 @@ namespace ISI.Cake.Addin.Docker
 				{
 					baseImageContainerRepositoryBuilder.Append("-ant");
 				}
+				if (request.IncludeLibnsl)
+				{
+					baseImageContainerRepositoryBuilder.Append("-libnsl");
+				}
 
 				baseImageContainerRepository = baseImageContainerRepositoryBuilder.ToString();
 			}
@@ -194,9 +198,14 @@ namespace ISI.Cake.Addin.Docker
 				alpinePackages.Add("git");
 			}
 
-			if (request.IncludeGit)
+			if (request.IncludeAnt)
 			{
 				alpinePackages.Add("apache-ant");
+			}
+
+			if (request.IncludeLibnsl)
+			{
+				alpinePackages.Add("libnsl-dev");
 			}
 
 			var shouldBuild = false;
@@ -332,34 +341,53 @@ namespace ISI.Cake.Addin.Docker
 
 					if (imageArtifacts.Any())
 					{
-						stringBuilder.AppendLine("FROM nginx:alpine AS builder");
+						stringBuilder.AppendLine("FROM alpine:latest AS builder");
 						stringBuilder.AppendLine();
 						stringBuilder.AppendLine("WORKDIR /app");
 						stringBuilder.AppendLine();
-						stringBuilder.AppendLine("RUN apk update && apk add curl");
+						stringBuilder.AppendLine("RUN apk update && apk add curl && apk add bzip2");
 						stringBuilder.AppendLine();
+						stringBuilder.AppendLine("RUN mkdir -p /tmp");
 
 						foreach (var imageArtifact in imageArtifacts)
 						{
 							if (imageArtifact.Artifact is IGetOrCreateOrUpgradeIfNeededBaseImageRequestDownload getOrCreateOrUpgradeIfNeededBaseImageRequestDownload)
 							{
-								imageArtifact.TempFullName = $"/tmp/tmp_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}";
-								stringBuilder.AppendLine($"RUN curl {getOrCreateOrUpgradeIfNeededBaseImageRequestDownload.DownloadUrl} --output {imageArtifact.TempFullName}");
+								if (imageArtifact.Artifact is IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz)
+								{
+									imageArtifact.TempDownloadFullName = $"/tmp/f_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}.tar.gz";
+									imageArtifact.TempExtractionDirectory = $"/tmp/d_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}";
+									stringBuilder.AppendLine($"RUN mkdir -p {imageArtifact.TempExtractionDirectory.TrimEnd('/')}");
+								}
+								else if (imageArtifact.Artifact is IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarBz2)
+								{
+									imageArtifact.TempDownloadFullName = $"/tmp/f_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}.tar.bz2";
+									imageArtifact.TempExtractionDirectory = $"/tmp/d_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}";
+									stringBuilder.AppendLine($"RUN mkdir -p {imageArtifact.TempExtractionDirectory.TrimEnd('/')}");
+								}
+								else
+								{
+									imageArtifact.TempDownloadFullName = $"/tmp/f_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}";
+								}
+
+								stringBuilder.AppendLine($"RUN curl {getOrCreateOrUpgradeIfNeededBaseImageRequestDownload.DownloadUrl} --output {imageArtifact.TempDownloadFullName}");
 							}
 
-							if (imageArtifact.Artifact is GetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz)
+							if (imageArtifact.Artifact is IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarGz)
 							{
-								imageArtifact.TempDirectory = $"/tmp/d_{Guid.NewGuid().Formatted(GuidExtensions.GuidFormat.NoFormatting)}";
-								stringBuilder.AppendLine($"RUN tar -zxvf {imageArtifact.TempFullName} -C {imageArtifact.TempDirectory}");
+								stringBuilder.AppendLine($"RUN tar -zxf {imageArtifact.TempDownloadFullName} -C {imageArtifact.TempExtractionDirectory}");
+							}
+
+							if (imageArtifact.Artifact is IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifactTarBz2)
+							{
+								stringBuilder.AppendLine($"RUN tar -jxf {imageArtifact.TempDownloadFullName} -C {imageArtifact.TempExtractionDirectory}");
 							}
 
 							stringBuilder.AppendLine();
 						}
 					}
 
-
-
-					stringBuilder.AppendLine($"FROM {request.SourceBaseImageContainerRegistry}/{request.SourceBaseImageContainerRepository}:{request.SourceBaseImageContainerImageTag} as base");
+					stringBuilder.AppendLine($"FROM {ISI.Extensions.Docker.Extensions.ContainerImageExtensions.GetContainerImageReference(request.SourceBaseImageContainerRegistry, request.SourceBaseImageContainerRepository, request.SourceBaseImageContainerImageTag)} as base");
 					stringBuilder.AppendLine();
 					stringBuilder.AppendLine("USER root");
 					stringBuilder.AppendLine();
@@ -380,6 +408,7 @@ namespace ISI.Cake.Addin.Docker
 						{
 							stringBuilder.Append($" && apk add {alpinePackage}");
 						}
+
 						stringBuilder.AppendLine();
 					}
 
@@ -395,17 +424,23 @@ namespace ISI.Cake.Addin.Docker
 					{
 						foreach (var imageArtifact in imageArtifacts)
 						{
-							if(!string.IsNullOrWhiteSpace(imageArtifact.TempDirectory))
+							if (!string.IsNullOrWhiteSpace(imageArtifact.TempExtractionDirectory))
 							{
-								stringBuilder.AppendLine($"COPY --from=builder {imageArtifact.TempDirectory}/ {imageArtifact.Artifact.DeployToDirectory.TrimEnd('/')}/");
+								stringBuilder.AppendLine($"RUN mkdir -p {imageArtifact.Artifact.DeployToDirectory.TrimEnd('/')}");
+								stringBuilder.AppendLine($"COPY --from=builder {imageArtifact.TempExtractionDirectory}/ {imageArtifact.Artifact.DeployToDirectory.TrimEnd('/')}/");
+								if (!string.IsNullOrWhiteSpace(imageArtifact.Artifact.PostDeployCommand))
+								{
+									stringBuilder.AppendLine($"RUN {imageArtifact.Artifact.PostDeployCommand}");
+								}
 							}
 						}
+
 						stringBuilder.AppendLine();
 					}
 
 					System.IO.File.WriteAllText(System.IO.Path.Combine(tempDirectory.FullName, "Dockerfile"), stringBuilder.ToString());
 
-					DockerBuildImage(cakeContext, new ISI.Cake.Addin.Docker.DockerBuildImageRequest()
+					response.Errored = DockerBuildImage(cakeContext, new ISI.Cake.Addin.Docker.DockerBuildImageRequest()
 					{
 						AppDirectory = tempDirectory.FullName,
 						Context = context,
@@ -416,70 +451,81 @@ namespace ISI.Cake.Addin.Docker
 						[
 							baseImageContainerImageTag
 						],
-					});
+					}).Errored;
+
+					if (response.Errored)
+					{
+						throw new Exception("Error Building Base Image");
+					}
 				}
 
-				ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactEnvironmentDateTimeStampVersion(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactEnvironmentDateTimeStampVersionRequest()
+				if (!response.Errored)
 				{
-					BuildArtifactsApiUri = buildArtifactsApiUri,
-					BuildArtifactsApiKey = buildArtifactsApiKey,
-					BuildArtifactName = baseImageContainerRepository,
-					Environment = "Build",
-					DateTimeStampVersion = baseImageContainerImageDateTimeStampVersion,
-				});
-
-				foreach (var alpinePackage in alpinePackages)
-				{
-					var key = getVersionKey(alpinePackage);
-					var repositoryVersion = repositoryPackageVersionByPackage[alpinePackage];
-
-					logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {repositoryVersion}");
-
-					ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+					ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactEnvironmentDateTimeStampVersion(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactEnvironmentDateTimeStampVersionRequest()
 					{
 						BuildArtifactsApiUri = buildArtifactsApiUri,
 						BuildArtifactsApiKey = buildArtifactsApiKey,
 						BuildArtifactName = baseImageContainerRepository,
-						Key = key,
-						Value = repositoryVersion,
+						Environment = "Build",
+						DateTimeStampVersion = baseImageContainerImageDateTimeStampVersion,
 					});
-				}
 
-				foreach (var imageArtifact in imageArtifacts)
-				{
-					var key = getVersionKey(imageArtifact.Artifact.ArtifactName);
-					var repositoryVersion = imageArtifact.RepositoryVersion;
-
-					logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {repositoryVersion}");
-
-					ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+					foreach (var alpinePackage in alpinePackages)
 					{
-						BuildArtifactsApiUri = buildArtifactsApiUri,
-						BuildArtifactsApiKey = buildArtifactsApiKey,
-						BuildArtifactName = baseImageContainerRepository,
-						Key = key,
-						Value = repositoryVersion,
-					});
-				}
+						var key = getVersionKey(alpinePackage);
+						var repositoryVersion = repositoryPackageVersionByPackage[alpinePackage];
 
-				{
-					var key = getVersionKey("baseImageSignature");
-					logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {baseImageSignature}");
+						logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {repositoryVersion}");
 
-					ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+						ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+						{
+							BuildArtifactsApiUri = buildArtifactsApiUri,
+							BuildArtifactsApiKey = buildArtifactsApiKey,
+							BuildArtifactName = baseImageContainerRepository,
+							Key = key,
+							Value = repositoryVersion,
+						});
+					}
+
+					foreach (var imageArtifact in imageArtifacts)
 					{
-						BuildArtifactsApiUri = buildArtifactsApiUri,
-						BuildArtifactsApiKey = buildArtifactsApiKey,
-						BuildArtifactName = baseImageContainerRepository,
-						Key = key,
-						Value = baseImageSignature,
-					});
+						var key = getVersionKey(imageArtifact.Artifact.ArtifactName);
+						var repositoryVersion = imageArtifact.RepositoryVersion;
+
+						logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {repositoryVersion}");
+
+						ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+						{
+							BuildArtifactsApiUri = buildArtifactsApiUri,
+							BuildArtifactsApiKey = buildArtifactsApiKey,
+							BuildArtifactName = baseImageContainerRepository,
+							Key = key,
+							Value = repositoryVersion,
+						});
+					}
+
+					{
+						var key = getVersionKey("baseImageSignature");
+						logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {baseImageSignature}");
+
+						ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+						{
+							BuildArtifactsApiUri = buildArtifactsApiUri,
+							BuildArtifactsApiKey = buildArtifactsApiKey,
+							BuildArtifactName = baseImageContainerRepository,
+							Key = key,
+							Value = baseImageSignature,
+						});
+					}
 				}
 			}
 
-			response.BaseImageContainerRegistry = baseImageContainerRegistry;
-			response.BaseImageContainerRepository = baseImageContainerRepository;
-			response.BaseImageContainerImageTag = baseImageContainerImageTag;
+			if (!response.Errored)
+			{
+				response.BaseImageContainerRegistry = baseImageContainerRegistry;
+				response.BaseImageContainerRepository = baseImageContainerRepository;
+				response.BaseImageContainerImageTag = baseImageContainerImageTag;
+			}
 
 			return response;
 		}
