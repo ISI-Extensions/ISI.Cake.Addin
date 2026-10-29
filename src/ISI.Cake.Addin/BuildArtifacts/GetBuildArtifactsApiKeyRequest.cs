@@ -40,5 +40,7 @@ namespace ISI.Cake.Addin.BuildArtifacts
 	public class GetBuildArtifactsApiKeyUsingSettingsRequest : IGetBuildArtifactsApiKeyRequest
 	{
 		public ISI.Extensions.Scm.Settings Settings { get; set; }
+
+		public bool SetApiKey { get; set; } = true;
 	}
 }

@@ -32,19 +32,21 @@ namespace ISI.Cake.Addin.BuildArtifacts
 
 			var getBuildArtifactsApiKeyRequest = request as GetBuildArtifactsApiKeyRequest;
 
-			if (request is GetBuildArtifactsApiKeyUsingSettingsRequest getBuildArtifactsApiKeyUsingSettingsRequest)
 			{
-				if (!string.IsNullOrWhiteSpace(getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiKey))
+				if (request is GetBuildArtifactsApiKeyUsingSettingsRequest getBuildArtifactsApiKeyUsingSettingsRequest)
 				{
-					response.BuildArtifactsApiKey = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiKey;
-				}
+					if (!string.IsNullOrWhiteSpace(getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiKey))
+					{
+						response.BuildArtifactsApiKey = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiKey;
+					}
 
-				getBuildArtifactsApiKeyRequest = new()
-				{
-					BuildArtifactsApiUri = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiUrl.GetNullableUri(),
-					UserName = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.UserName,
-					Password = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.Password,
-				};
+					getBuildArtifactsApiKeyRequest = new()
+					{
+						BuildArtifactsApiUri = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiUrl.GetNullableUri(),
+						UserName = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.UserName,
+						Password = getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.Password,
+					};
+				}
 			}
 
 			if (request is GetBuildArtifactsApiKeyUsingSettingsActiveDirectoryRequest getBuildArtifactsApiKeyUsingSettingsActiveDirectoryRequest)
@@ -80,6 +82,15 @@ namespace ISI.Cake.Addin.BuildArtifacts
 			if (string.IsNullOrWhiteSpace(response.BuildArtifactsApiKey))
 			{
 				throw new Exception("Could not get BuildArtifactsApiKey");
+			}
+
+			{
+				if (request is GetBuildArtifactsApiKeyUsingSettingsRequest getBuildArtifactsApiKeyUsingSettingsRequest && 
+				    getBuildArtifactsApiKeyUsingSettingsRequest.SetApiKey && 
+				    string.IsNullOrWhiteSpace(getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiKey))
+				{
+					getBuildArtifactsApiKeyUsingSettingsRequest.Settings.BuildArtifacts.ApiKey = response.BuildArtifactsApiKey;
+				}
 			}
 
 			return response;

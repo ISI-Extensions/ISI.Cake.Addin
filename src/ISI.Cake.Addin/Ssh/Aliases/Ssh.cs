@@ -27,12 +27,13 @@ namespace ISI.Cake.Addin.Ssh
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static SshResponse Ssh(this global::Cake.Core.ICakeContext cakeContext, string destination, string command)
+		public static SshResponse Ssh(this global::Cake.Core.ICakeContext cakeContext, string destination, string command, string password = null)
 		{
 			return Ssh(cakeContext, new SshRequest()
 			{
 				Destination = destination,
 				Command = command,
+				Password = password,
 			});
 		}
 
@@ -53,6 +54,7 @@ namespace ISI.Cake.Addin.Ssh
 			{
 				Destination = request.Destination,
 				Command = request.Command,
+				Password = request.Password,
 			});
 
 			return response;

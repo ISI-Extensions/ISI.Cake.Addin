@@ -26,5 +26,6 @@ namespace ISI.Cake.Addin.Ssh
 	{
 		public string Destination { get; set; }
 		public string Command { get; set; }
+		public string Password { get; set; }
 	}
 }

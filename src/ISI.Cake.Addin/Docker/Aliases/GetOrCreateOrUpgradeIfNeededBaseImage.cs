@@ -144,6 +144,10 @@ namespace ISI.Cake.Addin.Docker
 				{
 					baseImageContainerRepositoryBuilder.Append("-libnsl");
 				}
+				if (request.IncludeSshPass)
+				{
+					baseImageContainerRepositoryBuilder.Append("-sshpass");
+				}
 
 				baseImageContainerRepository = baseImageContainerRepositoryBuilder.ToString();
 			}
@@ -206,6 +210,11 @@ namespace ISI.Cake.Addin.Docker
 			if (request.IncludeLibnsl)
 			{
 				alpinePackages.Add("libnsl-dev");
+			}
+
+			if (request.IncludeSshPass)
+			{
+				alpinePackages.Add("sshpass");
 			}
 
 			var shouldBuild = false;

@@ -83,6 +83,7 @@ namespace ISI.Cake.Addin.Docker
 		bool IncludeGit { get; }
 		bool IncludeAnt { get; }
 		bool IncludeLibnsl { get; }
+		bool IncludeSshPass { get; }
 
 		IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; }
 
@@ -109,6 +110,7 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeGit { get; set; } = false;
 		public bool IncludeAnt { get; set; } = false;
 		public bool IncludeLibnsl { get; set; } = false;
+		public bool IncludeSshPass { get; set; } = false;
 
 		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 
@@ -138,6 +140,7 @@ namespace ISI.Cake.Addin.Docker
 		public bool IncludeGit { get; set; } = false;
 		public bool IncludeAnt { get; set; } = false;
 		public bool IncludeLibnsl { get; set; } = false;
+		public bool IncludeSshPass { get; set; } = false;
 
 		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 

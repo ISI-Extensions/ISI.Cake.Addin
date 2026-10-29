@@ -27,13 +27,14 @@ namespace ISI.Cake.Addin.Ssh
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static ScpResponse Scp(this global::Cake.Core.ICakeContext cakeContext, string source, string target, bool recursive = false)
+		public static ScpResponse Scp(this global::Cake.Core.ICakeContext cakeContext, string source, string target, bool recursive = false, string password = null)
 		{
 			return Scp(cakeContext, new ScpRequest()
 			{
 				Source = source,
 				Target = target,
 				Recursive = recursive,
+				Password = password,
 			});
 		}
 
@@ -55,6 +56,7 @@ namespace ISI.Cake.Addin.Ssh
 				Source = request.Source,
 				Target = request.Target,
 				Recursive = request.Recursive,
+				Password = request.Password,
 			});
 
 			return response;
