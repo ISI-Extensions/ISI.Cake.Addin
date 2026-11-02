@@ -35,6 +35,7 @@ namespace ISI.Cake.Addin.Docker
 			request.SourceBaseImageContainerRegistry = "mcr.microsoft.com";
 			request.SourceBaseImageContainerRepository = "dotnet/aspnet";
 			request.SourceBaseImageContainerImageTag = "10.0-alpine";
+			request.ImageContainerRepositoryType = ImageContainerRepositoryType.Alpine;
 
 			var logger = new CakeContextLogger(cakeContext);
 
@@ -49,6 +50,19 @@ namespace ISI.Cake.Addin.Docker
 			{
 				request.SourceBaseImageContainerImageTag = $"{targetFrameworkVersion.TrimStart("net", StringComparison.InvariantCultureIgnoreCase)}-alpine";
 			}
+
+			return request;
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static IGetOrCreateOrUpgradeIfNeededBaseImageRequest SetUbuntuSourceBaseImage(this global::Cake.Core.ICakeContext cakeContext, IGetOrCreateOrUpgradeIfNeededBaseImageRequest request, string project)
+		{
+			ServiceProvider.Initialize();
+
+			request.SourceBaseImageContainerRegistry = null;
+			request.SourceBaseImageContainerRepository = "ubuntu";
+			request.SourceBaseImageContainerImageTag = "resolute";
+			request.ImageContainerRepositoryType = ImageContainerRepositoryType.Ubuntu;
 
 			return request;
 		}
@@ -92,6 +106,22 @@ namespace ISI.Cake.Addin.Docker
 				}
 
 				DockerLogin(cakeContext, context, alpineBaseImageUsingSettingsRequest.Settings);
+			}
+
+			if (request.ImageContainerRepositoryType == ImageContainerRepositoryType.Unknown)
+			{
+				if (request.SourceBaseImageContainerRegistry.IndexOf("alpine", StringComparison.InvariantCultureIgnoreCase) >= 0)
+				{
+					request.ImageContainerRepositoryType = ImageContainerRepositoryType.Alpine;
+				}
+				else if (request.SourceBaseImageContainerRegistry.IndexOf("ubuntu", StringComparison.InvariantCultureIgnoreCase) >= 0)
+				{
+					request.ImageContainerRepositoryType = ImageContainerRepositoryType.Ubuntu;
+				}
+				else if (request.SourceBaseImageContainerRegistry.IndexOf("debian", StringComparison.InvariantCultureIgnoreCase) >= 0)
+				{
+					request.ImageContainerRepositoryType = ImageContainerRepositoryType.Debian;
+				}
 			}
 
 			if (string.IsNullOrWhiteSpace(baseImageContainerRepository))
@@ -155,6 +185,7 @@ namespace ISI.Cake.Addin.Docker
 			logger.LogInformation($"Checking: {baseImageContainerRegistry}/{baseImageContainerRepository}");
 
 			var alpinePackages = new List<string>();
+			var ubuntuPackages = new List<string>();
 			var repositoryPackageVersionByPackage = new Dictionary<string, string>(StringComparer.InvariantCulture);
 			var existingPackageVersionByPackage = new Dictionary<string, string>(StringComparer.InvariantCulture);
 
@@ -162,6 +193,8 @@ namespace ISI.Cake.Addin.Docker
 			{
 				alpinePackages.Add("msttcorefonts-installer");
 				alpinePackages.Add("fontconfig");
+
+				ubuntuPackages.Add("ttf-mscorefonts-installer");
 			}
 
 			if (request.DisableInvariantGlobalization)
@@ -170,51 +203,75 @@ namespace ISI.Cake.Addin.Docker
 				//alpinePackages.Add((PackageName: "libc6-compat", RepositoryVersion: null, ExistingVersion: null));
 				alpinePackages.Add("icu-data-full");
 				alpinePackages.Add("icu-libs");
+
+				ubuntuPackages.Add("libgdiplus");
+				ubuntuPackages.Add("libicu-dev");
+				ubuntuPackages.Add("icu-devtools");
 			}
 
 			if (request.IncludeOpenjdk8)
 			{
 				alpinePackages.Add("openjdk8");
+
+				ubuntuPackages.Add("openjdk-8-jdk");
 			}
 
 			if (request.IncludeOpenssl)
 			{
 				alpinePackages.Add("openssl");
+
+				ubuntuPackages.Add("openssl");
+				ubuntuPackages.Add("libssl-dev");
 			}
 
 			if (request.IncludeCaCertificates)
 			{
 				alpinePackages.Add("ca-certificates");
+
+				ubuntuPackages.Add("ca-certificates");
 			}
 
 			if (request.IncludeLdap)
 			{
 				alpinePackages.Add("libldap");
+
+				ubuntuPackages.Add("libldap2");
 			}
 
 			if (request.IncludeSqlite)
 			{
 				alpinePackages.Add("sqlite");
+
+				ubuntuPackages.Add("sqlite3");
+				ubuntuPackages.Add("libsqlite3-dev");
 			}
 
 			if (request.IncludeGit)
 			{
 				alpinePackages.Add("git");
+
+				ubuntuPackages.Add("git");
 			}
 
 			if (request.IncludeAnt)
 			{
 				alpinePackages.Add("apache-ant");
+
+				ubuntuPackages.Add("ant");
 			}
 
 			if (request.IncludeLibnsl)
 			{
 				alpinePackages.Add("libnsl-dev");
+
+				ubuntuPackages.Add("libnsl-dev");
 			}
 
 			if (request.IncludeSshPass)
 			{
 				alpinePackages.Add("sshpass");
+
+				ubuntuPackages.Add("sshpass");
 			}
 
 			var shouldBuild = false;
@@ -224,32 +281,77 @@ namespace ISI.Cake.Addin.Docker
 				return $"{name}-version";
 			}
 
-			foreach (var alpinePackage in alpinePackages)
+			switch (request.ImageContainerRepositoryType)
 			{
-				var repositoryVersion = (ISI.Cake.Addin.Alpine.Aliases.GetPackageDetails(cakeContext, new ISI.Cake.Addin.Alpine.GetPackageDetailsRequest()
-				{
-					Package = alpinePackage,
-				}).PackageDetails?.Version ?? string.Empty).Trim();
-				repositoryPackageVersionByPackage[alpinePackage] = repositoryVersion;
+				case ImageContainerRepositoryType.Alpine:
+					foreach (var alpinePackage in alpinePackages)
+					{
+						var repositoryVersion = (ISI.Cake.Addin.Alpine.Aliases.GetPackageDetails(cakeContext, new ISI.Cake.Addin.Alpine.GetPackageDetailsRequest()
+						{
+							Package = alpinePackage,
+						}).PackageDetails?.Version ?? string.Empty).Trim();
+						repositoryPackageVersionByPackage[alpinePackage] = repositoryVersion;
 
-				var existingVersion = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
-				{
-					BuildArtifactsApiUri = buildArtifactsApiUri,
-					BuildArtifactsApiKey = buildArtifactsApiKey,
-					BuildArtifactName = baseImageContainerRepository,
-					Key = getVersionKey(alpinePackage),
-				}).Value ?? string.Empty).Trim();
-				existingPackageVersionByPackage[alpinePackage] = existingVersion;
+						var existingVersion = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
+						{
+							BuildArtifactsApiUri = buildArtifactsApiUri,
+							BuildArtifactsApiKey = buildArtifactsApiKey,
+							BuildArtifactName = baseImageContainerRepository,
+							Key = getVersionKey(alpinePackage),
+						}).Value ?? string.Empty).Trim();
+						existingPackageVersionByPackage[alpinePackage] = existingVersion;
 
-				logger.LogInformation($"Checking Alpine Package: {alpinePackage}, Existing Version: {existingVersion}, Repository Version: {repositoryVersion}");
+						logger.LogInformation($"Checking Alpine Package: {alpinePackage}, Existing Version: {existingVersion}, Repository Version: {repositoryVersion}");
 
-				if (!string.Equals(repositoryVersion, existingVersion, StringComparison.InvariantCulture))
-				{
-					logger.LogInformation("Package Versions Don't Match !!!!!");
+						if (!string.Equals(repositoryVersion, existingVersion, StringComparison.InvariantCulture))
+						{
+							logger.LogInformation("Package Versions Don't Match !!!!!");
 
-					shouldBuild = true;
-				}
+							shouldBuild = true;
+						}
+					}
+					break;
+				
+				case ImageContainerRepositoryType.Ubuntu:
+					foreach (var ubuntuPackage in ubuntuPackages)
+					{
+						var repositoryVersion = (ISI.Cake.Addin.Debian.Aliases.GetPackageDetails(cakeContext, new ISI.Cake.Addin.Debian.GetPackageDetailsRequest()
+						{
+							Distribution = "Ubuntu",
+							Branch = "resolute",
+							Architecture = "amd64",
+							Package = ubuntuPackage,
+						}).PackageDetails?.Version ?? string.Empty).Trim();
+						repositoryPackageVersionByPackage[ubuntuPackage] = repositoryVersion;
+
+						var existingVersion = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
+						{
+							BuildArtifactsApiUri = buildArtifactsApiUri,
+							BuildArtifactsApiKey = buildArtifactsApiKey,
+							BuildArtifactName = baseImageContainerRepository,
+							Key = getVersionKey(ubuntuPackage),
+						}).Value ?? string.Empty).Trim();
+						existingPackageVersionByPackage[ubuntuPackage] = existingVersion;
+
+						logger.LogInformation($"Checking Ubuntu Package: {ubuntuPackage}, Existing Version: {existingVersion}, Repository Version: {repositoryVersion}");
+
+						if (!string.Equals(repositoryVersion, existingVersion, StringComparison.InvariantCulture))
+						{
+							logger.LogInformation("Package Versions Don't Match !!!!!");
+
+							shouldBuild = true;
+						}
+					}
+					break;
+
+				default:
+					if(alpinePackages.Any() || ubuntuPackages.Any())
+					{
+						throw new ArgumentOutOfRangeException();
+					}
+					break;
 			}
+
 
 			foreach (var imageArtifact in imageArtifacts)
 			{
@@ -410,23 +512,48 @@ namespace ISI.Cake.Addin.Docker
 						stringBuilder.AppendLine();
 					}
 
-					if (alpinePackages.Any())
+					switch (request.ImageContainerRepositoryType)
 					{
-						stringBuilder.Append("RUN apk update");
-						foreach (var alpinePackage in alpinePackages)
-						{
-							stringBuilder.Append($" && apk add {alpinePackage}");
-						}
+						case ImageContainerRepositoryType.Alpine:
+							if (alpinePackages.Any())
+							{
+								stringBuilder.Append("RUN apk update");
+								foreach (var alpinePackage in alpinePackages)
+								{
+									stringBuilder.Append($" && apk add {alpinePackage}");
+								}
 
-						stringBuilder.AppendLine();
-					}
+								stringBuilder.AppendLine();
+							}
 
-					if (request.IncludeMicrosoftFonts)
-					{
-						stringBuilder.AppendLine("RUN update-ms-fonts");
-						stringBuilder.AppendLine();
-						stringBuilder.AppendLine("RUN fc-cache -f");
-						stringBuilder.AppendLine();
+							if (request.IncludeMicrosoftFonts)
+							{
+								stringBuilder.AppendLine("RUN update-ms-fonts");
+								stringBuilder.AppendLine();
+								stringBuilder.AppendLine("RUN fc-cache -f");
+								stringBuilder.AppendLine();
+							}
+							break;
+
+						case ImageContainerRepositoryType.Ubuntu:
+							if (ubuntuPackages.Any())
+							{
+								stringBuilder.Append("RUN apt update && apt install");
+								foreach (var ubuntuPackage in ubuntuPackages)
+								{
+									stringBuilder.Append($" {ubuntuPackage}");
+								}
+								stringBuilder.Append(" -y");
+
+								stringBuilder.AppendLine();
+							}
+
+							if (request.IncludeMicrosoftFonts)
+							{
+								stringBuilder.AppendLine("RUN fc-cache -f -v");
+								stringBuilder.AppendLine();
+							}
+							break;
 					}
 
 					if (imageArtifacts.Any())

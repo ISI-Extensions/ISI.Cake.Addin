@@ -67,11 +67,21 @@ namespace ISI.Cake.Addin.Docker
 		public string PostDeployCommand { get; set; }
 	}
 
+	public enum ImageContainerRepositoryType
+	{
+		Unknown,
+		Alpine,
+		Ubuntu,
+		Debian,
+	}
+
 	public interface IGetOrCreateOrUpgradeIfNeededBaseImageRequest
 	{
 		string SourceBaseImageContainerRegistry { get; set; }
 		string SourceBaseImageContainerRepository { get; set; }
 		string SourceBaseImageContainerImageTag { get; set;  }
+
+		ImageContainerRepositoryType ImageContainerRepositoryType { get; set; }
 
 		bool DisableInvariantGlobalization { get; }
 		bool IncludeMicrosoftFonts { get; }
@@ -99,6 +109,8 @@ namespace ISI.Cake.Addin.Docker
 		public string SourceBaseImageContainerRegistry { get; set; }
 		public string SourceBaseImageContainerRepository { get; set; } = "alpine";
 		public string SourceBaseImageContainerImageTag { get; set; } = "latest";
+
+		public ImageContainerRepositoryType ImageContainerRepositoryType { get; set; } = ImageContainerRepositoryType.Unknown;
 
 		public bool DisableInvariantGlobalization { get; set; } = true;
 		public bool IncludeMicrosoftFonts { get; set; } = true;
@@ -129,6 +141,8 @@ namespace ISI.Cake.Addin.Docker
 		public string SourceBaseImageContainerRegistry { get; set; }
 		public string SourceBaseImageContainerRepository { get; set; } = "alpine";
 		public string SourceBaseImageContainerImageTag { get; set; } = "latest";
+
+		public ImageContainerRepositoryType ImageContainerRepositoryType { get; set; } = ImageContainerRepositoryType.Unknown;
 
 		public bool DisableInvariantGlobalization { get; set; } = true;
 		public bool IncludeMicrosoftFonts { get; set; } = true;
