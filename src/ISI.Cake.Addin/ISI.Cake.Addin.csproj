@@ -33,12 +33,12 @@
     <PackageReference Include="ISI.Extensions.Ssh" Version="10.0.9801.37313" />
     <PackageReference Include="ISI.Extensions.Svn" Version="10.0.9801.37313" />
     <PackageReference Include="ISI.Extensions.VisualStudio" Version="10.0.9801.37313" />
-    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9783.1153" />
-    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.9783.2986" />
-    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.9783.1375" />
-    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.9783.1560" />
-    <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.9783.1818" />
-    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.9783.3793" />
+    <PackageReference Include="ISI.Services.SCM.BuildArtifacts" Version="4.0.9802.2484" />
+    <PackageReference Include="ISI.Services.SCM.Jenkins" Version="1.0.9802.5032" />
+    <PackageReference Include="ISI.Services.SCM.Nuget" Version="4.0.9802.2918" />
+    <PackageReference Include="ISI.Services.SCM.RemoteCodeSigning" Version="1.0.9802.3200" />
+    <PackageReference Include="ISI.Services.SCM.VsExtensions" Version="4.0.9802.3544" />
+    <PackageReference Include="ISI.Services.WindowsDeploymentAgent" Version="4.0.9802.5988" />
     <PackageReference Include="Microsoft.Sbom.Api" Version="4.1.13" />
     <PackageReference Include="Microsoft.Sbom.Extensions" Version="4.1.13" />
     <PackageReference Include="Microsoft.Sbom.Extensions.DependencyInjection" Version="4.1.13" />
