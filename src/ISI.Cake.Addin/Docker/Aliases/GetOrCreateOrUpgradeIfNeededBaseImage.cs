@@ -28,40 +28,56 @@ namespace ISI.Cake.Addin.Docker
 	public static partial class Aliases
 	{
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static IGetOrCreateOrUpgradeIfNeededBaseImageRequest SetDotNetAspNetSourceBaseImage(this global::Cake.Core.ICakeContext cakeContext, IGetOrCreateOrUpgradeIfNeededBaseImageRequest request, string project)
+		public static IGetOrCreateOrUpgradeIfNeededBaseImageRequest SetDotNetAspNetSourceBaseImage(this global::Cake.Core.ICakeContext cakeContext, IGetOrCreateOrUpgradeIfNeededBaseImageRequest request, string project, string imageTag = null)
 		{
 			ServiceProvider.Initialize();
 
+			if (string.IsNullOrWhiteSpace(imageTag))
+			{
+				var logger = new CakeContextLogger(cakeContext);
+
+				var projectApi = new ISI.Extensions.VisualStudio.ProjectApi(logger);
+
+				var targetFrameworkVersion = projectApi.GetTargetFrameworkVersions(new()
+				{
+					Project = project,
+				}).TargetFrameworkVersions.NullCheckedFirstOrDefault(targetFrameworkVersion => targetFrameworkVersion.StartsWith("net", StringComparison.InvariantCultureIgnoreCase));
+
+				if (!string.IsNullOrWhiteSpace(targetFrameworkVersion))
+				{
+					imageTag = $"{targetFrameworkVersion.TrimStart("net", StringComparison.InvariantCultureIgnoreCase)}-alpine";
+				}
+			}
+
 			request.SourceBaseImageContainerRegistry = "mcr.microsoft.com";
 			request.SourceBaseImageContainerRepository = "dotnet/aspnet";
-			request.SourceBaseImageContainerImageTag = "10.0-alpine";
+			request.SourceBaseImageContainerImageTag = (string.IsNullOrWhiteSpace(imageTag) ? "11.0-alpine" : imageTag);
 			request.ImageContainerRepositoryType = ImageContainerRepositoryType.Alpine;
-
-			var logger = new CakeContextLogger(cakeContext);
-
-			var projectApi = new ISI.Extensions.VisualStudio.ProjectApi(logger);
-
-			var targetFrameworkVersion = projectApi.GetTargetFrameworkVersions(new()
-			{
-				Project = project,
-			}).TargetFrameworkVersions.NullCheckedFirstOrDefault(targetFrameworkVersion => targetFrameworkVersion.StartsWith("net", StringComparison.InvariantCultureIgnoreCase));
-
-			if (!string.IsNullOrWhiteSpace(targetFrameworkVersion))
-			{
-				request.SourceBaseImageContainerImageTag = $"{targetFrameworkVersion.TrimStart("net", StringComparison.InvariantCultureIgnoreCase)}-alpine";
-			}
 
 			return request;
 		}
 
 		[global::Cake.Core.Annotations.CakeMethodAlias]
-		public static IGetOrCreateOrUpgradeIfNeededBaseImageRequest SetUbuntuSourceBaseImage(this global::Cake.Core.ICakeContext cakeContext, IGetOrCreateOrUpgradeIfNeededBaseImageRequest request, string project)
+		public static IGetOrCreateOrUpgradeIfNeededBaseImageRequest SetAlpineSourceBaseImage(this global::Cake.Core.ICakeContext cakeContext, IGetOrCreateOrUpgradeIfNeededBaseImageRequest request, string imageTag = "latest")
+		{
+			ServiceProvider.Initialize();
+
+			request.SourceBaseImageContainerRegistry = null;
+			request.SourceBaseImageContainerRepository = "alpine";
+			request.SourceBaseImageContainerImageTag = imageTag;
+			request.ImageContainerRepositoryType = ImageContainerRepositoryType.Alpine;
+
+			return request;
+		}
+
+		[global::Cake.Core.Annotations.CakeMethodAlias]
+		public static IGetOrCreateOrUpgradeIfNeededBaseImageRequest SetUbuntuSourceBaseImage(this global::Cake.Core.ICakeContext cakeContext, IGetOrCreateOrUpgradeIfNeededBaseImageRequest request, string imageTag = "resolute")
 		{
 			ServiceProvider.Initialize();
 
 			request.SourceBaseImageContainerRegistry = null;
 			request.SourceBaseImageContainerRepository = "ubuntu";
-			request.SourceBaseImageContainerImageTag = "resolute";
+			request.SourceBaseImageContainerImageTag = imageTag;
 			request.ImageContainerRepositoryType = ImageContainerRepositoryType.Ubuntu;
 
 			return request;
@@ -311,7 +327,7 @@ namespace ISI.Cake.Addin.Docker
 						}
 					}
 					break;
-				
+
 				case ImageContainerRepositoryType.Ubuntu:
 					foreach (var ubuntuPackage in ubuntuPackages)
 					{
@@ -345,7 +361,7 @@ namespace ISI.Cake.Addin.Docker
 					break;
 
 				default:
-					if(alpinePackages.Any() || ubuntuPackages.Any())
+					if (alpinePackages.Any() || ubuntuPackages.Any())
 					{
 						throw new ArgumentOutOfRangeException();
 					}
@@ -381,6 +397,35 @@ namespace ISI.Cake.Addin.Docker
 
 					shouldBuild = true;
 				}
+			}
+
+			var additionalDockerFileStepsChecksum = string.Empty;
+			if (!string.IsNullOrWhiteSpace(request.AdditionalDockerFileSteps))
+			{
+				using (var sha256 = System.Security.Cryptography.SHA256.Create())
+				{
+					var checksum = sha256.ComputeHash(Encoding.UTF8.GetBytes(request.AdditionalDockerFileSteps));
+
+					additionalDockerFileStepsChecksum = BitConverter.ToString(checksum).Replace("-", String.Empty);
+				}
+			}
+
+			var existingAdditionalDockerFileStepsChecksum = (ISI.Cake.Addin.BuildArtifacts.Aliases.GetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.GetBuildArtifactKeyValueRequest()
+			{
+				BuildArtifactsApiUri = buildArtifactsApiUri,
+				BuildArtifactsApiKey = buildArtifactsApiKey,
+				BuildArtifactName = baseImageContainerRepository,
+				Key = getVersionKey("additionalDockerFileStepsChecksum"),
+			}).Value ?? string.Empty).Trim();
+
+
+			logger.LogInformation($"Checking Additional DockerFile Steps Checksum, Existing: {existingAdditionalDockerFileStepsChecksum}, Repository: {additionalDockerFileStepsChecksum}");
+
+			if (!string.Equals(existingAdditionalDockerFileStepsChecksum, additionalDockerFileStepsChecksum, StringComparison.InvariantCulture))
+			{
+				logger.LogInformation("Additional DockerFile Steps Checksum Don't Match !!!!!");
+
+				shouldBuild = true;
 			}
 
 
@@ -574,20 +619,49 @@ namespace ISI.Cake.Addin.Docker
 						stringBuilder.AppendLine();
 					}
 
+					if (!string.IsNullOrWhiteSpace(request.AdditionalDockerFileSteps))
+					{
+						stringBuilder.AppendLine();
+						stringBuilder.AppendLine(request.AdditionalDockerFileSteps);
+					}
+
 					System.IO.File.WriteAllText(System.IO.Path.Combine(tempDirectory.FullName, "Dockerfile"), stringBuilder.ToString());
 
-					response.Errored = DockerBuildImage(cakeContext, new ISI.Cake.Addin.Docker.DockerBuildImageRequest()
+					if (request.UseBuildX)
 					{
-						AppDirectory = tempDirectory.FullName,
-						Context = context,
+						response.Errored = DockerBuildXImage(cakeContext, new ISI.Cake.Addin.Docker.DockerBuildXImageRequest()
+						{
+							AppDirectory = tempDirectory.FullName,
+							Context = context,
 
-						ContainerRegistry = baseImageContainerRegistry,
-						ContainerRepository = baseImageContainerRepository,
-						ContainerImageTags =
-						[
-							baseImageContainerImageTag
-						],
-					}).Errored;
+							Platform = request.Platform,
+							UseDockerBuildKit = request.UseDockerBuildKit,
+
+							ContainerRegistry = baseImageContainerRegistry,
+							ContainerRepository = baseImageContainerRepository,
+							ContainerImageTags =
+							[
+								baseImageContainerImageTag
+							],
+						}).Errored;
+					}
+					else
+					{
+						response.Errored = DockerBuildImage(cakeContext, new ISI.Cake.Addin.Docker.DockerBuildImageRequest()
+						{
+							AppDirectory = tempDirectory.FullName,
+							Context = context,
+
+							UseDockerBuildKit = request.UseDockerBuildKit,
+
+							ContainerRegistry = baseImageContainerRegistry,
+							ContainerRepository = baseImageContainerRepository,
+							ContainerImageTags =
+							[
+								baseImageContainerImageTag
+							],
+						}).Errored;
+					}
 
 					if (response.Errored)
 					{
@@ -637,6 +711,20 @@ namespace ISI.Cake.Addin.Docker
 							BuildArtifactName = baseImageContainerRepository,
 							Key = key,
 							Value = repositoryVersion,
+						});
+					}
+
+					{
+						var key = getVersionKey("additionalDockerFileStepsChecksum");
+						logger.LogInformation($"SetBuildArtifactKeyValue, Key: {key}, Value: {additionalDockerFileStepsChecksum}");
+
+						ISI.Cake.Addin.BuildArtifacts.Aliases.SetBuildArtifactKeyValue(cakeContext, new ISI.Cake.Addin.BuildArtifacts.SetBuildArtifactKeyValueRequest()
+						{
+							BuildArtifactsApiUri = buildArtifactsApiUri,
+							BuildArtifactsApiKey = buildArtifactsApiKey,
+							BuildArtifactName = baseImageContainerRepository,
+							Key = key,
+							Value = additionalDockerFileStepsChecksum,
 						});
 					}
 

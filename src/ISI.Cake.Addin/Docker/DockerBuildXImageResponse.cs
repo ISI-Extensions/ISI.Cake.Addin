@@ -24,5 +24,6 @@ namespace ISI.Cake.Addin.Docker
 {
 	public class DockerBuildXImageResponse
 	{
+		public bool Errored { get; set; }
 	}
 }

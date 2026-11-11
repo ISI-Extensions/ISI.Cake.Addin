@@ -40,7 +40,7 @@ namespace ISI.Cake.Addin.Docker
 
 			var dockerApi = new ISI.Extensions.Docker.DockerApi(logger, dateTimeStamper, jsonSerializer);
 
-			dockerApi.BuildXImage(new()
+			response.Errored = dockerApi.BuildXImage(new()
 			{
 				AppDirectory = (string.IsNullOrWhiteSpace(request.AppDirectory) ? cakeContext.Environment.WorkingDirectory.FullPath : request.AppDirectory),
 				DockerFileFullName = request.DockerFileFullName,
@@ -57,7 +57,7 @@ namespace ISI.Cake.Addin.Docker
 				ContainerImageTags = request.ContainerImageTags,
 				OnBuildStart = tryGetEnvironmentValue => { request.OnBuildStart?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value)); },
 				OnBuildFinish = (tryGetEnvironmentValue, errored) => { request.OnBuildFinish?.Invoke((string key, out string value) => tryGetEnvironmentValue(key, out value), errored); },
-			});
+			}).Errored;
 
 			return response;
 		}

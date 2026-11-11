@@ -97,7 +97,13 @@ namespace ISI.Cake.Addin.Docker
 
 		IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; }
 
+		string AdditionalDockerFileSteps { get; set; }
+
 		string BaseImageContainerRepository { get; set; }
+
+		bool UseBuildX { get; set; }
+		string Platform { get; set; }
+		bool UseDockerBuildKit { get; set; }
 
 		ISI.Extensions.Scm.DateTimeStampVersion BuildDateTimeStampVersion { get; }
 	}
@@ -126,7 +132,13 @@ namespace ISI.Cake.Addin.Docker
 
 		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 
+		public string AdditionalDockerFileSteps { get; set; }
+
 		public string BaseImageContainerRepository { get; set; }
+
+		public bool UseBuildX { get; set; }
+		public string Platform { get; set; }
+		public bool UseDockerBuildKit { get; set; }
 
 		public ISI.Extensions.Scm.DateTimeStampVersion BuildDateTimeStampVersion { get; set; }
 	}
@@ -158,8 +170,14 @@ namespace ISI.Cake.Addin.Docker
 
 		public IGetOrCreateOrUpgradeIfNeededBaseImageRequestArtifact[] Artifacts { get; set; }
 
+		public string AdditionalDockerFileSteps { get; set; }
+
 		public string BaseImageContainerRegistry { get; set; }
 		public string BaseImageContainerRepository { get; set; }
+
+		public bool UseBuildX { get; set; }
+		public string Platform { get; set; }
+		public bool UseDockerBuildKit { get; set; }
 
 		public ISI.Extensions.Scm.DateTimeStampVersion BuildDateTimeStampVersion { get; set; }
 	}
