@@ -126,15 +126,15 @@ namespace ISI.Cake.Addin.Docker
 
 			if (request.ImageContainerRepositoryType == ImageContainerRepositoryType.Unknown)
 			{
-				if (request.SourceBaseImageContainerRegistry.IndexOf("alpine", StringComparison.InvariantCultureIgnoreCase) >= 0)
+				if (request.SourceBaseImageContainerRepository.IndexOf("alpine", StringComparison.InvariantCultureIgnoreCase) >= 0)
 				{
 					request.ImageContainerRepositoryType = ImageContainerRepositoryType.Alpine;
 				}
-				else if (request.SourceBaseImageContainerRegistry.IndexOf("ubuntu", StringComparison.InvariantCultureIgnoreCase) >= 0)
+				else if (request.SourceBaseImageContainerRepository.IndexOf("ubuntu", StringComparison.InvariantCultureIgnoreCase) >= 0)
 				{
 					request.ImageContainerRepositoryType = ImageContainerRepositoryType.Ubuntu;
 				}
-				else if (request.SourceBaseImageContainerRegistry.IndexOf("debian", StringComparison.InvariantCultureIgnoreCase) >= 0)
+				else if (request.SourceBaseImageContainerRepository.IndexOf("debian", StringComparison.InvariantCultureIgnoreCase) >= 0)
 				{
 					request.ImageContainerRepositoryType = ImageContainerRepositoryType.Debian;
 				}
