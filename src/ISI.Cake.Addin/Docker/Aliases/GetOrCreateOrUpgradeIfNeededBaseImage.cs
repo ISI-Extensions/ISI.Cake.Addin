@@ -194,6 +194,10 @@ namespace ISI.Cake.Addin.Docker
 				{
 					baseImageContainerRepositoryBuilder.Append("-sshpass");
 				}
+				if (request.IncludeZip)
+				{
+					baseImageContainerRepositoryBuilder.Append("-zip");
+				}
 
 				baseImageContainerRepository = baseImageContainerRepositoryBuilder.ToString();
 			}
@@ -288,6 +292,14 @@ namespace ISI.Cake.Addin.Docker
 				alpinePackages.Add("sshpass");
 
 				ubuntuPackages.Add("sshpass");
+			}
+
+			if (request.IncludeZip)
+			{
+				alpinePackages.Add("zip");
+
+				ubuntuPackages.Add("zip");
+				ubuntuPackages.Add("unzip");
 			}
 
 			var shouldBuild = false;
